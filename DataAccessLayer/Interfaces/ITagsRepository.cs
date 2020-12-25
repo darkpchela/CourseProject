@@ -2,7 +2,7 @@
 
 namespace DataAccessLayer.Interfaces
 {
-    public interface ITagRepository : IRepository<Tag>
+    public interface ITagsRepository : IRepository<Tag>
     {
     }
 }
