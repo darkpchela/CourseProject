@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CourseProject", "CourseProject\CourseProject.csproj", "{908C9824-B9A5-411C-9F3C-7575B3FB6719}"
+	ProjectSection(ProjectDependencies) = postProject
+		{77DC7AAB-9FFB-4783-953E-4A7FF1BD22FC} = {77DC7AAB-9FFB-4783-953E-4A7FF1BD22FC}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLayer", "BusinessLayer\BusinessLayer.csproj", "{F15FB236-8C9C-4934-B610-0D984207BFAF}"
 EndProject
