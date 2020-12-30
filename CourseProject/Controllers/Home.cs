@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace CourseProject.Controllers
 {
-    public class HomeController : Controller
+    public class Home : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<Home> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public Home(ILogger<Home> logger)
         {
             _logger = logger;
         }
@@ -23,7 +23,17 @@ namespace CourseProject.Controllers
             return View();
         }
 
+        public IActionResult Main()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        public IActionResult Profile()
         {
             return View();
         }

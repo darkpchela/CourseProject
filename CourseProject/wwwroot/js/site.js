@@ -1,4 +1,10 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿$('#btnColorTheme').click(e => {
+    e.preventDefault();
+    $('html').attr('theme') == 'dark'?
+     $('html').attr('theme', 'light'):
+     $('html').attr('theme', 'dark');
+});
 
-// Write your JavaScript code.
+$(() => {
+    $('[data-toggle="tooltip"]').tooltip();
+});
