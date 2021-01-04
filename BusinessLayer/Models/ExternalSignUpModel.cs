@@ -5,9 +5,6 @@ namespace BusinessLayer.Models
     public class ExternalSignUpModel
     {
         [Required]
-        public string Username { get; set; }
-
-        [Required]
         [EmailAddress]
         public string Email { get; set; }
 

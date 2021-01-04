@@ -1,0 +1,22 @@
+﻿@model ExternalSignUpModel
+<div class="col-md-4 offset-md-4 col-6 offset-3 mt-5">
+    <div class="border-custom rounded p-2">
+        <form asp-action="ExternalSignUp" asp-controller="Account" method="post" class="text-center">
+            <div class="form-group">
+                <label>First name</label>
+                <input type="email" class="form-control" asp-for="FirstName" readonly placeholder="First name">
+            </div>
+            <div class="form-group">
+                <label>Last name</label>
+                <input type="email" class="form-control" asp-for="LastName" readonly placeholder="Last name">
+            </div>
+            <div class="form-group">
+                <label>Email address</label>
+                <input type="email" class="form-control" asp-for="Email" readonly placeholder="Enter email">
+            </div>
+            <button type="submit" class="btn font-weight-bolder">Confirm</button>
+        </form>
+        <div asp-validation-summary="All">
+        </div>
+    </div>
+</div>

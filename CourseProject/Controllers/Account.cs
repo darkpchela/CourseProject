@@ -72,11 +72,12 @@ namespace CourseProject.Controllers
             var info = await identityUnitOfWork.SignInManager.GetExternalLoginInfoAsync();
             var user = new User
             {
-                UserName = model.Username,
+                UserName = info.Principal.FindFirst(ClaimTypes.Email).Value,
                 Email = info.Principal.FindFirst(ClaimTypes.Email).Value
             };
-            await identityUnitOfWork.UserManager.CreateAsync(user);
-            await identityUnitOfWork.UserManager.AddLoginAsync(user, info);
+            var res = await identityUnitOfWork.UserManager.CreateAsync(user);
+            if (res.Succeeded)
+                await identityUnitOfWork.UserManager.AddLoginAsync(user, info);
             return RedirectToAction(nameof(ExternalSignIn));
         }
 
