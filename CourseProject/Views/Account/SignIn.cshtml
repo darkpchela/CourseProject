@@ -52,4 +52,22 @@
             Sign Up
         </a>
     </div>
+@inject Identity.Interfaces.IIdentityUnitOfWork uof
+    <div>
+        @{ var providers = await uof.SignInManager.GetExternalAuthenticationSchemesAsync();
+                <form asp-action="ExternalLogin"  method="post" class="form-horizontal">
+                    <div>
+                        <p>
+                            @foreach (var provider in providers)
+                            {
+                                <input type="submit" class="btn btn-info" value="@provider.Name" name="provider" />
+                            }
+                        </p>
+                    </div>
+                </form>
+            }
+        @User.Identity.IsAuthenticated
+        @User.Identity.Name??"";
+    </div>
+    
 </div>

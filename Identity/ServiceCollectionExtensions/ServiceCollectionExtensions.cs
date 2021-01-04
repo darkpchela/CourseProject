@@ -1,6 +1,7 @@
 ﻿using Identity.Entities;
 using Identity.Interfaces;
 using Identity.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -42,7 +43,11 @@ namespace Identity.ServiceCollectionExtensions
 
         public static IServiceCollection AddExternalProviders(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddAuthentication()
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options => 
+                {
+                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/SignIn");
+                })
                 .AddGoogle("google", options =>
                 {
                     var googleAuth = configuration.GetSection("Authentication:Google");
