@@ -1,6 +1,6 @@
 ﻿namespace BusinessLayer.Models
 {
-    public class UserSignInModel
+    public class SignInModel
     {
         public string Email { get; set; }
 

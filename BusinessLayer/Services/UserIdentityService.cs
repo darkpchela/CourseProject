@@ -27,7 +27,7 @@ namespace BusinessLayer.Services
             throw new NotImplementedException();
         }
 
-        public async Task<bool> SignInAsync(UserSignInModel userSignInModel)
+        public async Task<bool> SignInAsync(SignInModel userSignInModel)
         {
             var res = await identityUnitOfWork.SignInManager.PasswordSignInAsync(userSignInModel.Email, userSignInModel.Password, userSignInModel.RememberMe, false);
             return res.Succeeded;
@@ -38,7 +38,7 @@ namespace BusinessLayer.Services
            await identityUnitOfWork.SignInManager.SignOutAsync();
         }
 
-        public async Task<bool> SignUpAsync(UserSignUpModel signUpModel)
+        public async Task<bool> SignUpAsync(SignUpModel signUpModel)
         {
             var user = new User();
             var res = await identityUnitOfWork.UserManager.CreateAsync(user, signUpModel.Password);

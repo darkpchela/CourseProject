@@ -6,9 +6,9 @@ namespace BusinessLayer.Interfaces
 {
     public interface IUserIdentityService : IDisposable
     {
-        Task<bool> SignUpAsync(UserSignUpModel signUpModel);
+        Task<bool> SignUpAsync(SignUpModel signUpModel);
 
-        Task<bool> SignInAsync(UserSignInModel userSignInModel);
+        Task<bool> SignInAsync(SignInModel userSignInModel);
 
         Task SignOutAsync();
 
