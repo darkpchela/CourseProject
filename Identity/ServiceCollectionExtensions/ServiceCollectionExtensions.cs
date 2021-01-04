@@ -26,7 +26,7 @@ namespace Identity.ServiceCollectionExtensions
                     RequireLowercase = false,
                     RequireNonAlphanumeric = false,
                     RequireUppercase = false,
-                    RequiredLength = 5
+                    RequiredLength = 3
                 };
             })
                 .AddEntityFrameworkStores<IdentityContext>()
@@ -37,6 +37,11 @@ namespace Identity.ServiceCollectionExtensions
         public static IServiceCollection AddIdentityDependencies(this IServiceCollection services)
         {
             services.AddTransient<IIdentityUnitOfWork, IdentityUnitOfWork>();
+            return services;
+        }
+
+        public static IServiceCollection AddExternalProviders(this IServiceCollection services)
+        {
             return services;
         }
     }
