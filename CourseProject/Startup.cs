@@ -28,6 +28,7 @@ namespace CourseProject
             services.AddIdentityDependencies();
             services.AddApplicationDbContext(Configuration);
             services.AddApplicationDbDependencies();
+            services.AddExternalProviders(Configuration);
             services.AddControllersWithViews();
         }
 

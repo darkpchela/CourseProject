@@ -40,8 +40,16 @@ namespace Identity.ServiceCollectionExtensions
             return services;
         }
 
-        public static IServiceCollection AddExternalProviders(this IServiceCollection services)
+        public static IServiceCollection AddExternalProviders(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddAuthentication()
+                .AddGoogle("google", options =>
+                {
+                    var googleAuth = configuration.GetSection("Authentication:Google");
+                    options.ClientId = googleAuth["ClientId"];
+                    options.ClientSecret = googleAuth["ClientSecret"];
+                    options.SignInScheme = IdentityConstants.ExternalScheme;
+                });
             return services;
         }
     }

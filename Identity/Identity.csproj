@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>d7b281cf-fb9e-4195-9b24-27aa0a54720a</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,6 +14,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="3.1.0" />
   </ItemGroup>
 
 </Project>
