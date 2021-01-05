@@ -1,3 +1,4 @@
+using BusinessLayer.Extensions;
 using DataAccessLayer.Extensions;
 using Identity.ServiceCollectionExtensions;
 using Microsoft.AspNetCore.Builder;
@@ -29,6 +30,7 @@ namespace CourseProject
             services.AddApplicationDbContext(Configuration);
             services.AddApplicationDbDependencies();
             services.AddExternalProviders(Configuration);
+            services.AddAutomapperProfiles();
             services.AddControllersWithViews();
         }
 
