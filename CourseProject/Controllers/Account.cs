@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Interfaces;
 using BusinessLayer.Models;
+using CourseProject.ViewModels;
 using Identity.Entities;
 using Identity.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -12,11 +13,12 @@ namespace CourseProject.Controllers
     {
         private readonly IIdentityUnitOfWork identityUnitOfWork;
 
-        private readonly IUserIdentityService userIdentityService;
+        private readonly IUserRegistService userRegistService;
 
-        public Account(IIdentityUnitOfWork identityUnitOfWork)
+        public Account(IIdentityUnitOfWork identityUnitOfWork, IUserRegistService userRegistService)
         {
             this.identityUnitOfWork = identityUnitOfWork;
+            this.userRegistService = userRegistService;
         }
 
         [HttpGet]
@@ -30,7 +32,7 @@ namespace CourseProject.Controllers
         {
             if (!ModelState.IsValid)
                 return View(model);
-            var res = await userIdentityService.SignUpAsync(model);
+            var res = await userRegistService.RegistAsync(model);
             if (!res)
             {
                 ModelState.AddModelError("", "Username or email already taken");
@@ -50,14 +52,20 @@ namespace CourseProject.Controllers
         {
             if (!ModelState.IsValid)
                 return View(model);
-            return View();
+            var res = await identityUnitOfWork.SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+            if(!res.Succeeded)
+            {
+                ModelState.AddModelError("","Incorrect login/password");
+                return View(model);
+            }
+            return RedirectToAction(nameof(Home.Index), nameof(Home));
         }
 
         [HttpGet]
         public async Task<IActionResult> ExternalSignUp()
         {
             var info = await identityUnitOfWork.SignInManager.GetExternalLoginInfoAsync();
-            var model = new ExternalSignUpModel
+            var model = new ExternalSignUpVM
             {
                 Email = info.Principal.FindFirst(ClaimTypes.Email).Value,
                 LastName = info.Principal.FindFirstValue(ClaimTypes.Surname),
@@ -67,18 +75,21 @@ namespace CourseProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ExternalSignUp(ExternalSignUpModel model)
+        public async Task<IActionResult> ExternalSignUp(ExternalSignUpVM model)
         {
             var info = await identityUnitOfWork.SignInManager.GetExternalLoginInfoAsync();
-            var user = new AppUser
+            if (info is null)
             {
-                UserName = info.Principal.FindFirst(ClaimTypes.Email).Value,
-                Email = info.Principal.FindFirst(ClaimTypes.Email).Value
-            };
-            var res = await identityUnitOfWork.UserManager.CreateAsync(user);
-            if (res.Succeeded)
-                await identityUnitOfWork.UserManager.AddLoginAsync(user, info);
-            return RedirectToAction(nameof(ExternalSignIn));
+                ModelState.AddModelError("", "Failed to fetch external data");
+                return View(model);
+            }
+            var res = await userRegistService.ExternalRegistAsync(info);
+            if (!res)
+            {
+                ModelState.AddModelError("", "Failed to sign up");
+                return View(model);
+            }
+            return RedirectToAction(nameof(Home.Index), nameof(Home));
         }
 
         [HttpPost]
@@ -95,6 +106,11 @@ namespace CourseProject.Controllers
             var info = await identityUnitOfWork.SignInManager.GetExternalLoginInfoAsync();
             if (info is null)
                 return RedirectToAction(nameof(SignIn));
+
+            var model = new ExternalSignInVM
+            {
+                Username = info.Principal.FindFirstValue(ClaimTypes.Email)
+            };
             var res = await identityUnitOfWork.SignInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
             if (!res.Succeeded)
                 return RedirectToAction(nameof(ExternalSignUp));
@@ -102,48 +118,34 @@ namespace CourseProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ExternalSignIn(string provider)
+        public async Task<IActionResult> ExternalSignIn(ExternalSignInVM model)
+        {
+            var info = await identityUnitOfWork.SignInManager.GetExternalLoginInfoAsync();
+            if (info is null)
+            {
+                ModelState.AddModelError("", "Failed to fetch external data");
+                return View(model);
+            }
+            var res = await identityUnitOfWork.SignInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
+            if (!res.Succeeded)
+            {
+                ModelState.AddModelError("", "Login failed");
+                return View(model);
+            }
+            return RedirectToAction(nameof(Home.Index), nameof(Home));
+        }
+
+        [HttpPost]
+        public IActionResult ExternalSignInRequest(string provider)
         {
             var redirectUrl = Url.Action(nameof(ExternalSignIn), nameof(Account));
             var props = identityUnitOfWork.SignInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
             return Challenge(props, provider);
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> ExternalLogin()
-        //{
-        //    var info = await identityUnitOfWork.SignInManager.GetExternalLoginInfoAsync();
-        //    if (info is null)
-        //        return RedirectToAction(nameof(SignIn));
-        //    var res = await identityUnitOfWork.SignInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
-        //    if (!res.Succeeded)
-        //    {
-        //        var email = info.Principal.FindFirst(ClaimTypes.Email).Value;
-        //        var lastname = info.Principal.FindFirstValue(ClaimTypes.Surname);
-        //        var firstname = info.Principal.FindFirstValue(ClaimTypes.GivenName);
-        //        if (email != null)
-        //        {
-        //            var user = await identityUnitOfWork.UserManager.FindByEmailAsync(email);
-
-        //            if (user is null)
-        //            {
-        //                user = new User
-        //                {
-        //                    UserName = email,
-        //                    Email = email
-        //                };
-        //                await identityUnitOfWork.UserManager.CreateAsync(user);
-        //            }
-        //            await identityUnitOfWork.UserManager.AddLoginAsync(user, info);
-        //        }
-        //        res = await identityUnitOfWork.SignInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
-        //    }
-        //    return RedirectToAction(nameof(SignIn));
-        //}
-
         public async Task<IActionResult> SignOut()
         {
-            await userIdentityService.SignOutAsync();
+            await identityUnitOfWork.SignInManager.SignOutAsync();
             return RedirectToAction(nameof(Home.Index), nameof(Home));
         }
     }

@@ -1,6 +1,7 @@
 ﻿using DataAccessLayer.Interfaces;
 using DataAccessLayer.Services.Repositories;
 using System;
+using System.Threading.Tasks;
 
 namespace DataAccessLayer.Services
 {
@@ -141,6 +142,11 @@ namespace DataAccessLayer.Services
         public CPUnitOfWork(CPDbContext dbContext)
         {
             this.dbContext = dbContext;
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await dbContext.SaveChangesAsync();
         }
 
         #region Disposable

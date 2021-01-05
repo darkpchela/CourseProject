@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace DataAccessLayer.Interfaces
 {
@@ -29,5 +30,7 @@ namespace DataAccessLayer.Interfaces
         IThemesRepository ThemesRepository { get; }
 
         IUsersRepository UsersRepository { get; }
+
+        Task SaveChangesAsync();
     }
 }

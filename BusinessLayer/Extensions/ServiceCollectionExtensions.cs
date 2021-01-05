@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using BusinessLayer.Interfaces;
+using BusinessLayer.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.Reflection;
@@ -14,6 +16,12 @@ namespace BusinessLayer.Extensions
                 Assembly.GetExecutingAssembly()
             };
             services.AddAutoMapper(assemblies);
+            return services;
+        }
+
+        public static IServiceCollection AddBusinessLayerServices(this IServiceCollection services)
+        {
+            services.AddTransient<IUserRegistService, UserRegistService>();
             return services;
         }
     }
