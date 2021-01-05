@@ -67,7 +67,7 @@ namespace CourseProject.Controllers
             var info = await identityUnitOfWork.SignInManager.GetExternalLoginInfoAsync();
             var model = new ExternalSignUpVM
             {
-                Email = info.Principal.FindFirst(ClaimTypes.Email).Value,
+                Email = info.Principal.FindFirstValue(ClaimTypes.Email),
                 LastName = info.Principal.FindFirstValue(ClaimTypes.Surname),
                 FirstName = info.Principal.FindFirstValue(ClaimTypes.GivenName)
             };

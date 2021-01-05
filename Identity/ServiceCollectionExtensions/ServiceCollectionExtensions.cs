@@ -48,6 +48,14 @@ namespace Identity.ServiceCollectionExtensions
                 {
                     options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/SignIn");
                 })
+                .AddVkontakte("vk", options =>
+                {
+                    var vkAuth = configuration.GetSection("Authentication:VK");
+                    options.ClientId = vkAuth["ClientId"];
+                    options.ClientSecret = vkAuth["ClientSecret"];
+                    options.Scope.Add("email");
+                    options.SignInScheme = IdentityConstants.ExternalScheme;
+                })
                 .AddGoogle("google", options =>
                 {
                     var googleAuth = configuration.GetSection("Authentication:Google");
