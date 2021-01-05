@@ -106,15 +106,11 @@ namespace CourseProject.Controllers
             var info = await identityUnitOfWork.SignInManager.GetExternalLoginInfoAsync();
             if (info is null)
                 return RedirectToAction(nameof(SignIn));
-
             var model = new ExternalSignInVM
             {
                 Username = info.Principal.FindFirstValue(ClaimTypes.Email)
             };
-            var res = await identityUnitOfWork.SignInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
-            if (!res.Succeeded)
-                return RedirectToAction(nameof(ExternalSignUp));
-            return RedirectToAction(nameof(Home.Index), nameof(Home));
+            return View(model);
         }
 
         [HttpPost]
@@ -128,10 +124,7 @@ namespace CourseProject.Controllers
             }
             var res = await identityUnitOfWork.SignInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
             if (!res.Succeeded)
-            {
-                ModelState.AddModelError("", "Login failed");
-                return View(model);
-            }
+                return RedirectToAction(nameof(ExternalSignUp), nameof(Account));
             return RedirectToAction(nameof(Home.Index), nameof(Home));
         }
 
