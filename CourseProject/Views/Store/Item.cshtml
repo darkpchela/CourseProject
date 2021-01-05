@@ -1,5 +1,66 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model ItemVM
+<div class="h-100">
+    <div class="h-100 w-100 mt-3 d-flex flex-column">
+        <div class="border-bottom-custom">
+            <div class="col-8 offset-2 text-center">
+                <h4 class="d-inline-block w-75">
+                    Item Name
+                </h4>
+                <h5>Collection</h5>
+                <h6>
+                    Owner: FirstName LastName
+                </h6>
+            </div>
+        </div>
+        <div class="d-flex flex-row flex-wrap justify-content-center w-100 border-bottom-custom">
+            <div class="flex-grow-0">
+                <div class="p-2 text-center">
+                    <a class="d-block">
+                        <img class="img-fluid img-thumbnail bg-dark mx-square-40"
+                             src="https://i.pinimg.com/originals/ff/b9/db/ffb9dbf3712b8da5d229334dbf499f16.jpg"
+                             alt="picture">
+                    </a>
+                    <h5>Bottle Of Whiskey</h5>
+                </div>
+            </div>
+            <div class="flex-grow-1 p-1 text-center">
+                <h5 class="text-center">Description</h5>
+                <textarea class="w-100" style="min-width: 300px;"></textarea>
+            </div>
+        </div>
+        <div class="text-center border-bottom-custom p-2">
+            <a id="btnLike" class="btn">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"
+                     class="medium-icon">
+                    <path fill-rule="evenodd"
+                          d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
+                </svg>
+            </a>
+            <span class="ml-2">Count</span>
+        </div>
+        <div>
+            <h5 class="text-center">Comments</h5>
+            <div class="d-flex flex-column ">
+                <div name='comment' class="p-1 border-custom">
+                    <h6 class="d-inline-block w-25 text-right">
+                        darkpchela
+                    </h6>
+                    <p class="d-inline-block ">
+                        Good item!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="position-fixed h-10 w-100 text-center" style="bottom: 0;">
+        <h6 class="position-absolute text-right">darkpchela</h6>
+        <textarea class="w-75 h-100 rounded p-2"></textarea>
+        <a class="btn position-absolute" style="top: 25%;">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="medium-icon"
+                 viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                      d="M14.082 2.182a.5.5 0 0 1 .103.557L8.528 15.467a.5.5 0 0 1-.917-.007L5.57 10.694.803 8.652a.5.5 0 0 1-.006-.916l12.728-5.657a.5.5 0 0 1 .556.103zM2.25 8.184l3.897 1.67a.5.5 0 0 1 .262.263l1.67 3.897L12.743 3.52 2.25 8.184z" />
+            </svg>
+        </a>
+    </div>
+</div>
