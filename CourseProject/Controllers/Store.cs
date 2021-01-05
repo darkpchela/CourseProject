@@ -38,14 +38,24 @@ namespace CourseProject.Controllers
             return View();
         }
 
-        public IActionResult _Collections()
+        public IActionResult _Collections(int id)
         {
-            return PartialView("Profile/_Collections", new List<CollectionVM>());
+            var model = new ProfileCollectionsVM
+            {
+                Collections = new List<CollectionVM>(),
+                IsEditable = true
+            };
+            return PartialView("Profile/_Collections", model);
         }
 
         public IActionResult _Items()
         {
-            return PartialView("Profile/_Items", new List<ItemVM>());
+            var model = new ProfileItemsVM
+            {
+                Items = new List<ItemVM>(),
+                IsEditable = true
+            };
+            return PartialView("Profile/_Items", model);
         }
 
     }

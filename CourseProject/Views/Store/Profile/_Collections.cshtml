@@ -1,22 +1,46 @@
-﻿@model IList<CollectionVM>
+﻿@model ProfileCollectionsVM
 <div>
+    @if (Model.IsEditable)
+    {
+        <div class="square-25 m-2 pt-2">
+            <div class="w-100 h-100 d-flex flex-row justify-content-center ">
+                <a asp-action="CreateCollection" asp-controller="Store" id="btnAdd" class="btn w-50 h-50 align-self-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                         fill="currentColor" class="h-100 w-100" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                              d="M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+                        <path fill-rule="evenodd"
+                              d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    }
     <div class="d-flex flex-row flex-wrap align-items-baseline justify-content-center">
-        @for (int i = 0; i < Model.Count; i++)
+        @for (int i = 0; i < Model.Collections.Count; i++)
         {
             <div class="m-1 square-25 text-center">
                 <div class="p-2">
-                    <a asp-action="Collection" asp-controller="Store" asp-route-id="@Model[i].Id" class="btn p-0 btn-outline-info">
+                    <a asp-action="Collection" asp-controller="Store" asp-route-id="@Model.Collections[i].Id" class="btn p-0 btn-outline-info">
                         <img class="img-fluid img-thumbnail"
                              src="https://i.pinimg.com/originals/ff/b9/db/ffb9dbf3712b8da5d229334dbf499f16.jpg"
                              alt="picture">
                     </a>
                 </div>
                 <div>
-                    <h5>@Model[i].Name</h5>
+                    <h5>@Model.Collections[i].Name</h5>
                 </div>
                 <div>
-                    <h6>Items: <span>@Model[i].Items.Count</span></h6>
+                    <h6>Items: <span>@Model.Collections[i].Items.Count</span></h6>
                 </div>
+                @if (Model.IsEditable)
+                {
+                    await Html.RenderPartialAsync("Profile/_EditTools", new EditToolsVM
+                    {
+                        Id = Model.Collections[i].Id,
+                        Type = ItemTypes.Collection
+                    });
+                }
             </div>
         }
     </div>
