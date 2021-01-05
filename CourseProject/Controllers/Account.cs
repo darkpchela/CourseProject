@@ -70,7 +70,7 @@ namespace CourseProject.Controllers
         public async Task<IActionResult> ExternalSignUp(ExternalSignUpModel model)
         {
             var info = await identityUnitOfWork.SignInManager.GetExternalLoginInfoAsync();
-            var user = new User
+            var user = new AppUser
             {
                 UserName = info.Principal.FindFirst(ClaimTypes.Email).Value,
                 Email = info.Principal.FindFirst(ClaimTypes.Email).Value

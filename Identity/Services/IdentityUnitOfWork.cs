@@ -7,11 +7,11 @@ namespace Identity.Services
 {
     public class IdentityUnitOfWork : IIdentityUnitOfWork
     {
-        public UserManager<User> UserManager { get; }
+        public UserManager<AppUser> UserManager { get; }
 
-        public SignInManager<User> SignInManager { get; }
+        public SignInManager<AppUser> SignInManager { get; }
 
-        public IdentityUnitOfWork(UserManager<User> userManager, SignInManager<User> signInManager)
+        public IdentityUnitOfWork(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;

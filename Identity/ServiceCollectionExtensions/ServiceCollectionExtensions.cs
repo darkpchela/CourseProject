@@ -18,7 +18,7 @@ namespace Identity.ServiceCollectionExtensions
             {
                 options.UseSqlServer(connection);
             });
-            services.AddIdentity<User, Role>(configs =>
+            services.AddIdentity<AppUser, Role>(configs =>
             {
                 configs.User.RequireUniqueEmail = true;
                 configs.Password = new PasswordOptions

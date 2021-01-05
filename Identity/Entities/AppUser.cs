@@ -2,7 +2,7 @@
 
 namespace Identity.Entities
 {
-    public class User : IdentityUser<int>
+    public class AppUser : IdentityUser<int>
     {
     }
 }

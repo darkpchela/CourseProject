@@ -40,7 +40,7 @@ namespace BusinessLayer.Services
 
         public async Task<bool> SignUpAsync(SignUpModel signUpModel)
         {
-            var user = new User();
+            var user = new AppUser();
             var res = await identityUnitOfWork.UserManager.CreateAsync(user, signUpModel.Password);
             return res.Succeeded;
         }

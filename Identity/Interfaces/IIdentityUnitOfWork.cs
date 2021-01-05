@@ -6,8 +6,8 @@ namespace Identity.Interfaces
 {
     public interface IIdentityUnitOfWork : IDisposable
     {
-        UserManager<User> UserManager { get; }
+        UserManager<AppUser> UserManager { get; }
 
-        SignInManager<User> SignInManager { get; }
+        SignInManager<AppUser> SignInManager { get; }
     }
 }
