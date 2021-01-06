@@ -10,6 +10,6 @@ namespace BusinessLayer.Models
 
         public string Name { get; set; }
 
-        public ICollection<CollectionModel> Collections { get; set; }
+        public IEnumerable<CollectionModel> Collections { get; set; }
     }
 }

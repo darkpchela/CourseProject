@@ -10,6 +10,6 @@ namespace BusinessLayer.Models
 
         public string Value { get; set; }
 
-        public ICollection<ItemTagModel> ItemTags { get; set; }
+        public IEnumerable<ItemTagModel> ItemTags { get; set; }
     }
 }

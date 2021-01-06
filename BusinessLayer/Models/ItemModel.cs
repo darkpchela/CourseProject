@@ -19,14 +19,14 @@ namespace BusinessLayer.Models
 
         public UserModel Owner { get; set; }
 
-        public ICollection<CollectionItemModel> CollectionItems { get; set; }
+        public IEnumerable<CollectionItemModel> CollectionItems { get; set; }
 
-        public ICollection<ItemCommentModel> ItemComments { get; set; }
+        public IEnumerable<ItemCommentModel> ItemComments { get; set; }
 
-        public ICollection<ItemLikeModel> ItemLikes { get; set; }
+        public IEnumerable<ItemLikeModel> ItemLikes { get; set; }
 
-        public ICollection<ItemOptionalFieldModel> ItemOptionalFields { get; set; }
+        public IEnumerable<ItemOptionalFieldModel> ItemOptionalFields { get; set; }
 
-        public ICollection<ItemTagModel> ItemTags { get; set; }
+        public IEnumerable<ItemTagModel> ItemTags { get; set; }
     }
 }

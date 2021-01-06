@@ -10,8 +10,8 @@ namespace BusinessLayer.Models
 
         public string Type { get; set; }
 
-        public ICollection<CollectionOptionalFieldModel> CollectionOptionalFields { get; set; }
+        public IEnumerable<CollectionOptionalFieldModel> CollectionOptionalFields { get; set; }
 
-        public ICollection<ItemOptionalFieldModel> ItemOptionalFields { get; set; }
+        public IEnumerable<ItemOptionalFieldModel> ItemOptionalFields { get; set; }
     }
 }

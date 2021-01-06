@@ -25,8 +25,8 @@ namespace BusinessLayer.Models
 
         public ThemeModel Theme { get; set; }
 
-        public ICollection<CollectionItemModel> CollectionItems { get; set; }
+        public IEnumerable<CollectionItemModel> CollectionItems { get; set; }
 
-        public ICollection<CollectionOptionalFieldModel> CollectionOptionalFields { get; set; }
+        public IEnumerable<CollectionOptionalFieldModel> CollectionOptionalFields { get; set; }
     }
 }

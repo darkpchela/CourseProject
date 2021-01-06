@@ -13,6 +13,6 @@ namespace BusinessLayer.Models
 
         public DateTime CreationDate { get; set; }
 
-        public ICollection<ItemCommentModel> ItemComments { get; set; }
+        public IEnumerable<ItemCommentModel> ItemComments { get; set; }
     }
 }
