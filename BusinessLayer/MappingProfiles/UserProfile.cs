@@ -11,6 +11,7 @@ namespace BusinessLayer.MappingProfiles
     {
         public UserProfile()
         {
+            CreateMap<User, UserModel>().ReverseMap();
             CreateMap<ExternalLoginInfo, User>()
                 .ForMember(d => d.FirstName, o => o.MapFrom(s => s.Principal.FindFirstValue(ClaimTypes.GivenName)))
                 .ForMember(d => d.LastName, o => o.MapFrom(s => s.Principal.FindFirstValue(ClaimTypes.Surname)));
