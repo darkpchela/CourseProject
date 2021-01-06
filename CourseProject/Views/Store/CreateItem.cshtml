@@ -1,69 +1,69 @@
-﻿<div class="d-flex justify-content-center">
-<div class="p-2 w-75" style="max-width: 768px;">
-    <h3 class="text-center">
-        New item
-    </h3>
-    <form>
-        <div class="d-flex flex-column align-items-center">
-            <input type="text" class="form-control w-75 text-center"
-                   placeholder="Item name">
-            <div class="text-center mt-2">
-                <h6 class="text-muted">
-                    Drag here an image
-                </h6>
-                <div class=" rounded align-self-center text-center pt-2"
-                     style="width: 20vh; height: 20vh; background-color: gainsboro;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                         fill="currentColor" class="w-50 h-50 mt-5" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd"
-                              d="M15 12V6a1 1 0 0 0-1-1h-1.172a3 3 0 0 1-2.12-.879l-.83-.828A1 1 0 0 0 9.173 3H6.828a1 1 0 0 0-.707.293l-.828.828A3 3 0 0 1 3.172 5H2a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2z" />
-                        <path fill-rule="evenodd"
-                              d="M8 11a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zm0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
-                        <path d="M3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z" />
-                    </svg>
-                    <input type="hidden">
+﻿@model CreateItemVM
+
+<div class="d-flex justify-content-center mt-2">
+    <div class="d-flex flex-column align-items-stretch w-75" style="max-width: 768px;">
+        <h3 class="text-center">
+            New Item
+        </h3>
+        <form id="dropzone" class="dropzone square-25 align-self-center" maxFiles="1" action="/.">
+        </form>
+        <form class="mt-2">
+            <div class="d-flex flex-column align-items-center">
+                <input type="text" class="form-control w-75 text-center"
+                       placeholder="Item name">
+                <input type="text" placeholder="Choose collection"
+                       class="mt-2 form-control w-75 text-center">
+                <div class="text-center mt-3 w-75">
+                    <h6 class="text-muted">Description(Markdown)</h6>
+                    <textarea class="form-control form-control w-100 text-center"
+                              placeholder="Item description"
+                              style="min-height: 20vh;"></textarea>
                 </div>
-            </div>
-            <input type="text" placeholder="Choose collection"
-                   class="mt-2 form-control w-75 text-center">
-            <div class="text-center mt-3 w-75">
-                <h6 class="text-muted">Description(Markdown)</h6>
-                <textarea class="form-control form-control w-100 text-center"
-                          placeholder="Item description"
-                          style="min-height: 20vh;"></textarea>
-            </div>
-            <div class="text-center w-75 mt-3">
-                <h6 class="text-muted">Optional fields</h6>
-                <div class="border-custom rounded ">
-                    <div class="d-flex flex-row flex-nowrap justify-content-between p-1">
-                        <label class="d-inline-block text-center p-1 w-50">
-                            FieldName
-                        </label>
-                        <input class="d-inline-block text-center form-control"
-                               style="width: 70%;">
+                <div class="text-center w-75 mt-3">
+                    <h6 class="text-muted">Optional fields</h6>
+                    <div class="border-custom rounded ">
+                        <div class="d-flex flex-row flex-nowrap justify-content-between p-1">
+                            <label class="d-inline-block text-center p-1 w-50">
+                                FieldName
+                            </label>
+                            <input class="d-inline-block text-center form-control"
+                                   style="width: 70%;">
+                        </div>
                     </div>
                 </div>
+                <div class="text-center w-75 mt-2">
+                    <input type="text" class="form-control text-center" placeholder="tags">
+                </div>
+                <div class="w-75 d-flex flex-row  justify-content-between mt-2">
+                    <a asp-action="Profile" asp-controller="Store" class="btn p-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                             class="medium-icon" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                  d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                        </svg>
+                    </a>
+                    <a href="#" class="btn p-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                             class="medium-icon" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                  d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
+                        </svg>
+                    </a>
+                </div>
             </div>
-            <div class="text-center w-75 mt-2">
-                <input type="text" class="form-control text-center" placeholder="tags">
-            </div>
-            <div class="w-75 d-flex flex-row  justify-content-between mt-2">
-                <a href="#" class="btn p-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                         class="medium-icon" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd"
-                              d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
-                    </svg>
-                </a>
-                <a href="#" class="btn p-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                         class="medium-icon" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd"
-                              d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
-                    </svg>
-                </a>
-            </div>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>
-</div>
+
+@section Scripts{
+    <link rel="stylesheet" href="~/lib/dropzone-5.7.0/dist/dropzone.css" />
+    <script src="~/lib/dropzone-5.7.0/dist/dropzone.js"></script>
+    <script>
+        Dropzone.autoDiscover = false;
+        new Dropzone("#dropzone", {
+            Url: "#",
+            maxFiles: 1,
+            maxFilesize: 20
+        })
+    </script>
+}
