@@ -6,7 +6,7 @@ using DataAccessLayer.Interfaces;
 
 namespace BusinessLayer.Services.BaseCrud
 {
-    public class UsersCrudService : BaseCRUDService<User, UserModel>, IUserCrudService
+    public class UsersCrudService : BaseCrudService<User, UserModel>, IUserCrudService
     {
         protected override IRepository<User> BaseRepository
         {

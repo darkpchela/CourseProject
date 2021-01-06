@@ -6,7 +6,7 @@ using DataAccessLayer.Interfaces;
 
 namespace BusinessLayer.Services.BaseCrud
 {
-    public class ItemTagCrudService : BaseCRUDService<ItemTag, ItemTagModel>, IItemTagCrudService
+    public class ItemTagCrudService : BaseCrudService<ItemTag, ItemTagModel>, IItemTagCrudService
     {
         protected override IRepository<ItemTag> BaseRepository
         {

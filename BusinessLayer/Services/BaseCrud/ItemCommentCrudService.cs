@@ -6,7 +6,7 @@ using DataAccessLayer.Interfaces;
 
 namespace BusinessLayer.Services.BaseCrud
 {
-    public class ItemCommentCrudService : BaseCRUDService<ItemComment, ItemCommentModel>, IItemCommentCrudService
+    public class ItemCommentCrudService : BaseCrudService<ItemComment, ItemCommentModel>, IItemCommentCrudService
     {
         protected override IRepository<ItemComment> BaseRepository
         {

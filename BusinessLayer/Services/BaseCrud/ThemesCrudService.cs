@@ -6,7 +6,7 @@ using DataAccessLayer.Interfaces;
 
 namespace BusinessLayer.Services.BaseCrud
 {
-    public class ThemesCrudService : BaseCRUDService<Theme, ThemeModel>, IThemesCrudService
+    public class ThemesCrudService : BaseCrudService<Theme, ThemeModel>, IThemesCrudService
     {
         protected override IRepository<Theme> BaseRepository
         {

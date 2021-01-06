@@ -5,17 +5,17 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace BusinessLayer.Services.BaseCRUD
+namespace BusinessLayer.Services.BaseCrud
 {
-    internal abstract class BaseCRUDService<TEntity, TModel> : IBaseCRUDService<TEntity, TModel> where TEntity : class where TModel : class
+    public abstract class BaseCrudService<TEntity, TModel> : IBaseCRUDService<TEntity, TModel> where TEntity : class where TModel : class
     {
-        private readonly ICPUnitOfWork cPUnitOfWork;
+        protected readonly ICPUnitOfWork cPUnitOfWork;
 
-        private readonly IMapper mapper;
+        protected readonly IMapper mapper;
 
         protected abstract IRepository<TEntity> BaseRepository { get; }
 
-        public BaseCRUDService(ICPUnitOfWork cPUnitOfWork, IMapper mapper)
+        public BaseCrudService(ICPUnitOfWork cPUnitOfWork, IMapper mapper)
         {
             this.cPUnitOfWork = cPUnitOfWork;
             this.mapper = mapper;
