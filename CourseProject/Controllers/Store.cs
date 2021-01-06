@@ -28,6 +28,30 @@ namespace CourseProject.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public IActionResult CreateCollection()
+        {
+            return View(new CreateCollectionVM());
+        }
+
+        [HttpPost]
+        public IActionResult CreateCollection(CreateCollectionVM model)
+        {
+            return null;
+        }
+
+        [HttpGet]
+        public IActionResult CreateItem()
+        {
+            return View(new CreateItemVM());
+        }
+
+        [HttpPost]
+        public IActionResult CreateItem(CreateItemVM model)
+        {
+            return null;
+        }
+
         public IActionResult Collection(int id)
         {
             return View();
