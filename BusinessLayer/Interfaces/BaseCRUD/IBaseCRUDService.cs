@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace BusinessLayer.Interfaces.BaseCRUD
+namespace BusinessLayer.Interfaces.BaseCrud
 {
     public interface IBaseCRUDService<TEntity, TModel> where TEntity : class where TModel : class
     {

@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using BusinessLayer.Models;
+using DataAccessLayer.Entities;
 
-namespace BusinessLayer.Interfaces.BaseCRUD
+namespace BusinessLayer.Interfaces.BaseCrud
 {
-    interface IItemOptionalFieldCrudService
+    public interface IItemOptionalFieldCrudService : IBaseCRUDService<ItemOptionalField, ItemOptionalFieldModel>
     {
     }
 }
