@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using BusinessLayer.Interfaces.BaseCRUD;
+using BusinessLayer.Interfaces.BaseCrud;
 using DataAccessLayer.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Services.BaseCRUD
 {
-    public abstract class BaseCRUDService<TEntity, TModel> : IBaseCRUDService<TEntity, TModel> where TEntity : class where TModel : class
+    internal abstract class BaseCRUDService<TEntity, TModel> : IBaseCRUDService<TEntity, TModel> where TEntity : class where TModel : class
     {
         private readonly ICPUnitOfWork cPUnitOfWork;
 
         private readonly IMapper mapper;
 
-        private protected abstract IRepository<TEntity> BaseRepository { get; }
+        protected abstract IRepository<TEntity> BaseRepository { get; }
 
         public BaseCRUDService(ICPUnitOfWork cPUnitOfWork, IMapper mapper)
         {
