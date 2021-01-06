@@ -31,12 +31,12 @@ namespace BusinessLayer.Services.BaseCRUD
             mapper.Map(entity, model);
         }
 
-        public async Task Delete(int id)
+        public async Task DeleteAsync(int id)
         {
             await BaseRepository.Delete(id);
         }
 
-        public async Task<IEnumerable<TModel>> GetAll()
+        public async Task<IEnumerable<TModel>> GetAllAsync()
         {
             var entities = await BaseRepository.GetAll().ToListAsync();
             var models = mapper.Map<IEnumerable<TModel>>(entities);

@@ -9,10 +9,10 @@ namespace BusinessLayer.Interfaces.BaseCRUD
 
         Task<TModel> GetAsync(int id);
 
-        Task<IEnumerable<TModel>> GetAll();
+        Task<IEnumerable<TModel>> GetAllAsync();
 
         Task Update(TModel model);
 
-        Task Delete(int id);
+        Task DeleteAsync(int id);
     }
 }
