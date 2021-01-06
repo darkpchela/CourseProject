@@ -1,14 +1,11 @@
 ﻿using AutoMapper;
 using BusinessLayer.Interfaces;
+using BusinessLayer.Interfaces.BaseCrud;
 using BusinessLayer.Models;
-using DataAccessLayer.Entities;
-using DataAccessLayer.Interfaces;
 using Identity.Entities;
 using Identity.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BusinessLayer.Services
@@ -17,15 +14,15 @@ namespace BusinessLayer.Services
     {
         private readonly IIdentityUnitOfWork identityUnitOfWork;
 
-        private readonly ICPUnitOfWork cPUnitOfWork;
-
         private readonly IMapper mapper;
 
-        public UserRegistService(IIdentityUnitOfWork identityUnitOfWork, ICPUnitOfWork cPUnitOfWork, IMapper mapper)
+        private readonly IUserCrudService userCrudService;
+
+        public UserRegistService(IIdentityUnitOfWork identityUnitOfWork, IMapper mapper, IUserCrudService userCrudService)
         {
             this.identityUnitOfWork = identityUnitOfWork;
-            this.cPUnitOfWork = cPUnitOfWork;
             this.mapper = mapper;
+            this.userCrudService = userCrudService;
         }
 
         public Task DeleteAsync(int userId)
@@ -40,10 +37,9 @@ namespace BusinessLayer.Services
             if (!res.Succeeded)
                 return false;
             await identityUnitOfWork.UserManager.AddLoginAsync(appUser, info);
-            var user = mapper.Map<User>(info);
+            var user = mapper.Map<UserModel>(info);
             user.Id = appUser.Id;
-            await cPUnitOfWork.UsersRepository.Create(user);
-            await cPUnitOfWork.SaveChangesAsync();
+            await userCrudService.CreateAsync(user);
             return true;
         }
 
@@ -53,10 +49,9 @@ namespace BusinessLayer.Services
             var res = await identityUnitOfWork.UserManager.CreateAsync(appUser, signUpModel.Password);
             if (!res.Succeeded)
                 return false;
-            var user = mapper.Map<User>(signUpModel);
+            var user = mapper.Map<UserModel>(signUpModel);
             user.Id = appUser.Id;
-            await cPUnitOfWork.UsersRepository.Create(user);
-            await cPUnitOfWork.SaveChangesAsync();
+            await userCrudService.CreateAsync(user);
             return true;
         }
 
@@ -71,7 +66,6 @@ namespace BusinessLayer.Services
                 if (disposing)
                 {
                     identityUnitOfWork.Dispose();
-                    cPUnitOfWork.Dispose();
                 }
                 disposed = true;
             }
