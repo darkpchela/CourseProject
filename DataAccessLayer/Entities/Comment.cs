@@ -14,6 +14,7 @@ namespace DataAccessLayer.Entities
 
         public int Id { get; set; }
         public string Value { get; set; }
+        public DateTime CreationDate { get; set; }
 
         public virtual ICollection<ItemComment> ItemComments { get; set; }
     }

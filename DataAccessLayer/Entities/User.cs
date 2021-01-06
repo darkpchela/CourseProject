@@ -15,9 +15,9 @@ namespace DataAccessLayer.Entities
         }
 
         public int Id { get; set; }
+        public string Username { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public DateTime? BirthDate { get; set; }
 
         public virtual ICollection<Collection> Collections { get; set; }
         public virtual ICollection<ItemLike> ItemLikes { get; set; }

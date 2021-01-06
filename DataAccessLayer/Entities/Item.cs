@@ -20,6 +20,7 @@ namespace DataAccessLayer.Entities
         public string Name { get; set; }
         public string ImageUrl { get; set; }
         public int OwnerId { get; set; }
+        public DateTime CreationDate { get; set; }
 
         public virtual User Owner { get; set; }
         public virtual ICollection<CollectionItem> CollectionItems { get; set; }

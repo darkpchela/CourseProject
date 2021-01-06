@@ -19,6 +19,7 @@ namespace DataAccessLayer.Entities
         public string ImageUrl { get; set; }
         public int ThemeId { get; set; }
         public int CreatorId { get; set; }
+        public DateTime CreationDate { get; set; }
 
         public virtual User Creator { get; set; }
         public virtual Theme Theme { get; set; }
