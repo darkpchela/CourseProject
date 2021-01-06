@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Services.BaseCrud
 {
-    public abstract class BaseCRUDService<TEntity, TModel> : IBaseCRUDService<TEntity, TModel> where TEntity : class where TModel : class
+    public abstract class BaseCrudService<TEntity, TModel> : IBaseCRUDService<TEntity, TModel> where TEntity : class where TModel : class
     {
         protected readonly ICPUnitOfWork cPUnitOfWork;
 
@@ -15,7 +15,7 @@ namespace BusinessLayer.Services.BaseCrud
 
         protected abstract IRepository<TEntity> BaseRepository { get; }
 
-        public BaseCRUDService(ICPUnitOfWork cPUnitOfWork, IMapper mapper)
+        public BaseCrudService(ICPUnitOfWork cPUnitOfWork, IMapper mapper)
         {
             this.cPUnitOfWork = cPUnitOfWork;
             this.mapper = mapper;
