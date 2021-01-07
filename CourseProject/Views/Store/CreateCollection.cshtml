@@ -4,8 +4,8 @@
             <h3 class="text-center">
                 New Item
             </h3>
-            <form id="dropzone" class="dropzone square-25 align-self-center" maxFiles="1" action="/.">
-            </form>
+            <div id="dropzone" class="dropzone square-25 align-self-center">
+            </div>
             <form class="d-flex flex-column align-items-center mt-2">
                 <input type="text" class="form-control w-75 text-center"
                        placeholder="Collection name">
@@ -78,14 +78,11 @@
                 Dropzone.autoDiscover = false;
                 $('#dropzone').dropzone({
                     addRemoveLinks: true,
-                    autoQueue: false,
                     maxFiles: 1,
                     maxFileSeize: 20,
                     method: 'post',
                     url: '/Store/UploadImage',
-                    resizeQuality: 0.2,
                     success: (file, response) => {
-                    $('#dopzone .dz-preview').addClass('square-25');
                         console.log(response);
                     }
                 });

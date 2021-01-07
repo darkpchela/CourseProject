@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CloudinaryDotNet.Actions;
+using CloudinaryDotNet;
 
 namespace CourseProject
 {
@@ -35,6 +37,8 @@ namespace CourseProject
             services.AddAutomapperProfiles();
             services.AddBusinessLayerDependencies();
             services.AddControllersWithViews();
+            services.AddCloudinary(new Account(Configuration["Cloudinary:CloudName"], Configuration["Cloudinary:ClientId"], Configuration["Cloudinary:ClientSecret"]));
+ 
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

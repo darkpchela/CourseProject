@@ -1,24 +1,27 @@
-﻿using CourseProject.ViewModels;
+﻿using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
+using CourseProject.ViewModels;
 using DataAccessLayer.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using CourseProject.Extensions;
 using System.Threading.Tasks;
-using System.IO;
 
 namespace CourseProject.Controllers
 {
     public class Store : Controller
     {
         private readonly ICPUnitOfWork cPUnitOfWork;
-        public Store(ICPUnitOfWork cPUnitOfWork)
+        private readonly Cloudinary cloudinary;
+
+        public Store(ICPUnitOfWork cPUnitOfWork, Cloudinary cloudinary)
         {
             this.cPUnitOfWork = cPUnitOfWork;
+            this.cloudinary = cloudinary;
         }
+
         public IActionResult Profile(int? id)
         {
             if (!id.HasValue)
@@ -68,11 +71,13 @@ namespace CourseProject.Controllers
         [HttpPost]
         public async Task<IActionResult> UploadImage(IFormFile file)
         {
-            using (StreamReader reader = new StreamReader(file.OpenReadStream()))
+            var uploadParams = new ImageUploadParams
             {
-                HttpContext.Session.Set("file", await reader.ReadToEndAsync());
-            }
-             return Json(true);
+                Folder = "CourseProject",
+                File = new FileDescription(file.FileName, file.OpenReadStream()),
+            };
+            var result = await cloudinary.UploadAsync(uploadParams);
+            return Json(result.Uri);
         }
 
         public IActionResult _Collections(int id)
@@ -94,6 +99,5 @@ namespace CourseProject.Controllers
             };
             return PartialView("Profile/_Items", model);
         }
-
     }
 }
