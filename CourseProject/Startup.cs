@@ -37,7 +37,7 @@ namespace CourseProject
             services.AddAutomapperProfiles();
             services.AddBusinessLayerDependencies();
             services.AddControllersWithViews();
-            services.AddCloudinary(new Account(Configuration["Cloudinary:CloudName"], Configuration["Cloudinary:ClientId"], Configuration["Cloudinary:ClientSecret"]));
+            services.AddCloudinaryService(Configuration);
  
         }
 

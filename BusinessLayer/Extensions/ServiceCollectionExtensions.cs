@@ -3,6 +3,8 @@ using BusinessLayer.Interfaces;
 using BusinessLayer.Interfaces.BaseCrud;
 using BusinessLayer.Services;
 using BusinessLayer.Services.BaseCrud;
+using CloudinaryDotNet;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.Reflection;
@@ -37,6 +39,13 @@ namespace BusinessLayer.Extensions
             services.AddTransient<IThemesCrudService, ThemesCrudService>();
             services.AddTransient<IUserCrudService, UsersCrudService>();
             services.AddTransient<IUserRegistService, UserRegistService>();
+            return services;
+        }
+
+        public static IServiceCollection AddCloudinaryService(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddCloudinary(new Account(configuration["Cloudinary:CloudName"], configuration["Cloudinary:ClientId"], configuration["Cloudinary:ClientSecret"]));
+            services.AddTransient<ICloudinaryService, CloudinaryService>();
             return services;
         }
     }

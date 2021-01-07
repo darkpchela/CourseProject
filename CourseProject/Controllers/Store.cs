@@ -1,4 +1,5 @@
-﻿using CloudinaryDotNet;
+﻿using BusinessLayer.Interfaces;
+using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using CourseProject.ViewModels;
 using DataAccessLayer.Interfaces;
@@ -13,13 +14,14 @@ namespace CourseProject.Controllers
 {
     public class Store : Controller
     {
-        private readonly ICPUnitOfWork cPUnitOfWork;
-        private readonly Cloudinary cloudinary;
+        private readonly ICloudinaryService cloudinaryService;
 
-        public Store(ICPUnitOfWork cPUnitOfWork, Cloudinary cloudinary)
+        private readonly ICPUnitOfWork cPUnitOfWork;
+
+        public Store(ICloudinaryService cloudinaryService, ICPUnitOfWork cPUnitOfWork)
         {
+            this.cloudinaryService = cloudinaryService;
             this.cPUnitOfWork = cPUnitOfWork;
-            this.cloudinary = cloudinary;
         }
 
         public IActionResult Profile(int? id)
@@ -71,13 +73,9 @@ namespace CourseProject.Controllers
         [HttpPost]
         public async Task<IActionResult> UploadImage(IFormFile file)
         {
-            var uploadParams = new ImageUploadParams
-            {
-                Folder = "CourseProject",
-                File = new FileDescription(file.FileName, file.OpenReadStream()),
-            };
-            var result = await cloudinary.UploadAsync(uploadParams);
-            return Json(result.Uri);
+            var fileDesc = new FileDescription(file.FileName, file.OpenReadStream());
+            var res = await cloudinaryService.UploadAsync(fileDesc);
+            return Json(res);
         }
 
         public IActionResult _Collections(int id)
