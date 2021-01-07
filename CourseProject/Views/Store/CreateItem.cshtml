@@ -1,12 +1,14 @@
 ﻿@model CreateItemVM
 
 <div class="d-flex justify-content-center mt-2">
-    <div class="d-flex flex-column align-items-stretch w-75" style="max-width: 768px;">
+    <div class="d-flex flex-column align-items-stretch w-75 mt-2" style="max-width: 768px;">
         <h3 class="text-center">
             New Item
         </h3>
-        <form id="dropzone" class="dropzone square-25 align-self-center" maxFiles="1" action="/.">
-        </form>
+        <div class="square-25 align-self-center border-custom">
+            <div id="dropzone" class="dropzone">
+            </div>
+        </div>
         <form class="mt-2">
             <div class="d-flex flex-column align-items-center">
                 <input type="text" class="form-control w-75 text-center"

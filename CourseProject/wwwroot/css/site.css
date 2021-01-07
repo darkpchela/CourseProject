@@ -226,3 +226,59 @@ h6:hover {
 .form-control:focus{
     box-shadow: 0 0 0 0.2rem var(--border-color) !important;
 }
+
+/* modified dropzone.css */
+.dropzone{
+    width: inherit !important;
+    height: inherit !important;
+    max-width: inherit !important;
+    max-height: inherit !important;
+    padding: 0px !important;
+    border: none !important;
+}
+
+.dropzone .dz-preview *{
+    background-color: rgba(128, 128, 128, 0.7) !important;
+}
+
+.dz-preview{
+    margin: 0px !important;
+    width: inherit;
+    height: inherit;
+}
+
+.dz-details{
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+}
+
+.dz-details{
+    border-radius: 10px;
+    margin-top: 10%;
+}
+
+.dz-image{
+    opacity: 1.0 !important;
+    width: inherit !important;
+    height: inherit !important;
+    max-width: none !important;
+    max-height: none !important;
+}
+
+.dz-image img{
+    width: inherit !important;
+    height: inherit !important;
+    max-width: none !important;
+    max-height: none !important;
+}
+
+.dz-remove{
+    display: block;
+    width: 100%;
+    position: absolute;
+    bottom: 0px;
+    z-index: 666;
+    border-bottom: 0px ;
+    border-radius: 10px;
+}
