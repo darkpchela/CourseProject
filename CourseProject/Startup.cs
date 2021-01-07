@@ -25,6 +25,8 @@ namespace CourseProject
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDistributedMemoryCache();
+            services.AddSession();
             services.AddIdentityContext(Configuration);
             services.AddIdentityDependencies();
             services.AddApplicationDbContext(Configuration);
@@ -53,6 +55,7 @@ namespace CourseProject
 
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

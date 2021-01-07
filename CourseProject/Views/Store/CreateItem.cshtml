@@ -60,10 +60,18 @@
     <script src="~/lib/dropzone-5.7.0/dist/dropzone.js"></script>
     <script>
         Dropzone.autoDiscover = false;
-        new Dropzone("#dropzone", {
-            Url: "#",
+        $('#dropzone').dropzone({
+            addRemoveLinks: true,
+            autoQueue: false,
             maxFiles: 1,
-            maxFilesize: 20
-        })
+            maxFileSeize: 20,
+            method: 'post',
+            url: '/Store/UploadImage',
+            resizeQuality: 0.2,
+            success: (file, response) => {
+                $('#dopzone .dz-preview').addClass('square-25');
+                console.log(response);
+            }
+        });
     </script>
 }

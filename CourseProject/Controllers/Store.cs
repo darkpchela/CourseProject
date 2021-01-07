@@ -1,11 +1,14 @@
 ﻿using CourseProject.ViewModels;
 using DataAccessLayer.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using CourseProject.Extensions;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace CourseProject.Controllers
 {
@@ -37,7 +40,7 @@ namespace CourseProject.Controllers
         [HttpPost]
         public IActionResult CreateCollection(CreateCollectionVM model)
         {
-            return null;
+            return View(model);
         }
 
         [HttpGet]
@@ -60,6 +63,16 @@ namespace CourseProject.Controllers
         public IActionResult Item(int id)
         {
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadImage(IFormFile file)
+        {
+            using (StreamReader reader = new StreamReader(file.OpenReadStream()))
+            {
+                HttpContext.Session.Set("file", await reader.ReadToEndAsync());
+            }
+             return Json(true);
         }
 
         public IActionResult _Collections(int id)

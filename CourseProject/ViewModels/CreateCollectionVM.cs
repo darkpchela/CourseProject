@@ -1,11 +1,18 @@
-﻿using System;
+﻿using BusinessLayer.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CourseProject.ViewModels
 {
     public class CreateCollectionVM
     {
+        public string Name { get; set; }
+
+        public ThemeModel Theme { get; set; }
+
+        public string Description { get; set; }
+
+        public string ImageUrl { get; set; }
+
+        public IList<OptionalFieldModel> Fields { get; set; }
     }
 }
