@@ -4,8 +4,8 @@
         <h3 class="text-center">
             New Item
         </h3>
-        <div class="square-25 align-self-center border-custom">
-            <div id="dropzone" class="dropzone">
+        <div class="align-self-center border-custom p-1">
+            <div id="dropzone" class="dropzone square-25">
             </div>
         </div>
         <form class="d-flex flex-column align-items-center mt-2">
@@ -86,6 +86,12 @@
             url: '/Store/UploadImage',
             success: (file, response) => {
                 console.log(response);
+                if (response.succeed === true) {
+                    $('#dropzone .dz-image img').attr('src', response.uri);
+                }
+                else {
+                    console.log(response.error);
+                }
             }
         });
     </script>

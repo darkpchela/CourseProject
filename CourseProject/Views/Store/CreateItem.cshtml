@@ -5,8 +5,8 @@
         <h3 class="text-center">
             New Item
         </h3>
-        <div class="square-25 align-self-center border-custom">
-            <div id="dropzone" class="dropzone">
+        <div class="align-self-center border-custom p-1">
+            <div id="dropzone" class="dropzone square-25">
             </div>
         </div>
         <form class="mt-2">
@@ -64,15 +64,18 @@
         Dropzone.autoDiscover = false;
         $('#dropzone').dropzone({
             addRemoveLinks: true,
-            autoQueue: false,
             maxFiles: 1,
             maxFileSeize: 20,
             method: 'post',
             url: '/Store/UploadImage',
-            resizeQuality: 0.2,
             success: (file, response) => {
-                $('#dopzone .dz-preview').addClass('square-25');
                 console.log(response);
+                if (response.succeed === true) {
+                    $('#dropzone .dz-image img').attr('src', response.uri);
+                }
+                else {
+                    console.log(response.error);
+                }
             }
         });
     </script>
