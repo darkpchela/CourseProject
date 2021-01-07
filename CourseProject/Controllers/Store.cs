@@ -88,7 +88,15 @@ namespace CourseProject.Controllers
         {
             var fileDesc = new FileDescription(file.FileName, file.OpenReadStream());
             var res = await cloudinaryService.UploadAsync(fileDesc);
+            HttpContext.Session.SetString("fileUri", res.Uri);
             return Json(res);
+        }
+
+        [HttpPost]
+        public async Task AbortUpload()
+        {
+            var fileUri = HttpContext.Session.GetString("fileUri");
+            await cloudinaryService.DeleteAsync(fileUri);
         }
 
         public IActionResult _Collections(int id)

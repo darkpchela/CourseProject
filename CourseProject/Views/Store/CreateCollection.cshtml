@@ -4,7 +4,7 @@
         <h3 class="text-center">
             New Item
         </h3>
-        <div class="align-self-center border-custom p-1">
+        <div class="align-self-center border-custom rounded p-1">
             <div id="dropzone" class="dropzone square-25">
             </div>
         </div>
@@ -87,6 +87,9 @@
                 else {
                     console.log(response.error);
                 }
+            },
+            removedfile: () => {
+                $.post('/Store/AbortUpload')
             }
         });
 
