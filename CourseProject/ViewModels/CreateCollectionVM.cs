@@ -7,12 +7,17 @@ namespace CourseProject.ViewModels
     {
         public string Name { get; set; }
 
-        public ThemeModel Theme { get; set; }
+        public int ThemeId { get; set; }
 
         public string Description { get; set; }
 
         public string ImageUrl { get; set; }
 
-        public IList<OptionalFieldModel> Fields { get; set; }
+        public IList<CollectionOptionalFieldVM> Fields { get; set; }
+
+        public IEnumerable<OptionalFieldModel> OptionalFields{ get; set; }
+
+        public IEnumerable<ThemeModel> Themes { get; set; }
+
     }
 }

@@ -8,21 +8,19 @@
             <div id="dropzone" class="dropzone square-25">
             </div>
         </div>
-        <form class="d-flex flex-column align-items-center mt-2">
-            <input type="text" class="form-control w-75 text-center"
+        <form asp-action="CreateCollection" asp-controller="Store" method="post" class="d-flex flex-column align-items-center mt-2">
+            <input asp-for="Name" type="text" class="form-control w-75 text-center"
                    placeholder="Collection name">
-            <input type="file" name="file" hidden />
-            <input type="text" placeholder="Collection theme"
-                   class="mt-2 form-control w-75 text-center">
+            @Html.DropDownListFor(m => m.ThemeId, new SelectList(Model.Themes, "Id", "Name"), "Select theme", new { @class= "mt-2 form-control w-75 text-center" })
             <div class="text-center mt-3 w-75">
                 <h6 class="text-muted">Description(Markdown)</h6>
-                <textarea class="form-control form-control w-100 text-center"
+                <textarea asp-for="Description" class="form-control form-control w-100 text-center"
                           placeholder="Collection description"
                           style="min-height: 20vh;"></textarea>
             </div>
             <div class="text-center mt-3 w-75">
                 <h6 class="text-muted">Optional fields</h6>
-                <div id='fields'
+                <div id='fields' name="Fields"
                      class="d-flex flex-column justify-content-center border-custom p-2">
                     <div class="w-100">
                         <a id="btnAddField" href="#" class="btn p-0">
@@ -37,20 +35,20 @@
                     </div>
                 </div>
                 <div class="w-100 d-flex flex-row justify-content-between mt-2">
-                    <a href="#" class="btn p-0">
+                    <a asp-action="Profile" asp-controller="Store" class="btn p-0">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                              class="bigger-icon" viewBox="0 0 16 16">
                             <path fill-rule="evenodd"
                                   d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
                         </svg>
                     </a>
-                    <a href="#" class="btn p-0">
+                    <button type="submit" class="btn p-0">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                              class="bigger-icon" viewBox="0 0 16 16">
                             <path fill-rule="evenodd"
                                   d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
                         </svg>
-                    </a>
+                    </button>
                 </div>
             </div>
         </form>
@@ -59,8 +57,8 @@
 
 <div class="d-none">
 <div id="fieldProto" name='field' data-id="0" class="d-flex flex-row flex-nowrap align-items-center mt-1">
-    <input type="text" class="form-control flex-grow-1 mr-1 " placeholder="Field name" />
-    <input class="form-control flex-grow-1  mr-1" placeholder="Choose type">
+    <input id="name" name="name" type="text" class="form-control flex-grow-1 mr-1 " placeholder="Field name" />
+    @Html.DropDownList("type", new SelectList(Model.OptionalFields, "Id", "Type"), "Select field type", new {@class="form-control"})
     <a name='btnDeleteField' href="" class="d-block btn p-0">
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="tiny-icon" viewBox="0 0 16 16">
             <path fill-rule="evenodd"
@@ -92,22 +90,31 @@
             }
         });
 
+        let fieldsCount = 0;
         const fieldProtoElem = $('#fieldProto');
         const fieldsElem = $('#fields');
         const getNewField = () => {
             let field = fieldProtoElem.clone().removeAttr('id');
-            let id = $('#fields [name="field"]').length + 1;
-            field.attr('data-id', id);
+            field.attr('data-id', fieldsCount);
+            field.children('#name').attr('name', `Fields[${fieldsCount}].Name`).removeAttr('id');
+            field.children('#type').attr('name', `Fields[${fieldsCount}].OptionalFieldId`).removeAttr('id');
             field.children('[name=btnDeleteField]').click(e => {
                 e.preventDefault();
-                $(`[name="field"][data-id=${id}]`).remove();
+                $(e.target).parents('[name="field"]').remove();
+                fieldsCount--;
             });
+            fieldsCount++;
             return field;
         };
+
         $('#btnAddField').click(e => {
             e.preventDefault();
             let field = getNewField();
             $("#fields #btnAddField").before(field);
+        });
+
+        $('select').focus(e => {
+            $(e.target).children('[value=""]').remove();
         });
     </script>
 }

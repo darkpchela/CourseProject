@@ -1,4 +1,5 @@
 ﻿using BusinessLayer.Interfaces;
+using BusinessLayer.Interfaces.BaseCrud;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using CourseProject.ViewModels;
@@ -18,10 +19,17 @@ namespace CourseProject.Controllers
 
         private readonly ICPUnitOfWork cPUnitOfWork;
 
-        public Store(ICloudinaryService cloudinaryService, ICPUnitOfWork cPUnitOfWork)
+        private readonly IOptionalFieldsCrudService optionalFieldsCrudService;
+
+        private readonly IThemesCrudService themesCrudService;
+
+        public Store(ICloudinaryService cloudinaryService, ICPUnitOfWork cPUnitOfWork, 
+            IOptionalFieldsCrudService optionalFieldsCrudService, IThemesCrudService themesCrudService)
         {
             this.cloudinaryService = cloudinaryService;
             this.cPUnitOfWork = cPUnitOfWork;
+            this.optionalFieldsCrudService = optionalFieldsCrudService;
+            this.themesCrudService = themesCrudService;
         }
 
         public IActionResult Profile(int? id)
@@ -37,9 +45,14 @@ namespace CourseProject.Controllers
         }
 
         [HttpGet]
-        public IActionResult CreateCollection()
+        public async Task<IActionResult> CreateCollection()
         {
-            return View(new CreateCollectionVM());
+            var model = new CreateCollectionVM
+            {
+                OptionalFields = await optionalFieldsCrudService.GetAllAsync(),
+                Themes = await themesCrudService.GetAllAsync()
+            };
+            return View(model);
         }
 
         [HttpPost]
