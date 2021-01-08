@@ -1,6 +1,6 @@
 ﻿namespace BusinessLayer.Models
 {
-    public class GetResourceModel
+    public class GetResourceResultModel
     {
         public bool Succeed { get; set; }
 

@@ -8,7 +8,7 @@ namespace BusinessLayer.Interfaces
     {
         Task<UploadResultModel> UploadAsync(FileDescription fileDescription);
 
-        Task<GetResourceModel> GetUri(string publicId);
+        Task<GetResourceResultModel> GetUri(string publicId);
 
         Task DeleteAsync(string publicId);
     }

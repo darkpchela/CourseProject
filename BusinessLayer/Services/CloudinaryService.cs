@@ -47,11 +47,11 @@ namespace BusinessLayer.Services
             return model;
         }
 
-        public async Task<GetResourceModel> GetUri(string pulbicId)
+        public async Task<GetResourceResultModel> GetUri(string pulbicId)
         {
             var getParams = new GetResourceParams(pulbicId);
             var result = await cloudinary.GetResourceAsync(getParams);
-            var model = new GetResourceModel
+            var model = new GetResourceResultModel
             {
                 Succeed = result.Error is null ? true : false,
                 Error = result.Error?.Message ?? "",
