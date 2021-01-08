@@ -3,7 +3,7 @@ using DataAccessLayer.Entities;
 
 namespace BusinessLayer.Interfaces.BaseCrud
 {
-    public interface ICollectionOptionalFieldCrudService : IBaseCRUDService<CollectionOptionalField, CollectionOptionalFieldModel>
+    public interface ICollectionOptionalFieldCrudService : IBaseCrudService<CollectionOptionalField, CollectionOptionalFieldModel>
     {
     }
 }
