@@ -89,7 +89,8 @@
                 }
             },
             removedfile: () => {
-                $.post('/Store/AbortUpload')
+                $.post('/Store/AbortUpload');
+                $('#dropzone .dz-preview').remove();
             }
         });
 
