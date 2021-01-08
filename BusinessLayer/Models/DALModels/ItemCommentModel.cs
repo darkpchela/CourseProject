@@ -1,6 +1,6 @@
 ﻿#nullable disable
 
-namespace BusinessLayer.Models
+namespace BusinessLayer.Models.DALModels
 {
     public class ItemCommentModel
     {
