@@ -93,6 +93,11 @@ namespace DataAccessLayer.Services
                     .WithMany(p => p.CollectionOptionalFields)
                     .HasForeignKey(d => d.CollectionId)
                     .HasConstraintName("FK_CollectionOptionalField_To_Collections");
+
+                entity.HasOne(d => d.OptionalField)
+                    .WithMany(p => p.CollectionOptionalFields)
+                    .HasForeignKey(d => d.OptionalFieldId)
+                    .HasConstraintName("FK_CollectionOptionalField_To_OptionalFields");
             });
 
             modelBuilder.Entity<Comment>(entity =>
@@ -167,6 +172,11 @@ namespace DataAccessLayer.Services
                     .WithMany(p => p.ItemOptionalFields)
                     .HasForeignKey(d => d.ItemId)
                     .HasConstraintName("FK_ItemOptionalField_To_Items");
+
+                entity.HasOne(d => d.OptionalField)
+                    .WithMany(p => p.ItemOptionalFields)
+                    .HasForeignKey(d => d.OptionalFieldId)
+                    .HasConstraintName("FK_ItemOptionalField_To_OptionalFields");
             });
 
             modelBuilder.Entity<ItemTag>(entity =>
