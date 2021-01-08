@@ -2,7 +2,7 @@
 
 namespace CourseProject.ViewModels
 {
-    public class OptionalFieldVM
+    public class CreateOptionalFieldVM
     {
         public int Id { get; set; }
 

@@ -8,6 +8,7 @@ using CourseProject.ViewModels;
 using DataAccessLayer.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -25,6 +26,8 @@ namespace CourseProject.Controllers
 
         private readonly IThemesCrudService themesCrudService;
 
+        private readonly ICollectionsCrudService collectionsCrudService;
+
         private readonly ICollectionsManager collectionsManager;
 
         private readonly IMapper mapper;
@@ -35,7 +38,7 @@ namespace CourseProject.Controllers
             Description = "It's a test collection"
         };
 
-        public Store(ICloudinaryService cloudinaryService, ICPUnitOfWork cPUnitOfWork,
+        public Store(ICloudinaryService cloudinaryService, ICPUnitOfWork cPUnitOfWork, ICollectionsCrudService collectionsCrudService,
             IFieldTypesCrudService fieldTypesCrudService, IThemesCrudService themesCrudService, ICollectionsManager collectionsManager, IMapper mapper)
         {
             this.cloudinaryService = cloudinaryService;
@@ -43,6 +46,7 @@ namespace CourseProject.Controllers
             this.fieldTypesCrudService = fieldTypesCrudService;
             this.themesCrudService = themesCrudService;
             this.collectionsManager = collectionsManager;
+            this.collectionsCrudService = collectionsCrudService;
             this.mapper = mapper;
         }
 
@@ -119,6 +123,22 @@ namespace CourseProject.Controllers
         {
             var fileId = HttpContext.Session.GetString("fileId");
             await cloudinaryService.DeleteAsync(fileId);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetCollectionFields(int id)
+        {
+            var collection = await collectionsCrudService.GetAsync(id);
+            var fields = collection.CollectionOptionalFields;
+            try
+            {
+            var fieldsVM = mapper.Map<IEnumerable<CollectionOptionalFieldVM>>(fields);
+            return Json(fieldsVM);
+            }
+            catch(Exception e)
+            {
+                return Json(null);
+            }
         }
 
         public IActionResult _Collections(int id)
