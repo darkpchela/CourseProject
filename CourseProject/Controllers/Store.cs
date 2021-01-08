@@ -18,16 +18,16 @@ namespace CourseProject.Controllers
 
         private readonly ICPUnitOfWork cPUnitOfWork;
 
-        private readonly IOptionalFieldsCrudService optionalFieldsCrudService;
+        private readonly IFieldTypesCrudService fieldTypesCrudService;
 
         private readonly IThemesCrudService themesCrudService;
 
         public Store(ICloudinaryService cloudinaryService, ICPUnitOfWork cPUnitOfWork,
-            IOptionalFieldsCrudService optionalFieldsCrudService, IThemesCrudService themesCrudService)
+            IFieldTypesCrudService fieldTypesCrudService, IThemesCrudService themesCrudService)
         {
             this.cloudinaryService = cloudinaryService;
             this.cPUnitOfWork = cPUnitOfWork;
-            this.optionalFieldsCrudService = optionalFieldsCrudService;
+            this.fieldTypesCrudService = fieldTypesCrudService;
             this.themesCrudService = themesCrudService;
         }
 
@@ -48,7 +48,7 @@ namespace CourseProject.Controllers
         {
             var model = new CreateCollectionVM
             {
-                OptionalFields = await optionalFieldsCrudService.GetAllAsync(),
+                FieldTypes = await fieldTypesCrudService.GetAllAsync(),
                 Themes = await themesCrudService.GetAllAsync()
             };
             return View(model);

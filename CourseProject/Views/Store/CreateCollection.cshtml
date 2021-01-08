@@ -58,7 +58,7 @@
 <div class="d-none">
 <div id="fieldProto" name='field' data-id="0" class="d-flex flex-row flex-nowrap align-items-center mt-1">
     <input id="name" name="name" type="text" class="form-control flex-grow-1 mr-1 " placeholder="Field name" />
-    @Html.DropDownList("type", new SelectList(Model.OptionalFields, "Id", "Type"), "Select field type", new {@class="form-control"})
+    @Html.DropDownList("type", new SelectList(Model.FieldTypes, "Id", "Type"), "Select field type", new {@class="form-control"})
     <a name='btnDeleteField' href="" class="d-block btn p-0">
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="tiny-icon" viewBox="0 0 16 16">
             <path fill-rule="evenodd"
@@ -101,7 +101,7 @@
             let field = fieldProtoElem.clone().removeAttr('id');
             field.attr('data-id', fieldsCount);
             field.children('#name').attr('name', `Fields[${fieldsCount}].Name`).removeAttr('id');
-            field.children('#type').attr('name', `Fields[${fieldsCount}].OptionalFieldId`).removeAttr('id');
+            field.children('#type').attr('name', `Fields[${fieldsCount}].TypeId`).removeAttr('id');
             field.children('[name=btnDeleteField]').click(e => {
                 e.preventDefault();
                 $(e.target).parents('[name="field"]').remove();

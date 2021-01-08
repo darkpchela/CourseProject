@@ -15,7 +15,7 @@ namespace CourseProject.ViewModels
 
         public IList<CollectionOptionalFieldVM> Fields { get; set; }
 
-        public IEnumerable<OptionalFieldModel> OptionalFields{ get; set; }
+        public IEnumerable<FieldTypeModel> FieldTypes{ get; set; }
 
         public IEnumerable<ThemeModel> Themes { get; set; }
 

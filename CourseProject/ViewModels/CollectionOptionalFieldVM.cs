@@ -2,7 +2,7 @@
 {
     public class CollectionOptionalFieldVM
     {
-        public int OptionalFieldId { get; set; }
+        public int TypeId { get; set; }
 
         public string Name { get; set; }
     }
