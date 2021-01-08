@@ -168,6 +168,8 @@ namespace DataAccessLayer.Services
             {
                 entity.ToTable("ItemOptionalField");
 
+                entity.Property(e => e.Value).HasMaxLength(1024);
+
                 entity.HasOne(d => d.Item)
                     .WithMany(p => p.ItemOptionalFields)
                     .HasForeignKey(d => d.ItemId)

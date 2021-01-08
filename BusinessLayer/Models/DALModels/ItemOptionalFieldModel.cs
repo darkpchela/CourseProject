@@ -10,6 +10,8 @@ namespace BusinessLayer.Models.DALModels
 
         public int OptionalFieldId { get; set; }
 
+        public string Value { get; set; }
+
         public ItemModel Item { get; set; }
 
         public OptionalFieldModel OptionalField { get; set; }
