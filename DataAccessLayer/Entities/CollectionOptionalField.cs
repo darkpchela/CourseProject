@@ -12,6 +12,5 @@ namespace DataAccessLayer.Entities
         public int OptionalFieldId { get; set; }
 
         public virtual Collection Collection { get; set; }
-        public virtual OptionalField OptionalField { get; set; }
     }
 }

@@ -22,6 +22,7 @@ namespace DataAccessLayer.Services
         public virtual DbSet<CollectionItem> CollectionItems { get; set; }
         public virtual DbSet<CollectionOptionalField> CollectionOptionalFields { get; set; }
         public virtual DbSet<Comment> Comments { get; set; }
+        public virtual DbSet<FieldType> FieldTypes { get; set; }
         public virtual DbSet<Item> Items { get; set; }
         public virtual DbSet<ItemComment> ItemComments { get; set; }
         public virtual DbSet<ItemLike> ItemLikes { get; set; }
@@ -92,11 +93,6 @@ namespace DataAccessLayer.Services
                     .WithMany(p => p.CollectionOptionalFields)
                     .HasForeignKey(d => d.CollectionId)
                     .HasConstraintName("FK_CollectionOptionalField_To_Collections");
-
-                entity.HasOne(d => d.OptionalField)
-                    .WithMany(p => p.CollectionOptionalFields)
-                    .HasForeignKey(d => d.OptionalFieldId)
-                    .HasConstraintName("FK_CollectionOptionalField_To_OptionalFields");
             });
 
             modelBuilder.Entity<Comment>(entity =>
@@ -104,6 +100,16 @@ namespace DataAccessLayer.Services
                 entity.Property(e => e.CreationDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Value).IsRequired();
+            });
+
+            modelBuilder.Entity<FieldType>(entity =>
+            {
+                entity.HasIndex(e => e.Type, "UQ_FieldTypes_Type")
+                    .IsUnique();
+
+                entity.Property(e => e.Type)
+                    .IsRequired()
+                    .HasMaxLength(64);
             });
 
             modelBuilder.Entity<Item>(entity =>
@@ -161,11 +167,6 @@ namespace DataAccessLayer.Services
                     .WithMany(p => p.ItemOptionalFields)
                     .HasForeignKey(d => d.ItemId)
                     .HasConstraintName("FK_ItemOptionalField_To_Items");
-
-                entity.HasOne(d => d.OptionalField)
-                    .WithMany(p => p.ItemOptionalFields)
-                    .HasForeignKey(d => d.OptionalFieldId)
-                    .HasConstraintName("FK_ItemOptionalField_To_OptionalFields");
             });
 
             modelBuilder.Entity<ItemTag>(entity =>
@@ -185,12 +186,15 @@ namespace DataAccessLayer.Services
 
             modelBuilder.Entity<OptionalField>(entity =>
             {
-                entity.HasIndex(e => e.Type, "UQ_OptionalFields_Type")
-                    .IsUnique();
-
-                entity.Property(e => e.Type)
+                entity.Property(e => e.Name)
                     .IsRequired()
-                    .HasMaxLength(64);
+                    .HasMaxLength(128);
+
+                entity.HasOne(d => d.Type)
+                    .WithMany(p => p.OptionalFields)
+                    .HasForeignKey(d => d.TypeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_OptionalFields_To_FieldTypes");
             });
 
             modelBuilder.Entity<Tag>(entity =>

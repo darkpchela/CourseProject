@@ -31,6 +31,8 @@ namespace DataAccessLayer.Interfaces
 
         IUsersRepository UsersRepository { get; }
 
+        IFieldTypesRepository FieldTypesRepository { get; }
+
         Task SaveChangesAsync();
     }
 }
