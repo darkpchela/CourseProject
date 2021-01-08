@@ -1,7 +1,9 @@
 ﻿namespace CourseProject.ViewModels
 {
-    public class CollectionOptionalFieldVM
+    public class OptionalFieldVM
     {
+        public int Id { get; set; }
+
         public int TypeId { get; set; }
 
         public string Name { get; set; }

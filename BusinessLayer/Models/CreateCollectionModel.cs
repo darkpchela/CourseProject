@@ -12,7 +12,7 @@ namespace BusinessLayer.Models
 
         public string Description { get; set; }
 
-        public IList<CollectionOptionalFieldModel> Fields { get; set; }
+        public IList<OptionalFieldModel> Fields { get; set; }
 
         public string ImagePublicKey { get; set; }
 
