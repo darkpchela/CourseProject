@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BusinessLayer.Extensions;
 using BusinessLayer.Interfaces;
 using BusinessLayer.Interfaces.BaseCrud;
 using BusinessLayer.Models;
@@ -65,11 +66,20 @@ namespace CourseProject.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateCollection(CreateCollectionVM model)
+        public async Task<IActionResult> CreateCollection(CreateCollectionVM model)
         {
             if (!ModelState.IsValid)
                 return View(model);
+            var imageId = HttpContext.Session.GetString("fileId");
+            if (string.IsNullOrEmpty(imageId))
+            {
+                ModelState.AddModelError("", "Collection image required.");
+                return View(model);
+            }
             var dtoModel = mapper.Map<CreateCollectionModel>(model);
+            dtoModel.ImagePublicKey = imageId;
+            dtoModel.Owner = HttpContext.User.Identity.Name.UntilChar('@');
+            await collectionsManager.CreateAsync(dtoModel);
             return View(model);
         }
 

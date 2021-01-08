@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BusinessLayer.Models;
 using BusinessLayer.Models.DALModels;
 using DataAccessLayer.Entities;
 
@@ -9,6 +10,9 @@ namespace BusinessLayer.MappingProfiles
         public CollectionProfile()
         {
             CreateMap<Collection, CollectionModel>().ReverseMap();
+            CreateMap<CreateCollectionModel, CollectionModel>()
+                .ForMember(d => d.ImageUrl, o => o.MapFrom(s => s.ImagePublicKey))
+                .ForMember(d => d.CreationDate, o => o.MapFrom(s => s.CreatedAt));
         }
     }
 }
