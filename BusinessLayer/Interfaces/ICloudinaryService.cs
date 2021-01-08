@@ -1,6 +1,5 @@
 ﻿using BusinessLayer.Models;
 using CloudinaryDotNet.Actions;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace BusinessLayer.Interfaces
@@ -9,6 +8,8 @@ namespace BusinessLayer.Interfaces
     {
         Task<UploadResultModel> UploadAsync(FileDescription fileDescription);
 
-        Task DeleteAsync(string url);
+        Task<GetResourceModel> GetUri(string publicId);
+
+        Task DeleteAsync(string publicId);
     }
 }

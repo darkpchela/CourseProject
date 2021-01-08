@@ -16,15 +16,15 @@ namespace BusinessLayer.Services
             this.cloudinary = cloudinary;
         }
 
-        public async Task DeleteAsync(string id)
+        public async Task DeleteAsync(string publicId)
         {
             var delParams = new DelResParams
             {
                 ResourceType = ResourceType.Image,
                 PublicIds = new List<string>
-               {
-                   id
-               }
+                {
+                    publicId
+                }
             };
             await cloudinary.DeleteResourcesAsync(delParams);
         }
@@ -43,6 +43,19 @@ namespace BusinessLayer.Services
                 Error = result.Error?.Message ?? "",
                 Uri = result.Uri?.AbsoluteUri ?? "",
                 ObjectId = result.PublicId
+            };
+            return model;
+        }
+
+        public async Task<GetResourceModel> GetUri(string pulbicId)
+        {
+            var getParams = new GetResourceParams(pulbicId);
+            var result = await cloudinary.GetResourceAsync(getParams);
+            var model = new GetResourceModel
+            {
+                Succeed = result.Error is null ? true : false,
+                Error = result.Error?.Message ?? "",
+                Uri = result.Url
             };
             return model;
         }
