@@ -13,6 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CloudinaryDotNet.Actions;
 using CloudinaryDotNet;
+using System.Reflection;
 
 namespace CourseProject
 {
@@ -34,7 +35,7 @@ namespace CourseProject
             services.AddApplicationDbContext(Configuration);
             services.AddApplicationDbDependencies();
             services.AddExternalProviders(Configuration);
-            services.AddAutomapperProfiles();
+            services.AddAutomapperProfiles(Assembly.GetExecutingAssembly());
             services.AddBusinessLayerDependencies();
             services.AddControllersWithViews();
             services.AddCloudinaryService(Configuration);

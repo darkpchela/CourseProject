@@ -1,5 +1,7 @@
-﻿using BusinessLayer.Interfaces;
+﻿using AutoMapper;
+using BusinessLayer.Interfaces;
 using BusinessLayer.Interfaces.BaseCrud;
+using BusinessLayer.Models;
 using CloudinaryDotNet.Actions;
 using CourseProject.ViewModels;
 using DataAccessLayer.Interfaces;
@@ -22,13 +24,25 @@ namespace CourseProject.Controllers
 
         private readonly IThemesCrudService themesCrudService;
 
+        private readonly ICollectionsManager collectionsManager;
+
+        private readonly IMapper mapper;
+
+        private CreateCollectionVM createCollectionTestVM = new CreateCollectionVM()
+        {
+            Name ="Test",
+            Description = "It's a test collection"
+        };
+
         public Store(ICloudinaryService cloudinaryService, ICPUnitOfWork cPUnitOfWork,
-            IFieldTypesCrudService fieldTypesCrudService, IThemesCrudService themesCrudService)
+            IFieldTypesCrudService fieldTypesCrudService, IThemesCrudService themesCrudService, ICollectionsManager collectionsManager, IMapper mapper)
         {
             this.cloudinaryService = cloudinaryService;
             this.cPUnitOfWork = cPUnitOfWork;
             this.fieldTypesCrudService = fieldTypesCrudService;
             this.themesCrudService = themesCrudService;
+            this.collectionsManager = collectionsManager;
+            this.mapper = mapper;
         }
 
         public IActionResult Profile(int? id)
@@ -46,11 +60,7 @@ namespace CourseProject.Controllers
         [HttpGet]
         public async Task<IActionResult> CreateCollection()
         {
-            var model = new CreateCollectionVM
-            {
-                FieldTypes = await fieldTypesCrudService.GetAllAsync(),
-                Themes = await themesCrudService.GetAllAsync()
-            };
+            var model = createCollectionTestVM;
             return View(model);
         }
 
@@ -59,6 +69,7 @@ namespace CourseProject.Controllers
         {
             if (!ModelState.IsValid)
                 return View(model);
+            var dtoModel = mapper.Map<CreateCollectionModel>(model);
             return View(model);
         }
 
