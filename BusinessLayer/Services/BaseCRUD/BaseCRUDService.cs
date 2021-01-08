@@ -26,7 +26,7 @@ namespace BusinessLayer.Services.BaseCrud
             if (model is null)
                 return;
             var entity = mapper.Map<TEntity>(model);
-            await BaseRepository.Create(entity);
+            await BaseRepository.Add(entity);
             await cPUnitOfWork.SaveChangesAsync();
             mapper.Map(entity, model);
         }

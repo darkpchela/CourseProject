@@ -36,7 +36,7 @@ namespace BusinessLayer.Services
                 result.Error = "Invalid input parameters";
                 return result;
             }
-            await cPUnitOfWork.CollectionsRepository.Create(collection);
+            await cPUnitOfWork.CollectionsRepository.Add(collection);
             await SetCollectionFields(collection, createCollectionModel.Fields);
             await cPUnitOfWork.SaveChangesAsync();
             result.Succeed = true;
@@ -62,7 +62,7 @@ namespace BusinessLayer.Services
                     Collection = collection,
                     OptionalField = field
                 };
-                await cPUnitOfWork.CollectionOptionalFieldRepository.Create(collectionField);
+                await cPUnitOfWork.CollectionOptionalFieldRepository.Add(collectionField);
             }
         }
     }

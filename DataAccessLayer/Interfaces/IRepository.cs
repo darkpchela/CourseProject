@@ -5,7 +5,7 @@ namespace DataAccessLayer.Interfaces
 {
     public interface IRepository<TEntity> where TEntity : class
     {
-        Task Create(TEntity entity);
+        Task Add(TEntity entity);
 
         Task<TEntity> Get(int id);
 

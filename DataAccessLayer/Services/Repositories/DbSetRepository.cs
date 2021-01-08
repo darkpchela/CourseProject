@@ -14,7 +14,7 @@ namespace DataAccessLayer.Services.Repositories
             dbSet = dbContext.Set<TEntity>();
         }
 
-        public async Task Create(TEntity entity)
+        public async Task Add(TEntity entity)
         {
             await dbSet.AddAsync(entity);
         }
