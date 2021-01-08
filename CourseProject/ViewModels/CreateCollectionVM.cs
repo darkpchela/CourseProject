@@ -5,15 +5,15 @@ namespace CourseProject.ViewModels
 {
     public class CreateCollectionVM
     {
-        [Required]
+        [Required(ErrorMessage = "Collection name is required.")]
         [StringLength(64, MinimumLength = 3, ErrorMessage = "Min name legth is 3. Maximum is 64.")]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Theme must me chosen.")]
-        public int ThemeId { get; set; }
+        public int? ThemeId { get; set; }
 
-        [Required]
-        [StringLength(1024, MinimumLength = 3, ErrorMessage = "Min description length is 3. Maximum is 1024")]
+        [Required(ErrorMessage = "Collection description required.")]
+        [StringLength(1024, MinimumLength = 3, ErrorMessage = "Min description length is 3. Maximum is 1024.")]
         public string Description { get; set; }
 
         public IList<OptionalFieldVM> Fields { get; set; }
