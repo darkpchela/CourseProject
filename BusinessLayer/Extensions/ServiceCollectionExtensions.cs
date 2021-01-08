@@ -40,6 +40,7 @@ namespace BusinessLayer.Extensions
             services.AddTransient<IUserCrudService, UsersCrudService>();
             services.AddTransient<IUserRegistService, UserRegistService>();
             services.AddTransient<IFieldTypesCrudService, FieldTypesCrudService>();
+            services.AddTransient<ICollectionsManager, CollectionsManager>();
             return services;
         }
 

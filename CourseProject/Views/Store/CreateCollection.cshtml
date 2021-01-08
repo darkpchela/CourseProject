@@ -1,4 +1,7 @@
 ﻿@model CreateCollectionVM
+@inject IThemesCrudService themesService
+@inject IFieldTypesCrudService fieldTypesService 
+
 <div class="d-flex justify-content-center mt-2">
     <div class="d-flex flex-column align-items-stretch w-75 mt-2" style="max-width: 768px;">
         <h3 class="text-center">
@@ -11,7 +14,7 @@
         <form asp-action="CreateCollection" asp-controller="Store" method="post" class="d-flex flex-column align-items-center mt-2">
             <input asp-for="Name" type="text" class="form-control w-75 text-center"
                    placeholder="Collection name">
-            @Html.DropDownListFor(m => m.ThemeId, new SelectList(Model.Themes, "Id", "Name"), "Select theme", new { @class= "mt-2 form-control w-75 text-center" })
+            @Html.DropDownListFor(m => m.ThemeId, new SelectList(await themesService.GetAllAsync(), "Id", "Name"), "Select theme", new { @class= "mt-2 form-control w-75 text-center" })
             <div class="text-center mt-3 w-75">
                 <h6 class="text-muted">Description(Markdown)</h6>
                 <textarea asp-for="Description" class="form-control form-control w-100 text-center"
@@ -58,7 +61,7 @@
 <div class="d-none">
 <div id="fieldProto" name='field' data-id="0" class="d-flex flex-row flex-nowrap align-items-center mt-1">
     <input id="name" name="name" type="text" class="form-control flex-grow-1 mr-1 " placeholder="Field name" />
-    @Html.DropDownList("type", new SelectList(Model.FieldTypes, "Id", "Type"), "Select field type", new {@class="form-control"})
+    @Html.DropDownList("type", new SelectList(await fieldTypesService.GetAllAsync(), "Id", "Type"), "Select field type", new {@class="form-control"})
     <a name='btnDeleteField' href="" class="d-block btn p-0">
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="tiny-icon" viewBox="0 0 16 16">
             <path fill-rule="evenodd"

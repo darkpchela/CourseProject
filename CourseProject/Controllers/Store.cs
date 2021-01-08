@@ -57,6 +57,8 @@ namespace CourseProject.Controllers
         [HttpPost]
         public IActionResult CreateCollection(CreateCollectionVM model)
         {
+            if (!ModelState.IsValid)
+                return View(model);
             return View(model);
         }
 
