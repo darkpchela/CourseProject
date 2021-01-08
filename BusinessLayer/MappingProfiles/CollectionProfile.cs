@@ -10,7 +10,7 @@ namespace BusinessLayer.MappingProfiles
         public CollectionProfile()
         {
             CreateMap<Collection, CollectionModel>().ReverseMap();
-            CreateMap<CreateCollectionModel, CollectionModel>()
+            CreateMap<CreateCollectionModel, Collection>()
                 .ForMember(d => d.ImageUrl, o => o.MapFrom(s => s.ImagePublicKey))
                 .ForMember(d => d.CreationDate, o => o.MapFrom(s => s.CreatedAt));
         }
