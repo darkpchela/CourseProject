@@ -1,4 +1,4 @@
-﻿using BusinessLayer.Models;
+﻿using BusinessLayer.Models.DALModels;
 using DataAccessLayer.Entities;
 
 namespace BusinessLayer.Interfaces.BaseCrud
