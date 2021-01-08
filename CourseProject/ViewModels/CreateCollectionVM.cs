@@ -1,4 +1,4 @@
-﻿using BusinessLayer.Models;
+﻿using BusinessLayer.Models.DALModels;
 using System.Collections.Generic;
 
 namespace CourseProject.ViewModels

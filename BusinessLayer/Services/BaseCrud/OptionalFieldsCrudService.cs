@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using BusinessLayer.Interfaces.BaseCrud;
-using BusinessLayer.Models;
+using BusinessLayer.Models.DALModels;
 using DataAccessLayer.Entities;
 using DataAccessLayer.Interfaces;
 

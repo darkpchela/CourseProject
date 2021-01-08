@@ -2,6 +2,7 @@
 using BusinessLayer.Interfaces;
 using BusinessLayer.Interfaces.BaseCrud;
 using BusinessLayer.Models;
+using BusinessLayer.Models.DALModels;
 using Identity.Entities;
 using Identity.Interfaces;
 using Microsoft.AspNetCore.Identity;

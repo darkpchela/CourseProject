@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BusinessLayer.Extensions;
 using BusinessLayer.Models;
+using BusinessLayer.Models.DALModels;
 using DataAccessLayer.Entities;
 using Identity.Entities;
 using Microsoft.AspNetCore.Identity;
