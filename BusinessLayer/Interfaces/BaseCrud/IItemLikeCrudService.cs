@@ -3,7 +3,7 @@ using DataAccessLayer.Entities;
 
 namespace BusinessLayer.Interfaces.BaseCrud
 {
-    public interface IItemLikeCrudService : IBaseCRUDService<ItemLike, ItemLikeModel>
+    public interface IItemLikeCrudService : IBaseCrudService<ItemLike, ItemLikeModel>
     {
     }
 }

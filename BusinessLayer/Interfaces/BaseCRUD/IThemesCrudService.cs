@@ -3,7 +3,7 @@ using DataAccessLayer.Entities;
 
 namespace BusinessLayer.Interfaces.BaseCrud
 {
-    public interface IThemesCrudService : IBaseCRUDService<Theme, ThemeModel>
+    public interface IThemesCrudService : IBaseCrudService<Theme, ThemeModel>
     {
     }
 }

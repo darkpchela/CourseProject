@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Services.BaseCrud
 {
-    public abstract class BaseCrudService<TEntity, TModel> : IBaseCRUDService<TEntity, TModel> where TEntity : class where TModel : class
+    public abstract class BaseCrudService<TEntity, TModel> : IBaseCrudService<TEntity, TModel> where TEntity : class where TModel : class
     {
         protected readonly ICPUnitOfWork cPUnitOfWork;
 
