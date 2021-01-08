@@ -7,5 +7,7 @@
         public string Uri { get; set; }
 
         public string Error { get; set; }
+
+        public string ObjectId { get; set; }
     }
 }

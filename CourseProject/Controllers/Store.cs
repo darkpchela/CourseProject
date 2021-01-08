@@ -1,6 +1,5 @@
 ﻿using BusinessLayer.Interfaces;
 using BusinessLayer.Interfaces.BaseCrud;
-using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using CourseProject.ViewModels;
 using DataAccessLayer.Interfaces;
@@ -23,7 +22,7 @@ namespace CourseProject.Controllers
 
         private readonly IThemesCrudService themesCrudService;
 
-        public Store(ICloudinaryService cloudinaryService, ICPUnitOfWork cPUnitOfWork, 
+        public Store(ICloudinaryService cloudinaryService, ICPUnitOfWork cPUnitOfWork,
             IOptionalFieldsCrudService optionalFieldsCrudService, IThemesCrudService themesCrudService)
         {
             this.cloudinaryService = cloudinaryService;
@@ -88,15 +87,16 @@ namespace CourseProject.Controllers
         {
             var fileDesc = new FileDescription(file.FileName, file.OpenReadStream());
             var res = await cloudinaryService.UploadAsync(fileDesc);
-            HttpContext.Session.SetString("fileUri", res.Uri);
+            HttpContext.Session.SetString("fileUrl", res.ObjectId);
+            HttpContext.Session.SetString("fileId", res.ObjectId);
             return Json(res);
         }
 
         [HttpPost]
         public async Task AbortUpload()
         {
-            var fileUri = HttpContext.Session.GetString("fileUri");
-            await cloudinaryService.DeleteAsync(fileUri);
+            var fileId = HttpContext.Session.GetString("fileId");
+            await cloudinaryService.DeleteAsync(fileId);
         }
 
         public IActionResult _Collections(int id)

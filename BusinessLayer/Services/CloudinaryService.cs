@@ -2,7 +2,7 @@
 using BusinessLayer.Models;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
-using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BusinessLayer.Services
@@ -16,9 +16,17 @@ namespace BusinessLayer.Services
             this.cloudinary = cloudinary;
         }
 
-        public Task DeleteAsync(string url)
+        public async Task DeleteAsync(string id)
         {
-            throw new NotImplementedException();
+            var delParams = new DelResParams
+            {
+                ResourceType = ResourceType.Image,
+                PublicIds = new List<string>
+               {
+                   id
+               }
+            };
+            await cloudinary.DeleteResourcesAsync(delParams);
         }
 
         public async Task<UploadResultModel> UploadAsync(FileDescription fileDescription)
@@ -33,7 +41,8 @@ namespace BusinessLayer.Services
             {
                 Succeed = result.Error is null ? true : false,
                 Error = result.Error?.Message ?? "",
-                Uri = result.Uri?.AbsoluteUri ?? ""
+                Uri = result.Uri?.AbsoluteUri ?? "",
+                ObjectId = result.PublicId
             };
             return model;
         }
