@@ -16,7 +16,7 @@ namespace BusinessLayer.Models
 
         public string ImagePublicKey { get; set; }
 
-        public string Owner { get; set; }
+        public int OwnerId { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
     }

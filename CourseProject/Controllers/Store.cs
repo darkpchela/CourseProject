@@ -79,7 +79,7 @@ namespace CourseProject.Controllers
             }
             var dtoModel = mapper.Map<CreateCollectionModel>(model);
             dtoModel.ImagePublicKey = imageId;
-            dtoModel.Owner = HttpContext.User.Identity.Name.UntilChar('@');
+            dtoModel.OwnerId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             await collectionsManager.CreateAsync(dtoModel);
             return View(model);
         }
