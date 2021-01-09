@@ -47,11 +47,14 @@
     </div>
 </div>
 
-<div id="fieldProto">
-    <div class="border-custom rounded ">
-        <div class="d-flex flex-row flex-nowrap justify-content-between p-1">
-            <label name="fieldName" class="d-inline-block text-center p-1 w-50">FieldName</label>
-            <input name="fieldInput" class="d-inline-block text-center form-control" style="width: 70%;">
+<div class="d-none">
+    <div id="fieldProto">
+        <div class="border-custom rounded ">
+            <div class="d-flex flex-row flex-nowrap justify-content-between p-1">
+                <label name="fieldName" class="d-inline-block text-center p-1 w-50">FieldName</label>
+                <input name="fieldInput" class="d-inline-block text-center form-control" style="width: 70%; display: none;">
+                <textarea name="fieldInput" class="d-inline-block text-center form-control" style="width: 70%; display:none;"> </textarea>
+            </div>
         </div>
     </div>
 </div>
@@ -78,14 +81,36 @@
             }
         });
 
+        const typesDictionary = {
+            "Boolen": {
+                elem: "input",
+                type: "Checkbox"
+            },
+            "Date": {
+                elem: "input",
+                type: "Date",
+            },
+            "ShortString": {
+                elem: "input",
+                type: "Text"
+            },
+            "LongString": {
+                elem: "textarea"
+            },
+            "Number": {
+                elem: "input",
+                type: "Number"
+            }
+        };
+
         let fieldsCount = 0;
         const fieldProtoElem = $('#fieldProto');
         const fieldsElem = $('#fields');
-        const getNewField = () => {
+        const getField = (typeObj, name) => {
             let field = fieldProtoElem.clone().removeAttr('id');
-            field.attr('data-id', fieldsCount);
-            field.children('[name="fieldName"]').attr('name', `Fields[${fieldsCount}].Name`);
-            field.children('[name="fieldInput"]').attr('name', `Fields[${fieldsCount}].Value`);
+            field.find('[name="fieldName"]').attr('name', `Fields[${fieldsCount}].Name`).text(name);
+            field.find(`[name="fieldInput"]`).hide();
+            field.find(`${typeObj["elem"]}[name="fieldInput"]`).attr('name', `Fields[${fieldsCount}].Value`).attr('type', typeObj["type"]).show();
             fieldsCount++;
             return field;
         };
@@ -94,10 +119,17 @@
             $(e.target).children('[value=""]').remove();
             e.preventDefault();
             console.log($(e.target).val());
+            fieldsElem.empty();
             $.post("/Store/GetCollectionFields",
-                { id : $(e.target).val() },
+                { id: $(e.target).val() },
                 data => {
-                    console.log(data)
+                    console.log(data);
+                    for (let i = 0; i < data.length; i++) {
+                        let fieldName = data[i]["name"];
+                        let fieldType = data[i]["type"];
+                        let field = getField(typesDictionary[fieldType], fieldName);
+                        fieldsElem.append(field);
+                    }
                 }
             );
         });
