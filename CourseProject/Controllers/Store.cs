@@ -114,6 +114,9 @@ namespace CourseProject.Controllers
         [HttpPost]
         public async Task<IActionResult> UploadImage(IFormFile file)
         {
+            var previousId = HttpContext.Session.GetString("fileId");
+            if (!string.IsNullOrEmpty(previousId))
+                await AbortUpload();
             var fileDesc = new FileDescription(file.FileName, file.OpenReadStream());
             var res = await cloudinaryService.UploadAsync(fileDesc);
             HttpContext.Session.SetString("fileId", res.ObjectId);
