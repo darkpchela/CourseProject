@@ -50,10 +50,10 @@
 <div class="d-none">
     <div id="fieldProto">
         <div class="border-custom rounded ">
-            <div class="d-flex flex-row flex-nowrap justify-content-between p-1">
+            <div name="fieldBody" class="d-flex flex-row flex-nowrap justify-content-between p-1">
                 <label name="fieldName" class="d-inline-block text-center p-1 w-50">FieldName</label>
-                <input name="fieldInput" class="d-inline-block text-center form-control" style="width: 70%; display: none;">
-                <textarea name="fieldInput" class="d-inline-block text-center form-control" style="width: 70%; display:none;"> </textarea>
+                @*<input name="fieldInput" class="d-inline-block text-center form-control w-75" >
+                <textarea name="fieldInput" class="d-inline-block text-center form-control w-75"  > </textarea>*@
             </div>
         </div>
     </div>
@@ -83,23 +83,29 @@
 
         const typesDictionary = {
             "Boolen": {
-                elem: "input",
-                type: "Checkbox"
+                elem: "<input/>",
+                type: "Checkbox",
+                class: "d-inline-block text-center form-control w-75"
             },
             "Date": {
-                elem: "input",
+                elem: "<input/>",
                 type: "Date",
+                class: "d-inline-block text-center form-control w-75"
             },
             "ShortString": {
-                elem: "input",
-                type: "Text"
+                elem: "<input/>",
+                type: "Text",
+                class: "d-inline-block text-center form-control w-75"
             },
             "LongString": {
-                elem: "textarea"
+                elem: "<textarea/>",
+                type: "",
+                class: "d-inline-block text-center form-control w-75"
             },
             "Number": {
-                elem: "input",
-                type: "Number"
+                elem: "<input/>",
+                type: "Number",
+                class: "d-inline-block text-center form-control w-75"
             }
         };
 
@@ -109,8 +115,12 @@
         const getField = (typeObj, name) => {
             let field = fieldProtoElem.clone().removeAttr('id');
             field.find('[name="fieldName"]').attr('name', `Fields[${fieldsCount}].Name`).text(name);
-            field.find(`[name="fieldInput"]`).hide();
-            field.find(`${typeObj["elem"]}[name="fieldInput"]`).attr('name', `Fields[${fieldsCount}].Value`).attr('type', typeObj["type"]).show();
+            let inputElem = $(typeObj['elem'], {
+                name: `Fields[${fieldsCount}].Value`,
+                type: typeObj['type'],
+                class: typeObj['class'],
+            });
+            field.find('[name=fieldBody]').append(inputElem);
             fieldsCount++;
             return field;
         };
@@ -118,7 +128,6 @@
         $('select').change(e => {
             $(e.target).children('[value=""]').remove();
             e.preventDefault();
-            console.log($(e.target).val());
             fieldsElem.empty();
             $.post("/Store/GetCollectionFields",
                 { id: $(e.target).val() },
