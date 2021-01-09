@@ -1,6 +1,5 @@
 ﻿@model CreateItemVM
-@inject ICollectionsCrudService collectionsService
-
+@inject IUserCrudService userService
 <div class="d-flex justify-content-center mt-2">
     <div class="d-flex flex-column align-items-stretch w-75 mt-2" style="max-width: 768px;">
         <h3 class="text-center">
@@ -13,7 +12,13 @@
         <form asp-action="CreateItem" asp-controller="Store" method="post" class="mt-2">
             <div class="d-flex flex-column align-items-center">
                 <input type="text" class="form-control w-75 text-center" asp-for="@Model.Name" placeholder="Item name">
-                @Html.DropDownListFor(m => m.CollectionId, new SelectList(await collectionsService.GetAllAsync(), "Id", "Name"), "Select collection", new { @class = "mt-2 form-control w-75 text-center" })
+                @{
+                    var user = await userService.GetAsync(int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "0"));
+                    if (user != null)
+                    {
+                        @Html.DropDownListFor(m => m.CollectionId, new SelectList(user.Collections, "Id", "Name"), "Select collection", new { @class = "mt-2 form-control w-75 text-center" });
+                    }
+                }
                 <div class="text-center mt-3 w-75">
                     <h6 class="text-muted">Description(Markdown)</h6>
                     <textarea class="form-control form-control w-100 text-center" placeholder="Item description" asp-for="Description" style="min-height: 20vh;"></textarea>
@@ -85,27 +90,27 @@
 
         const typesDictionary = {
             "Boolen": {
-                elem: "<input/>",
+                elem: "<input />",
                 type: "Checkbox",
                 class: "d-inline-block text-center form-control w-75"
             },
             "Date": {
-                elem: "<input/>",
+                elem: "<input />",
                 type: "Date",
                 class: "d-inline-block text-center form-control w-75"
             },
             "ShortString": {
-                elem: "<input/>",
+                elem: "<input />",
                 type: "Text",
                 class: "d-inline-block text-center form-control w-75"
             },
             "LongString": {
-                elem: "<textarea/>",
+                elem: "<textarea />",
                 type: "",
                 class: "d-inline-block text-center form-control w-75"
             },
             "Number": {
-                elem: "<input/>",
+                elem: "<input />",
                 type: "Number",
                 class: "d-inline-block text-center form-control w-75"
             }
