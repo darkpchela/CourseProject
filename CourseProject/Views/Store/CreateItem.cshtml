@@ -117,7 +117,7 @@
         const createField = (typeObj, name, id) => {
             let field = fieldProtoElem.clone().removeAttr('id');
             field.find('[name="fieldName"]').attr('name', `Fields[${fieldsCount}].Name`).text(name);
-            field.find('[name=fieldId]').attr('name', `Fields[${fieldsCount}].OptionalFieldId`).val(id);
+            field.find('[name=fieldId]').attr('name', `Fields[${fieldsCount}].Id`).val(id);
             console.log(id);
             let inputElem = $(typeObj['elem'], {
                 name: `Fields[${fieldsCount}].Value`,
@@ -137,7 +137,7 @@
                     for (let i = 0; i < data.length; i++) {
                         let fieldName = data[i]['name'];
                         let fieldType = data[i]['type'];
-                        let id = data[i]['optionalFieldId'];
+                        let id = data[i]['id'];
                         let field = createField(typesDictionary[fieldType], fieldName, id);
                         fieldsElem.append(field);
                     }

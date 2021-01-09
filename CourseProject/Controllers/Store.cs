@@ -134,7 +134,7 @@ namespace CourseProject.Controllers
             if (collection is null)
                 return Json(null);
             var fields = collection.OptionalFields;
-            var fieldsVM = mapper.Map<IEnumerable<CollectionOptionalFieldVM>>(fields);
+            var fieldsVM = mapper.Map<IEnumerable<OptionalFieldVM>>(fields);
             return Json(fieldsVM);
         }
 
