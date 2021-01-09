@@ -10,7 +10,7 @@
             <div id="dropzone" class="dropzone square-25">
             </div>
         </div>
-        <form class="mt-2">
+        <form asp-action="CreateItem" asp-controller="Store" method="post" class="mt-2">
             <div class="d-flex flex-column align-items-center">
                 <input type="text" class="form-control w-75 text-center" asp-for="@Model.Name" placeholder="Item name">
                 @Html.DropDownListFor(m => m.CollectionId, new SelectList(await collectionsService.GetAllAsync(), "Id", "Name"), "Select collection", new { @class = "mt-2 form-control w-75 text-center" })
@@ -34,13 +34,16 @@
                                   d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
                         </svg>
                     </a>
-                    <button type="submit" asp-action="CreateItem" asp-controller="Store" class="btn p-0">
+
+                    <button type="submit" class="btn p-0">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                              class="medium-icon" viewBox="0 0 16 16">
                             <path fill-rule="evenodd"
                                   d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
                         </svg>
                     </button>
+                </div>
+                <div asp-validation-summary="All" class="text-center">
                 </div>
             </div>
         </form>
@@ -51,6 +54,7 @@
     <div id="fieldProto">
         <div class="border-custom rounded ">
             <div name="fieldBody" class="d-flex flex-row flex-nowrap justify-content-between p-1">
+                <input name="fieldId" type="hidden" />
                 <label name="fieldName" class="d-inline-block text-center p-1 w-50">FieldName</label>
             </div>
         </div>
@@ -110,9 +114,11 @@
         let fieldsCount = 0;
         const fieldProtoElem = $('#fieldProto');
         const fieldsElem = $('#fields');
-        const getField = (typeObj, name) => {
+        const createField = (typeObj, name, id) => {
             let field = fieldProtoElem.clone().removeAttr('id');
             field.find('[name="fieldName"]').attr('name', `Fields[${fieldsCount}].Name`).text(name);
+            field.find('[name=fieldId]').attr('name', `Fields[${fieldsCount}].OptionalFieldId`).val(id);
+            console.log(id);
             let inputElem = $(typeObj['elem'], {
                 name: `Fields[${fieldsCount}].Value`,
                 type: typeObj['type'],
@@ -122,23 +128,35 @@
             fieldsCount++;
             return field;
         };
-
-        $('select').change(e => {
-            $(e.target).children('[value=""]').remove();
-            e.preventDefault();
+        const loadFields = id => {
             fieldsElem.empty();
             $.post("/Store/GetCollectionFields",
-                { id: $(e.target).val() },
+                { id: id },
                 data => {
                     console.log(data);
                     for (let i = 0; i < data.length; i++) {
-                        let fieldName = data[i]["name"];
-                        let fieldType = data[i]["type"];
-                        let field = getField(typesDictionary[fieldType], fieldName);
+                        let fieldName = data[i]['name'];
+                        let fieldType = data[i]['type'];
+                        let id = data[i]['optionalFieldId'];
+                        let field = createField(typesDictionary[fieldType], fieldName, id);
                         fieldsElem.append(field);
                     }
                 }
             );
+        };
+
+        $('select').change(e => {
+            $(e.target).children('[value=""]').remove();
+            e.preventDefault();
+            let id = $(e.target).val();
+            loadFields(id);
+        });
+
+        $(() => {
+            if ($('#CollectionId').val() != "") {
+                let id = $('#CollectionId').val();
+                loadFields(id);
+            }
         });
     </script>
 }

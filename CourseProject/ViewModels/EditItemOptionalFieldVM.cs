@@ -1,15 +1,13 @@
-﻿namespace CourseProject.ViewModels
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CourseProject.ViewModels
 {
     public class EditItemOptionalFieldVM
     {
-        public int Id { get; set; }
+        [Required]
+        public int? OptionalFieldId { get; set; }
 
-        public int CollectionId { get; set; }
-
-        public string Name { get; set; }
-
-        public string Type { get; set; }
-
-        public string Value { get; set; }
+        [Required(ErrorMessage = "Field must not be empty")]
+        public string? Value { get; set; }
     }
 }

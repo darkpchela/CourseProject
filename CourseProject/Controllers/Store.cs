@@ -96,7 +96,9 @@ namespace CourseProject.Controllers
         [HttpPost]
         public IActionResult CreateItem(CreateItemVM model)
         {
-            return null;
+            if (!ModelState.IsValid)
+                return View(model);
+            return View(model);
         }
 
         public IActionResult Collection(int id)
@@ -129,16 +131,11 @@ namespace CourseProject.Controllers
         public async Task<IActionResult> GetCollectionFields(int id)
         {
             var collection = await collectionsCrudService.GetAsync(id);
+            if (collection is null)
+                return Json(null);
             var fields = collection.CollectionOptionalFields;
-            try
-            {
             var fieldsVM = mapper.Map<IEnumerable<CollectionOptionalFieldVM>>(fields);
             return Json(fieldsVM);
-            }
-            catch(Exception e)
-            {
-                return Json(null);
-            }
         }
 
         public IActionResult _Collections(int id)
