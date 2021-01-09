@@ -1,6 +1,9 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@inject ICollectionsCrudService colelctionsService
+@inject IItemsCrudService itemsService
+@inject ICloudinaryService cloudinaryService
 
 <div>
     <div class="d-flex flex-column">
@@ -8,7 +11,7 @@
             <div class="p-2 border-custom border-top-0 rounded">
                 <div id="tagsCloud" class="d-flex flex-row flex-wrap justify-content-center">
                     <a id="tagPrototype" class="btn btn-outline-info" href="https://localhost:44306/#"
-                       data-selected="0" class="tag" hidden></a>
+                       data-selected="0" hidden></a>
                     <a href="https://localhost:44306/#" class="btn btn-outline-info" data-selected="0"
                        data-id="3" data-value="it" class="tag">#it</a>
                     <a href="https://localhost:44306/#" class="btn btn-outline-info" data-selected="0"
@@ -22,29 +25,29 @@
             <div class="text-center ">
                 <h4>
                     Top collections
-
                 </h4>
             </div>
             <div>
                 <div>
                     <div class="d-flex flex-row flex-nowrap justify-content-center overflow-auto">
-
-                        <div class="m-2 square-25 text-center">
-                            <div class="p-2">
-                                <a href="" class="btn p-0 btn-outline-info">
-                                    <img class="img-fluid img-thumbnail"
-                                         src="https://i.pinimg.com/originals/ff/b9/db/ffb9dbf3712b8da5d229334dbf499f16.jpg"
-                                         alt="picture">
-                                </a>
+                        @foreach (var collection in (await colelctionsService.GetAllAsync()).OrderByDescending(c => c.CollectionItems.Count()).Take(10))
+                        {
+                            <div class="m-2 square-25 text-center">
+                                <div class="p-2">
+                                    <a asp-action="Collection" asp-controller="Store" asp-route-id="@collection.Id" class="btn p-0 btn-outline-info">
+                                        <img class="img-fluid img-thumbnail"
+                                             src=@{await cloudinaryService.GetUri(collection.ImageUrl);}
+                                             alt="picture">
+                                    </a>
+                                </div>
+                                <div>
+                                    <h5>@collection.Name</h5>
+                                </div>
+                                <div>
+                                    <h6>Items: <span>@collection.CollectionItems.Count()</span></h6>
+                                </div>
                             </div>
-                            <div>
-                                <h5>Bar</h5>
-                            </div>
-                            <div>
-                                <h6>Items: <span>3</span></h6>
-                            </div>
-                        </div>
-
+                        }
                     </div>
                 </div>
             </div>
@@ -58,43 +61,22 @@
                 </div>
                 <div>
                     <div class="d-flex flex-row flex-wrap align-items-baseline justify-content-center">
-                        <div class=" m-1 square-25 text-center">
-                            <div class="p-2">
-                                <a href="" class="btn p-0 btn-outline-info" data-placement="bottom" data-toggle="tooltip" data-html="true"
-                                   @*title="@{await Html.RenderPartialAsync("Store/_ItemTooltip");}"*@ title="tooltip">
-                                                <img class="img-fluid img-thumbnail"
-                                                    src="https://yandex.by/images/_crpd/kf5Pv2198/52610cxUM/eRJu4M94jxH2MVUEro1UKqegWWpvswQ7RE_jwPY1avZFULWfTE_H9C90nSwSGlUuFal4J9SkhSQ275vS9-pwPDgOOsiyQJtR_zVcBbdINC-uiWF6X6pIQyhur4iLaXqyMHC5rvhGx7UeNfhtvgpZImkV0KuteGzc7xcWEkbLMWQ5RkKx-iB3tPI5fYz7FVA2_oyFohc3nDI8l5OF9qXG500c-be0N5slLql4HXMHoANldcirIRAYXBsHOnpaF2UYdRYvJUrIE1muqcFsIyl09kYI3XLHgyBmKJP_WWJJ0rdhDA3vJEfzoV6l7HH_r1jnvV1g--XISMhDr2IidncF-IV-b9EWnJ_ZerFV3Hfl8A5C8K3qc2uM5lxfl5n2lWKLUZSRM2DTmz06OUTN81sY96X5uLsduKAov-cCvrp_pRi5Oj-FEgCjiTLpaQjf5QAm-sR5ru8H2N60O5-pconqA7mQkSsAk5vJVr3c1dvzRNu5IQCDHSSooLOjJn72e20IPeab1VrcS8FqqeF8LwVQiv789eaf50hytM_HzUJ5eketrMGXEOvPJaaZHBHHe0T7mc1Ez73ouPDHW0ZmbvN1CC2eE4WyhE8RoqlV-G_VKFpCBJmul8egssjP67Gure6LdQgR_wA7ry1GCZxV2wsov2FtoP9lQLAAFwteHkbjpVRlFvNdwnQfAcqtNRzH8dwG7iQhXgsL9JLs61dNnunyA8mY9XMs76f9VpHwXcfjTINxtSSXAZi8JG-fViJuM4V4sUpH6SrYF1Fa_YncXwl0Nv6EIc7HD9ACOCdPnQrNYrPhnIXzdAvfpQIVKDmnAyRvkVEcb5kQoATPu74W9scJWHGeFx3qmEtdmsV9mLNRxB6myP1-X3OMHiD7a6V65aL7PXg1_7x3x62CgfC9G9u0P-G1HAdtwFD0u-cOolI_-TitOvuFwpSnlVrlDWD7bdiuZsA14lP3NBJYJ-tNDv3M"
-                                                    alt="picture">
-                                            </a>
+                        @foreach (var item in (await itemsService.GetAllAsync()).OrderByDescending(i => i.CreationDate))
+                        {
+                            <div class=" m-1 square-25 text-center">
+                                <div class="p-2">
+                                    <a asp-action="Item" asp-controller="Store" asp-route-id="@item.Id"
+                                       class="btn p-0 btn-outline-info" data-placement="bottom" data-toggle="tooltip" data-html="true" title="tooltip">
+                                        <img class="img-fluid img-thumbnail"
+                                             src="@{await cloudinaryService.GetUri(item.ImageUrl); } "
+                                             alt="picture">
+                                    </a>
+                                </div>
+                                <div>
+                                    <h5>@item.Name</h5>
+                                </div>
                             </div>
-                            <div>
-                                <h5>Bottle Of Whiskey</h5>
-                            </div>
-                        </div>
-                        <div class="m-1 square-25 text-center">
-                            <div class="p-2">
-                                <a href="" class="btn p-0 btn-outline-info">
-                                    <img class="img-fluid img-thumbnail"
-                                         src="https://i.artfile.ru/2048x1365_882005_[www.ArtFile.ru].jpg"
-                                         alt="picture">
-                                </a>
-                            </div>
-                            <div>
-                                <h5>Bar</h5>
-                            </div>
-                        </div>
-                        <div class="m-1 square-25 text-center">
-                            <div class="p-2">
-                                <a href="" class="btn p-0 btn-outline-info">
-                                    <img class="img-fluid img-thumbnail"
-                                         src="https://sc02.alicdn.com/kf/UTB8lBMkE5aMiuJk43PTq6ySmXXa5/Jack-Daniels.jpg"
-                                         alt="picture">
-                                </a>
-                            </div>
-                            <div>
-                                <h5>Bar</h5>
-                            </div>
-                        </div>
+                        }
                     </div>
                 </div>
             </div>
