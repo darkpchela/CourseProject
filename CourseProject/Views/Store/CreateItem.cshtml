@@ -119,15 +119,20 @@
         let fieldsCount = 0;
         const fieldProtoElem = $('#fieldProto');
         const fieldsElem = $('#fields');
+        const setUpCheckBox = (jqElem) => {
+            jqElem.change(e => {
+                $(e.target).val() == 'false' ? $(e.target).val('true') : $(e.target).val('false');
+            });
+        };
         const createField = (typeObj, name, id) => {
             let field = fieldProtoElem.clone().removeAttr('id');
             field.find('[name="fieldName"]').attr('name', `Fields[${fieldsCount}].Name`).text(name);
-            field.find('[name=fieldId]').attr('name', `Fields[${fieldsCount}].Id`).val(id);
+            field.find('[name=fieldId]').attr('name', `Fields[${fieldsCount}].OptionalFieldId`).val(id);
             console.log(id);
             let inputElem = $(typeObj['elem'], {
                 name: `Fields[${fieldsCount}].Value`,
                 type: typeObj['type'],
-                class: typeObj['class'],
+                class: typeObj['class']
             });
             field.find('[name=fieldBody]').append(inputElem);
             fieldsCount++;
@@ -145,6 +150,9 @@
                         let id = data[i]['id'];
                         let field = createField(typesDictionary[fieldType], fieldName, id);
                         fieldsElem.append(field);
+                        if (fieldType == 'Boolen') {
+                            setUpCheckBox(field);
+                        }
                     }
                 }
             );
