@@ -22,13 +22,11 @@ namespace CourseProject.Controllers
 
         private readonly ICPUnitOfWork cPUnitOfWork;
 
-        private readonly IFieldTypesCrudService fieldTypesCrudService;
-
-        private readonly IThemesCrudService themesCrudService;
-
         private readonly ICollectionsCrudService collectionsCrudService;
 
         private readonly ICollectionsManager collectionsManager;
+
+        private readonly IItemsManager itemsManager;
 
         private readonly IMapper mapper;
 
@@ -38,16 +36,15 @@ namespace CourseProject.Controllers
             Description = "It's a test collection"
         };
 
-        public Store(ICloudinaryService cloudinaryService, ICPUnitOfWork cPUnitOfWork, ICollectionsCrudService collectionsCrudService,
-            IFieldTypesCrudService fieldTypesCrudService, IThemesCrudService themesCrudService, ICollectionsManager collectionsManager, IMapper mapper)
+        public Store(ICloudinaryService cloudinaryService, ICPUnitOfWork cPUnitOfWork, ICollectionsCrudService collectionsCrudService, ICollectionsManager collectionsManager,
+            IItemsManager itemsManager, IMapper mapper)
         {
             this.cloudinaryService = cloudinaryService;
             this.cPUnitOfWork = cPUnitOfWork;
-            this.fieldTypesCrudService = fieldTypesCrudService;
-            this.themesCrudService = themesCrudService;
             this.collectionsManager = collectionsManager;
             this.collectionsCrudService = collectionsCrudService;
             this.mapper = mapper;
+            this.itemsManager = itemsManager;
         }
 
         public IActionResult Profile(int? id)
@@ -94,10 +91,20 @@ namespace CourseProject.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateItem(CreateItemVM model)
+        public async Task<IActionResult> CreateItem(CreateItemVM model)
         {
             if (!ModelState.IsValid)
                 return View(model);
+            var imageId = HttpContext.Session.GetString("fileId");
+            if (string.IsNullOrEmpty(imageId))
+            {
+                ModelState.AddModelError("", "Collection image required.");
+                return View(model);
+            }
+            var dtoModel = mapper.Map<CreateItemModel>(model);
+            dtoModel.ImageUrl = imageId;
+            dtoModel.CreatorId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            await itemsManager.CreateAsync(dtoModel);
             return View(model);
         }
 

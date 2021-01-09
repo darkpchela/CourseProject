@@ -1,4 +1,5 @@
 ﻿using BusinessLayer.Models.DALModels;
+using System;
 using System.Collections.Generic;
 
 namespace BusinessLayer.Models
@@ -9,12 +10,16 @@ namespace BusinessLayer.Models
 
         public int CollectionId { get; set; }
 
-        public string ImageId { get; set; }
+        public int CreatorId { get; set; }
+
+        public string ImageUrl { get; set; }
 
         public string Description { get; set; }
 
         public IEnumerable<TagModel> Tags { get; set; }
 
         public IEnumerable<ItemOptionalFieldModel> Fields { get; set; }
+
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
     }
 }
