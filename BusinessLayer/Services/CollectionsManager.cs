@@ -57,12 +57,8 @@ namespace BusinessLayer.Services
             var fields = mapper.Map<IEnumerable<OptionalField>>(optionalFieldModels);
             foreach (OptionalField field in fields)
             {
-                var collectionField = new CollectionOptionalField
-                {
-                    Collection = collection,
-                    OptionalField = field
-                };
-                await cPUnitOfWork.CollectionOptionalFieldRepository.Add(collectionField);
+                field.Collection = collection;
+                await cPUnitOfWork.OptionalFieldsRepository.Add(field);
             }
         }
     }

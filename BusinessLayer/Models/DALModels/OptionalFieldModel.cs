@@ -12,9 +12,11 @@ namespace BusinessLayer.Models.DALModels
 
         public string Name { get; set; }
 
-        public virtual FieldTypeModel Type { get; set; }
+        public int CollectionId { get; set; }
 
-        public IEnumerable<CollectionOptionalFieldModel> CollectionOptionalFields { get; set; }
+        public  CollectionModel Collection { get; set; }
+
+        public  FieldTypeModel Type { get; set; }
 
         public IEnumerable<ItemOptionalFieldModel> ItemOptionalFields { get; set; }
     }

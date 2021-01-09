@@ -22,7 +22,6 @@ namespace DataAccessLayer.Extensions
         public static IServiceCollection AddApplicationDbDependencies(this IServiceCollection services)
         {
             services.AddTransient<ICollectionItemRepository, CollectionItemRepository>();
-            services.AddTransient<ICollectionOptionalFieldRepository, CollectionOptionalFieldRepository>();
             services.AddTransient<ICollectionsRepository, CollectionsRepository>();
             services.AddTransient<ICommentsRepository, CommentsRepository>();
             services.AddTransient<IItemCommentRepository, ItemCommentRepository>();

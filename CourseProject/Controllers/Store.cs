@@ -133,7 +133,7 @@ namespace CourseProject.Controllers
             var collection = await collectionsCrudService.GetAsync(id);
             if (collection is null)
                 return Json(null);
-            var fields = collection.CollectionOptionalFields;
+            var fields = collection.OptionalFields;
             var fieldsVM = mapper.Map<IEnumerable<CollectionOptionalFieldVM>>(fields);
             return Json(fieldsVM);
         }

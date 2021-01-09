@@ -7,8 +7,6 @@ namespace DataAccessLayer.Interfaces
     {
         ICollectionItemRepository CollectionItemRepository { get; }
 
-        ICollectionOptionalFieldRepository CollectionOptionalFieldRepository { get; }
-
         ICollectionsRepository CollectionsRepository { get; }
 
         ICommentsRepository CommentsRepository { get; }

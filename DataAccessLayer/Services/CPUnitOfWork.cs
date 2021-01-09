@@ -11,8 +11,6 @@ namespace DataAccessLayer.Services
 
         private ICollectionItemRepository collectionItemRepository;
 
-        private ICollectionOptionalFieldRepository collectionOptionalFieldRepository;
-
         private ICollectionsRepository collectionsRepository;
 
         private ICommentsRepository commentsRepository;
@@ -42,14 +40,6 @@ namespace DataAccessLayer.Services
             get
             {
                 return collectionItemRepository ?? (collectionItemRepository = new CollectionItemRepository(dbContext));
-            }
-        }
-
-        public ICollectionOptionalFieldRepository CollectionOptionalFieldRepository
-        {
-            get
-            {
-                return collectionOptionalFieldRepository ?? (collectionOptionalFieldRepository = new CollectionOptionalFieldRepository(dbContext));
             }
         }
 

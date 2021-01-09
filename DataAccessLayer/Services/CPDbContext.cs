@@ -20,7 +20,6 @@ namespace DataAccessLayer.Services
 
         public virtual DbSet<Collection> Collections { get; set; }
         public virtual DbSet<CollectionItem> CollectionItems { get; set; }
-        public virtual DbSet<CollectionOptionalField> CollectionOptionalFields { get; set; }
         public virtual DbSet<Comment> Comments { get; set; }
         public virtual DbSet<FieldType> FieldTypes { get; set; }
         public virtual DbSet<Item> Items { get; set; }
@@ -83,21 +82,6 @@ namespace DataAccessLayer.Services
                     .WithMany(p => p.CollectionItems)
                     .HasForeignKey(d => d.ItemId)
                     .HasConstraintName("FK_CollectionItem_To_Items");
-            });
-
-            modelBuilder.Entity<CollectionOptionalField>(entity =>
-            {
-                entity.ToTable("CollectionOptionalField");
-
-                entity.HasOne(d => d.Collection)
-                    .WithMany(p => p.CollectionOptionalFields)
-                    .HasForeignKey(d => d.CollectionId)
-                    .HasConstraintName("FK_CollectionOptionalField_To_Collections");
-
-                entity.HasOne(d => d.OptionalField)
-                    .WithMany(p => p.CollectionOptionalFields)
-                    .HasForeignKey(d => d.OptionalFieldId)
-                    .HasConstraintName("FK_CollectionOptionalField_To_OptionalFields");
             });
 
             modelBuilder.Entity<Comment>(entity =>
@@ -201,6 +185,11 @@ namespace DataAccessLayer.Services
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(128);
+
+                entity.HasOne(d => d.Collection)
+                    .WithMany(p => p.OptionalFields)
+                    .HasForeignKey(d => d.CollectionId)
+                    .HasConstraintName("FK_OptionalFields_To_Colelctions");
 
                 entity.HasOne(d => d.Type)
                     .WithMany(p => p.OptionalFields)

@@ -26,7 +26,6 @@ namespace BusinessLayer.Extensions
         public static IServiceCollection AddBusinessLayerDependencies(this IServiceCollection services)
         {
             services.AddTransient<ICollectionItemCrudService, CollectionItemCrudService>();
-            services.AddTransient<ICollectionOptionalFieldCrudService, CollectionOptionalFieldCrudService>();
             services.AddTransient<ICollectionsCrudService, CollectionsCrudService>();
             services.AddTransient<ICommentsCrudService, CommentsCrudService>();
             services.AddTransient<IItemCommentCrudService, ItemCommentCrudService>();

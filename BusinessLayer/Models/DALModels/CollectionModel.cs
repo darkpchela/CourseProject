@@ -27,6 +27,6 @@ namespace BusinessLayer.Models.DALModels
 
         public IEnumerable<CollectionItemModel> CollectionItems { get; set; }
 
-        public IEnumerable<CollectionOptionalFieldModel> CollectionOptionalFields { get; set; }
+        public IEnumerable<OptionalFieldModel> OptionalFields { get; set; }
     }
 }
