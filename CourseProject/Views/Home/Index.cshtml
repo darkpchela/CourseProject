@@ -36,7 +36,10 @@
                                 <div class="p-2">
                                     <a asp-action="Collection" asp-controller="Store" asp-route-id="@collection.Id" class="btn p-0 btn-outline-info">
                                         <img class="img-fluid img-thumbnail"
-                                             src=@{await cloudinaryService.GetUri(collection.ImageUrl);}
+                                             src=@{
+                                                 var res = await cloudinaryService.GetUri(collection.ImageUrl);
+                                                 @res.Uri;
+                                                 }
                                              alt="picture">
                                     </a>
                                 </div>
@@ -68,7 +71,10 @@
                                     <a asp-action="Item" asp-controller="Store" asp-route-id="@item.Id"
                                        class="btn p-0 btn-outline-info" data-placement="bottom" data-toggle="tooltip" data-html="true" title="tooltip">
                                         <img class="img-fluid img-thumbnail"
-                                             src="@{await cloudinaryService.GetUri(item.ImageUrl); } "
+                                             src=@{
+                                                 var res = await cloudinaryService.GetUri(item.ImageUrl);
+                                                 @res.Uri;
+                                                 }
                                              alt="picture">
                                     </a>
                                 </div>
