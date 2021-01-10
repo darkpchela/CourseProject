@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace CourseProject.MappingProfiles
 {
-    public class ItemOptionalFieldProfile : Profile
+    public class ItemOptionalFieldModelProfile : Profile
     {
-        public ItemOptionalFieldProfile()
+        public ItemOptionalFieldModelProfile()
         {
             CreateMap<EditItemOptionalFieldVM, ItemOptionalFieldModel>();
         }

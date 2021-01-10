@@ -18,7 +18,7 @@ namespace BusinessLayer.Models
 
         public IEnumerable<TagModel> Tags { get; set; }
 
-        public IEnumerable<ItemOptionalFieldModel> Fields { get; set; }
+        public IEnumerable<ItemOptionalFieldModel> OptionalFields { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
     }

@@ -4,9 +4,9 @@ using CourseProject.ViewModels;
 
 namespace CourseProject.MappingProfiles
 {
-    public class OptionalFieldProfile : Profile
+    public class OptionalFieldModelProfile : Profile
     {
-        public OptionalFieldProfile()
+        public OptionalFieldModelProfile()
         {
             CreateMap<OptionalFieldModel, OptionalFieldVM>()
                 .ForMember(d => d.Type, o => o.MapFrom(s => s.Type.Type));

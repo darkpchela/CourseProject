@@ -19,7 +19,7 @@ namespace BusinessLayer.Models.DALModels
 
         public int CreatorId { get; set; }
 
-        public DateTime CreationDate { get; set; }
+        public DateTime CreationDate { get; set; } = DateTime.Now;
 
         public UserModel Creator { get; set; }
 

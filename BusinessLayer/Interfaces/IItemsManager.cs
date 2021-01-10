@@ -5,6 +5,6 @@ namespace BusinessLayer.Interfaces
 {
     public interface IItemsManager
     {
-        Task CreateAsync(CreateItemModel createItemModel);
+        Task<CreateItemResultModel> CreateAsync(CreateItemModel createItemModel);
     }
 }

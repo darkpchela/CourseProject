@@ -15,7 +15,7 @@ namespace BusinessLayer.Models.DALModels
 
         public int OwnerId { get; set; }
 
-        public DateTime CreationDate { get; set; }
+        public DateTime CreationDate { get; set; } = DateTime.Now;
 
         public UserModel Owner { get; set; }
 

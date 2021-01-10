@@ -1,4 +1,6 @@
-﻿namespace BusinessLayer.Models
+﻿using System.Collections.Generic;
+
+namespace BusinessLayer.Models
 {
     public class CreateCollectionResultModel
     {
@@ -6,6 +8,6 @@
 
         public int CollectionId { get; set; }
 
-        public string Error { get; set; }
+        public IList<string> Errors { get; set; } = new List<string>();
     }
 }

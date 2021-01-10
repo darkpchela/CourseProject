@@ -22,8 +22,6 @@ namespace CourseProject.Controllers
 
         private readonly ICPUnitOfWork cPUnitOfWork;
 
-        private readonly ICollectionsCrudService collectionsCrudService;
-
         private readonly ICollectionsManager collectionsManager;
 
         private readonly IItemsManager itemsManager;
@@ -36,13 +34,12 @@ namespace CourseProject.Controllers
             Description = "It's a test collection"
         };
 
-        public Store(ICloudinaryService cloudinaryService, ICPUnitOfWork cPUnitOfWork, ICollectionsCrudService collectionsCrudService, ICollectionsManager collectionsManager,
+        public Store(ICloudinaryService cloudinaryService, ICPUnitOfWork cPUnitOfWork, ICollectionsManager collectionsManager,
             IItemsManager itemsManager, IMapper mapper)
         {
             this.cloudinaryService = cloudinaryService;
             this.cPUnitOfWork = cPUnitOfWork;
             this.collectionsManager = collectionsManager;
-            this.collectionsCrudService = collectionsCrudService;
             this.mapper = mapper;
             this.itemsManager = itemsManager;
         }

@@ -4,12 +4,12 @@ using CourseProject.ViewModels;
 
 namespace CourseProject.MappingProfiles
 {
-    public class CreateCollectionProfile : Profile
+    public class CreateCollectionModelProfile : Profile
     {
-        public CreateCollectionProfile()
+        public CreateCollectionModelProfile()
         {
             CreateMap<CreateCollectionVM, CreateCollectionModel>()
-                .ForMember(d => d.Fields, o => o.MapFrom(s => s.Fields));
+                .ForMember(d => d.OptionalFields, o => o.MapFrom(s => s.Fields));
         }
     }
 }
