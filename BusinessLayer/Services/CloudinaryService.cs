@@ -4,6 +4,7 @@ using BusinessLayer.Models;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace BusinessLayer.Services
@@ -30,35 +31,23 @@ namespace BusinessLayer.Services
             await cloudinary.DeleteResourcesAsync(delParams);
         }
 
-        public async Task<UploadResultModel> UploadAsync(FileDescription fileDescription)
+        public async Task<UploadResult> UploadAsync(string name, Stream fileStream)
         {
+            var fileDesc = new FileDescription(name, fileStream);
             var uploadParams = new ImageUploadParams
             {
                 Folder = "CourseProject",
-                File = fileDescription
+                File = fileDesc
             };
             var result = await cloudinary.UploadAsync(uploadParams);
-            var model = new UploadResultModel
-            {
-                Succeed = result.Error is null ? true : false,
-                Error = result.Error?.Message ?? "",
-                Uri = result.Uri?.AbsoluteUri ?? "",
-                ObjectId = result.PublicId
-            };
-            return model;
+            return result;
         }
 
-        public async Task<GetResourceResultModel> GetUri(string pulbicId)
+        public async Task<GetResourceResult> GetUri(string pulbicId)
         {
             var getParams = new GetResourceParams(pulbicId);
             var result = await cloudinary.GetResourceAsync(getParams);
-            var model = new GetResourceResultModel
-            {
-                Succeed = result.Error is null ? true : false,
-                Error = result.Error?.Message ?? "",
-                Uri = result.Url
-            };
-            return model;
+            return result;
         }
     }
 }
