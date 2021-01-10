@@ -48,6 +48,8 @@
                         </svg>
                     </button>
                 </div>
+                <input type="hidden" asp-for="@Model.ResourceId" />
+                <input type="hidden" asp-for="@Model.OwnerId" />
                 <div asp-validation-summary="All" class="text-center">
                 </div>
             </div>
@@ -80,7 +82,8 @@
             success: (file, response) => {
                 console.log(response);
                 if (response.succeed === true) {
-                    $('#dropzone .dz-image img').attr('src', response.uri);
+                    $('#dropzone .dz-image img').attr('src', response.url);
+                    $('#ResourceId').val(response.id);
                 }
                 else {
                     console.log(response.error);

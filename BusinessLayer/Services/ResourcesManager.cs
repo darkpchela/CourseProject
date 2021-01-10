@@ -42,5 +42,14 @@ namespace BusinessLayer.Services
             await cloudinaryService.DeleteAsync(resourceModel.PublicId);
             await resourceCrudService.DeleteAsync(resourceModel.Id);
         }
+
+        public async Task DeleteAsync(int id)
+        {
+            var resource = await resourceCrudService.GetAsync(id);
+            if (resource is null)
+                return;
+            await cloudinaryService.DeleteAsync(resource.PublicId);
+            await resourceCrudService.DeleteAsync(id);
+        }
     }
 }

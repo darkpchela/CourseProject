@@ -9,5 +9,7 @@ namespace BusinessLayer.Interfaces
         Task<CreateResourceResultModel> CreateAsync(CreateResourceModel createResourceModel);
 
         Task DeleteAsync(ResourceModel resourceModel);
+
+        Task DeleteAsync(int id);
     }
 }

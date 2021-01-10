@@ -41,6 +41,7 @@ namespace BusinessLayer.Extensions
             services.AddTransient<IFieldTypesCrudService, FieldTypesCrudService>();
             services.AddTransient<ICollectionsManager, CollectionsManager>();
             services.AddTransient<IItemsManager, ItemsManager>();
+            services.AddTransient<IResourcesManager, ResourcesManager>();
             return services;
         }
 

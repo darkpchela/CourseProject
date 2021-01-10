@@ -1,14 +1,11 @@
 ﻿using AutoMapper;
-using BusinessLayer.Extensions;
 using BusinessLayer.Interfaces;
 using BusinessLayer.Interfaces.BaseCrud;
 using BusinessLayer.Models;
-using CloudinaryDotNet.Actions;
 using CourseProject.ViewModels;
 using DataAccessLayer.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -18,7 +15,7 @@ namespace CourseProject.Controllers
 {
     public class Store : Controller
     {
-        private readonly ICloudinaryService cloudinaryService;
+        private readonly IResourcesManager resourcesManager;
 
         private readonly ICPUnitOfWork cPUnitOfWork;
 
@@ -27,20 +24,18 @@ namespace CourseProject.Controllers
         private readonly IItemsManager itemsManager;
 
         private readonly ICollectionsCrudService collectionsCrudService;
-        
-        private readonly IMapper mapper;
 
+        private readonly IMapper mapper;
 
         private CreateCollectionVM createCollectionTestVM = new CreateCollectionVM()
         {
-            Name ="Test",
+            Name = "Test",
             Description = "It's a test collection"
         };
 
-        public Store(ICloudinaryService cloudinaryService, ICPUnitOfWork cPUnitOfWork, ICollectionsManager collectionsManager,
-            IItemsManager itemsManager, ICollectionsCrudService collectionsCrudService, IMapper mapper)
+        public Store(IResourcesManager resourcesManager, ICPUnitOfWork cPUnitOfWork, ICollectionsManager collectionsManager, IItemsManager itemsManager, ICollectionsCrudService collectionsCrudService, IMapper mapper)
         {
-            this.cloudinaryService = cloudinaryService;
+            this.resourcesManager = resourcesManager;
             this.cPUnitOfWork = cPUnitOfWork;
             this.collectionsManager = collectionsManager;
             this.itemsManager = itemsManager;
@@ -96,16 +91,13 @@ namespace CourseProject.Controllers
         {
             if (!ModelState.IsValid)
                 return View(model);
-            var imageId = HttpContext.Session.GetString("fileId");
-            if (string.IsNullOrEmpty(imageId))
+            var dtoModel = mapper.Map<CreateItemModel>(model);
+            var result = await itemsManager.CreateAsync(dtoModel);
+            if(!result.Succeed)
             {
-                ModelState.AddModelError("", "Collection image required.");
+                result.Errors.ToList().ForEach(e => ModelState.AddModelError("", e));
                 return View(model);
             }
-            var dtoModel = mapper.Map<CreateItemModel>(model);
-            dtoModel.ImageUrl = imageId;
-            dtoModel.OwnerId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            await itemsManager.CreateAsync(dtoModel);
             return View(model);
         }
 
@@ -125,17 +117,18 @@ namespace CourseProject.Controllers
             var previousId = HttpContext.Session.GetString("fileId");
             if (!string.IsNullOrEmpty(previousId))
                 await AbortUpload();
-            var fileDesc = new FileDescription(file.FileName, file.OpenReadStream());
-            var res = await cloudinaryService.UploadAsync(fileDesc);
-            HttpContext.Session.SetString("fileId", res.ObjectId);
+            var resourcModel = mapper.Map<CreateResourceModel>(file);
+            var res = await resourcesManager.CreateAsync(resourcModel);
+            if (res.Succeed)
+                HttpContext.Session.SetInt32("fileId", res.Id);
             return Json(res);
         }
 
         [HttpPost]
         public async Task AbortUpload()
         {
-            var fileId = HttpContext.Session.GetString("fileId");
-            await cloudinaryService.DeleteAsync(fileId);
+            var fileId = HttpContext.Session.GetInt32("fileId");
+            await resourcesManager.DeleteAsync(fileId.Value);
         }
 
         [HttpPost]
@@ -166,6 +159,15 @@ namespace CourseProject.Controllers
                 IsEditable = true
             };
             return PartialView("Profile/_Items", model);
+        }
+
+        private int? GetCurrentUserId()
+        {
+            var stringId =  User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (stringId is null || !int.TryParse(stringId, out int id))
+                return null;
+            else
+                return id;
         }
     }
 }

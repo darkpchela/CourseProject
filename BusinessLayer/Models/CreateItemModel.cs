@@ -12,7 +12,7 @@ namespace BusinessLayer.Models
 
         public int OwnerId { get; set; }
 
-        public string ImageUrl { get; set; }
+        public int ResourceId { get; set; }
 
         public string Description { get; set; }
 

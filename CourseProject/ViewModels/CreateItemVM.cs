@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CourseProject.ViewModels
 {
@@ -15,8 +12,14 @@ namespace CourseProject.ViewModels
         [Required(ErrorMessage = "Collection must be chosen")]
         public int? CollectionId { get; set; }
 
+        [Required(ErrorMessage = "Image required")]
+        public int? ResourceId { get; set; }
+
+        [Required]
+        public int? OwnerId { get; set; }
+
         [Required(ErrorMessage = "Item description is required")]
-        [StringLength(1024, MinimumLength = 3, ErrorMessage ="Description minimum length is 3. Maximum is 1024")]
+        [StringLength(1024, MinimumLength = 3, ErrorMessage = "Description minimum length is 3. Maximum is 1024")]
         public string Description { get; set; }
 
         public string Tags { get; set; }
