@@ -8,6 +8,6 @@ namespace BusinessLayer.Models
 
         public int CollectionId { get; set; }
 
-        public IList<string> Errors { get; set; } = new List<string>();
+        public IList<string> Errors { get; } = new List<string>();
     }
 }

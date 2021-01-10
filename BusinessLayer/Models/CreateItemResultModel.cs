@@ -6,6 +6,6 @@ namespace BusinessLayer.Models
     {
         public bool Succeed { get; set; }
 
-        public IList<string> Errors { get; set; }
+        public IList<string> Errors { get; } = new List<string>();
     }
 }

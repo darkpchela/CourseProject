@@ -10,7 +10,7 @@ namespace BusinessLayer.Models
 
         public int CollectionId { get; set; }
 
-        public int CreatorId { get; set; }
+        public int OwnerId { get; set; }
 
         public string ImageUrl { get; set; }
 

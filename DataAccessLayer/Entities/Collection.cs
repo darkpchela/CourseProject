@@ -18,10 +18,10 @@ namespace DataAccessLayer.Entities
         public string Description { get; set; }
         public string ImageUrl { get; set; }
         public int ThemeId { get; set; }
-        public int CreatorId { get; set; }
+        public int OwnerId { get; set; }
         public DateTime CreationDate { get; set; }
 
-        public virtual User Creator { get; set; }
+        public virtual User Owner { get; set; }
         public virtual Theme Theme { get; set; }
         public virtual ICollection<CollectionItem> CollectionItems { get; set; }
         public virtual ICollection<OptionalField> OptionalFields { get; set; }

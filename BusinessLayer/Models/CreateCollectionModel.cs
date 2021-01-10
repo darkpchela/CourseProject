@@ -14,7 +14,7 @@ namespace BusinessLayer.Models
 
         public IEnumerable<OptionalFieldModel> OptionalFields { get; set; }
 
-        public string ImagePublicKey { get; set; }
+        public string ImageUrl { get; set; }
 
         public int OwnerId { get; set; }
 

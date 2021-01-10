@@ -52,7 +52,7 @@ namespace BusinessLayer.Services
             var collection = await collectionsCrudService.GetAsync(createItemModel.CollectionId);
             if (collection is null)
                 result.Errors.Add("Collection not exists");
-            var user = await userCrudService.GetAsync(createItemModel.CreatorId);
+            var user = await userCrudService.GetAsync(createItemModel.OwnerId);
             if (user is null)
                 result.Errors.Add("User not exists");
             return result;

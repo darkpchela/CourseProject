@@ -57,9 +57,9 @@ namespace DataAccessLayer.Services
                     .IsRequired()
                     .HasMaxLength(64);
 
-                entity.HasOne(d => d.Creator)
+                entity.HasOne(d => d.Owner)
                     .WithMany(p => p.Collections)
-                    .HasForeignKey(d => d.CreatorId)
+                    .HasForeignKey(d => d.OwnerId)
                     .HasConstraintName("FK_Collections_To_Users");
 
                 entity.HasOne(d => d.Theme)

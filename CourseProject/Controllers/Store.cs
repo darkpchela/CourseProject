@@ -26,7 +26,10 @@ namespace CourseProject.Controllers
 
         private readonly IItemsManager itemsManager;
 
+        private readonly ICollectionsCrudService collectionsCrudService;
+        
         private readonly IMapper mapper;
+
 
         private CreateCollectionVM createCollectionTestVM = new CreateCollectionVM()
         {
@@ -35,13 +38,14 @@ namespace CourseProject.Controllers
         };
 
         public Store(ICloudinaryService cloudinaryService, ICPUnitOfWork cPUnitOfWork, ICollectionsManager collectionsManager,
-            IItemsManager itemsManager, IMapper mapper)
+            IItemsManager itemsManager, ICollectionsCrudService collectionsCrudService, IMapper mapper)
         {
             this.cloudinaryService = cloudinaryService;
             this.cPUnitOfWork = cPUnitOfWork;
             this.collectionsManager = collectionsManager;
-            this.mapper = mapper;
             this.itemsManager = itemsManager;
+            this.collectionsCrudService = collectionsCrudService;
+            this.mapper = mapper;
         }
 
         public IActionResult Profile(int? id)
@@ -75,7 +79,7 @@ namespace CourseProject.Controllers
                 return View(model);
             }
             var dtoModel = mapper.Map<CreateCollectionModel>(model);
-            dtoModel.ImagePublicKey = imageId;
+            dtoModel.ImageUrl = imageId;
             dtoModel.OwnerId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             await collectionsManager.CreateAsync(dtoModel);
             return View(model);
@@ -100,7 +104,7 @@ namespace CourseProject.Controllers
             }
             var dtoModel = mapper.Map<CreateItemModel>(model);
             dtoModel.ImageUrl = imageId;
-            dtoModel.CreatorId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            dtoModel.OwnerId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             await itemsManager.CreateAsync(dtoModel);
             return View(model);
         }
