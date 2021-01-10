@@ -4,39 +4,43 @@
         <div class="border-bottom-custom">
             <div class="col-8 offset-2 text-center">
                 <h4 class="d-inline-block w-75">
-                    Item Name
+                   @Model.Name
                 </h4>
-                <h5>Collection</h5>
+                <h5>
+                    Collections:
+                    @foreach(var collection in Model.Collections)
+                    {
+                        <a class="btn font-weight-bold" asp-action="Collection" asp-controller="Store" asp-route-id="@collection.Id" >@collection.Name</a><br/>
+                    }
+                </h5>
                 <h6>
-                    Owner: FirstName LastName
+                    Owner: <a class="btn font-weight-bold" asp-action="Profile" asp-controller="Store" asp-route-id="@Model.Owner.Id">@Model.Owner.Username</a>
                 </h6>
             </div>
         </div>
         <div class="d-flex flex-row flex-wrap justify-content-center w-100 border-bottom-custom">
             <div class="flex-grow-0">
                 <div class="p-2 text-center">
-                    <a class="d-block">
-                        <img class="img-fluid img-thumbnail bg-dark mx-square-40"
-                             src="https://i.pinimg.com/originals/ff/b9/db/ffb9dbf3712b8da5d229334dbf499f16.jpg"
-                             alt="picture">
-                    </a>
-                    <h5>Bottle Of Whiskey</h5>
+                        <img class="img-fluid img-thumbnail mx-square-40" src="@Model.ImageUrl" alt="picture">
+                    <h5>@Model.Name</h5>
                 </div>
             </div>
             <div class="flex-grow-1 p-1 text-center">
                 <h5 class="text-center">Description</h5>
-                <textarea class="w-100" style="min-width: 300px;"></textarea>
+                <div class="w-100" style="min-width: 300px;">
+                    @Model.Description
+                </div>
             </div>
         </div>
         <div class="text-center border-bottom-custom p-2">
-            <a id="btnLike" class="btn">
+            <a asp-action="LikeItem" asp-controller="Store" id="btnLike" class="btn">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"
                      class="medium-icon">
                     <path fill-rule="evenodd"
                           d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
                 </svg>
             </a>
-            <span class="ml-2">Count</span>
+            <span class="ml-2">@Model.ItemLikes.Count</span>
         </div>
         <div>
             <h5 class="text-center">Comments</h5>
