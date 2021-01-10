@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace CourseProject.ViewModels
 {
@@ -12,5 +9,9 @@ namespace CourseProject.ViewModels
         public string Name { get; set; }
 
         public string Description { get; set; }
+
+        public string ImageUrl { get; set; }
+
+        public IList<ItemOptionalFieldVM> Fields { get; set; }
     }
 }

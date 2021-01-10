@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Http;
 
 namespace CourseProject.MappingProfiles
 {
-    public class CreateResourceProfile : Profile
+    public class CreateResourceModelProfile : Profile
     {
-        public CreateResourceProfile()
+        public CreateResourceModelProfile()
         {
             CreateMap<IFormFile, CreateResourceModel>()
                 .ForMember(d => d.FileStream, o => o.MapFrom(s => s.OpenReadStream()))

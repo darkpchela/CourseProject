@@ -23,6 +23,8 @@ namespace CourseProject.Controllers
 
         private readonly IItemsManager itemsManager;
 
+        private readonly IItemsCrudService itemsCrudService;
+
         private readonly ICollectionsCrudService collectionsCrudService;
 
         private readonly IMapper mapper;
@@ -33,13 +35,15 @@ namespace CourseProject.Controllers
             Description = "It's a test collection"
         };
 
-        public Store(IResourcesManager resourcesManager, ICPUnitOfWork cPUnitOfWork, ICollectionsManager collectionsManager, IItemsManager itemsManager, ICollectionsCrudService collectionsCrudService, IMapper mapper)
+        public Store(IResourcesManager resourcesManager, ICPUnitOfWork cPUnitOfWork, ICollectionsManager collectionsManager, IItemsManager itemsManager,
+            IItemsCrudService itemsCrudService , ICollectionsCrudService collectionsCrudService, IMapper mapper)
         {
             this.resourcesManager = resourcesManager;
             this.cPUnitOfWork = cPUnitOfWork;
             this.collectionsManager = collectionsManager;
             this.itemsManager = itemsManager;
             this.collectionsCrudService = collectionsCrudService;
+            this.itemsCrudService = itemsCrudService;
             this.mapper = mapper;
         }
 
@@ -109,14 +113,22 @@ namespace CourseProject.Controllers
             return View(model);
         }
 
-        public IActionResult Collection(int id)
+        public async Task<IActionResult> Collection(int id)
         {
-            return View();
+            var collection = await collectionsCrudService.GetAsync(id);
+            if (collection is null)
+                return RedirectToAction(nameof(Home.Index), nameof(Home));
+            var collectionVM = mapper.Map<CollectionVM>(collection);
+            return View(collectionVM);
         }
 
-        public IActionResult Item(int id)
+        public async Task<IActionResult> Item(int id)
         {
-            return View();
+            var item = await itemsCrudService.GetAsync(id);
+            if (item is null)
+                return RedirectToAction(nameof(Home.Index), nameof(Home));
+            var itemVM = mapper.Map<ItemVM>(item);
+            return View(itemVM);
         }
 
         [HttpPost]

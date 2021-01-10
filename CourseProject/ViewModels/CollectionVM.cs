@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace CourseProject.ViewModels
 {
@@ -10,6 +7,10 @@ namespace CourseProject.ViewModels
         public int Id { get; set; }
 
         public string Name { get; set; }
+
+        public ThemeVM Theme { get; set; }
+
+        public UserVM Owner { get; set; }
 
         public string Description { get; set; }
 

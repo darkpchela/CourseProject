@@ -4,11 +4,11 @@ using CourseProject.ViewModels;
 
 namespace CourseProject.MappingProfiles
 {
-    public class OptionalFieldModelProfile : Profile
+    public class ThemeVMProfile : Profile
     {
-        public OptionalFieldModelProfile()
+        public ThemeVMProfile()
         {
-            CreateMap<CreateOptionalFieldVM, OptionalFieldModel>();
+            CreateMap<ThemeModel, ThemeVM>();
         }
     }
 }

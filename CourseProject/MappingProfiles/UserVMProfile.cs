@@ -4,11 +4,11 @@ using CourseProject.ViewModels;
 
 namespace CourseProject.MappingProfiles
 {
-    public class OptionalFieldModelProfile : Profile
+    public class UserVMProfile : Profile
     {
-        public OptionalFieldModelProfile()
+        public UserVMProfile()
         {
-            CreateMap<CreateOptionalFieldVM, OptionalFieldModel>();
+            CreateMap<UserModel, UserVM>().ReverseMap();
         }
     }
 }
