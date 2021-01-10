@@ -94,6 +94,12 @@ namespace DataAccessLayer.Services
                 entity.Property(e => e.CreationDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Value).IsRequired();
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Comments)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Comments_To_Users");
             });
 
             modelBuilder.Entity<FieldType>(entity =>

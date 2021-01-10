@@ -13,6 +13,10 @@ namespace BusinessLayer.Models.DALModels
 
         public DateTime CreationDate { get; set; }
 
+        public int UserId { get; set; }
+
+        public UserModel User { get; set; }
+
         public IEnumerable<ItemCommentModel> ItemComments { get; set; }
     }
 }

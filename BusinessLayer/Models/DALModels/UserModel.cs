@@ -16,6 +16,8 @@ namespace BusinessLayer.Models.DALModels
 
         public IEnumerable<CollectionModel> Collections { get; set; }
 
+        public IEnumerable<CommentModel> Comments { get; set; }
+
         public IEnumerable<ItemLikeModel> ItemLikes { get; set; }
 
         public IEnumerable<ItemModel> Items { get; set; }

@@ -21,6 +21,7 @@ namespace DataAccessLayer.Entities
         public int OwnerId { get; set; }
         public DateTime CreationDate { get; set; }
         public int ResourceId { get; set; }
+        public string Description { get; set; }
 
         public virtual User Owner { get; set; }
         public virtual Resource Resource { get; set; }
