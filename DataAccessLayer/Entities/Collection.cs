@@ -16,12 +16,13 @@ namespace DataAccessLayer.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public string ImageUrl { get; set; }
         public int ThemeId { get; set; }
         public int OwnerId { get; set; }
         public DateTime CreationDate { get; set; }
+        public int ResourceId { get; set; }
 
         public virtual User Owner { get; set; }
+        public virtual Resource Resource { get; set; }
         public virtual Theme Theme { get; set; }
         public virtual ICollection<CollectionItem> CollectionItems { get; set; }
         public virtual ICollection<OptionalField> OptionalFields { get; set; }

@@ -13,8 +13,6 @@ namespace BusinessLayer.Models.DALModels
 
         public string Description { get; set; }
 
-        public string ImageUrl { get; set; }
-
         public int ThemeId { get; set; }
 
         public int OwnerId { get; set; }
@@ -22,6 +20,8 @@ namespace BusinessLayer.Models.DALModels
         public DateTime CreationDate { get; set; } = DateTime.Now;
 
         public UserModel Creator { get; set; }
+
+        public ResourceModel Resource { get; set; }
 
         public ThemeModel Theme { get; set; }
 

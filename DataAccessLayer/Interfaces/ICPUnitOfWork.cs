@@ -31,6 +31,8 @@ namespace DataAccessLayer.Interfaces
 
         IFieldTypesRepository FieldTypesRepository { get; }
 
+        IResourceRepository ResourceRepository { get; }
+
         Task SaveChangesAsync();
     }
 }

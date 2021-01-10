@@ -13,11 +13,11 @@ namespace BusinessLayer.Models.DALModels
 
         public string ImageUrl { get; set; }
 
-        public int OwnerId { get; set; }
-
         public DateTime CreationDate { get; set; } = DateTime.Now;
 
         public UserModel Owner { get; set; }
+
+        public ResourceModel Resource { get; set; }
 
         public IEnumerable<CollectionItemModel> CollectionItems { get; set; }
 

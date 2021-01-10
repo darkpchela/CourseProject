@@ -34,6 +34,7 @@ namespace DataAccessLayer.Extensions
             services.AddTransient<IThemesRepository, ThemesRepository>();
             services.AddTransient<IUsersRepository, UsersRepository>();
             services.AddTransient<IFieldTypesRepository, FieldTypesRepository>();
+            services.AddTransient<IResourceRepository, ResourceRepository>();
             services.AddTransient<ICPUnitOfWork, CPUnitOfWork>();
             return services;
         }

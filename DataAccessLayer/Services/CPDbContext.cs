@@ -28,6 +28,7 @@ namespace DataAccessLayer.Services
         public virtual DbSet<ItemOptionalField> ItemOptionalFields { get; set; }
         public virtual DbSet<ItemTag> ItemTags { get; set; }
         public virtual DbSet<OptionalField> OptionalFields { get; set; }
+        public virtual DbSet<Resource> Resources { get; set; }
         public virtual DbSet<Tag> Tags { get; set; }
         public virtual DbSet<Theme> Themes { get; set; }
         public virtual DbSet<User> Users { get; set; }
@@ -51,8 +52,6 @@ namespace DataAccessLayer.Services
 
                 entity.Property(e => e.Description).IsRequired();
 
-                entity.Property(e => e.ImageUrl).HasMaxLength(512);
-
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(64);
@@ -61,6 +60,12 @@ namespace DataAccessLayer.Services
                     .WithMany(p => p.Collections)
                     .HasForeignKey(d => d.OwnerId)
                     .HasConstraintName("FK_Collections_To_Users");
+
+                entity.HasOne(d => d.Resource)
+                    .WithMany(p => p.Collections)
+                    .HasForeignKey(d => d.ResourceId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Collections_To_Resources");
 
                 entity.HasOne(d => d.Theme)
                     .WithMany(p => p.Collections)
@@ -105,8 +110,6 @@ namespace DataAccessLayer.Services
             {
                 entity.Property(e => e.CreationDate).HasColumnType("datetime");
 
-                entity.Property(e => e.ImageUrl).HasMaxLength(512);
-
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(128);
@@ -116,6 +119,12 @@ namespace DataAccessLayer.Services
                     .HasForeignKey(d => d.OwnerId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Items_To_Users");
+
+                entity.HasOne(d => d.Resource)
+                    .WithMany(p => p.Items)
+                    .HasForeignKey(d => d.ResourceId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Items_To_Resources");
             });
 
             modelBuilder.Entity<ItemComment>(entity =>
@@ -196,6 +205,13 @@ namespace DataAccessLayer.Services
                     .HasForeignKey(d => d.TypeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_OptionalFields_To_FieldTypes");
+            });
+
+            modelBuilder.Entity<Resource>(entity =>
+            {
+                entity.Property(e => e.PublicId).IsRequired();
+
+                entity.Property(e => e.Url).IsRequired();
             });
 
             modelBuilder.Entity<Tag>(entity =>

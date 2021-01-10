@@ -35,6 +35,8 @@ namespace DataAccessLayer.Services
 
         private IFieldTypesRepository fieldTypesRepository;
 
+        private IResourceRepository resourceRepository;
+
         public ICollectionItemRepository CollectionItemRepository
         {
             get
@@ -136,6 +138,14 @@ namespace DataAccessLayer.Services
             get
             {
                 return fieldTypesRepository ?? (fieldTypesRepository = new FieldTypesRepository(dbContext));
+            }
+        }
+
+        public IResourceRepository ResourceRepository
+        {
+            get
+            {
+                return resourceRepository ?? (resourceRepository = new ResourceRepository(dbContext));
             }
         }
 
