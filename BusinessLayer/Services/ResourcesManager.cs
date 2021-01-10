@@ -2,9 +2,7 @@
 using BusinessLayer.Interfaces;
 using BusinessLayer.Interfaces.BaseCrud;
 using BusinessLayer.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using BusinessLayer.Models.DALModels;
 using System.Threading.Tasks;
 
 namespace BusinessLayer.Services
@@ -33,16 +31,16 @@ namespace BusinessLayer.Services
                 resultModel.AddError("Cloudinary service error");
                 return resultModel;
             }
-
+            var resourceModel = mapper.Map<ResourceModel>(cloudinaryRes);
+            await resourceCrudService.CreateAsync(resourceModel);
+            mapper.Map(resourceModel, resultModel);
             return resultModel;
+        }
 
-            //var resultModel = new CreateResourceResultModel
-            //{
-            //    Succeed = cloudinaryRes.Error is null ? true : false,
-            //    Error = cloudinaryRes.Error?.Message ?? "",
-            //    Uri = cloudinaryRes.Uri?.AbsoluteUri ?? "",
-            //    ObjectId = cloudinaryRes.PublicId
-            //};
+        public async Task DeleteAsync(ResourceModel resourceModel)
+        {
+            await cloudinaryService.DeleteAsync(resourceModel.PublicId);
+            await resourceCrudService.DeleteAsync(resourceModel.Id);
         }
     }
 }

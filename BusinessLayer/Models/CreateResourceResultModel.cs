@@ -4,13 +4,15 @@ namespace BusinessLayer.Models
 {
     public class CreateResourceResultModel
     {
+        public int Id { get; set; }
+
         public bool Succeed { get; private set; } = true;
 
-        public string Uri { get; set; }
+        public string Url { get; set; }
 
         public IList<string> Errors { get; } = new List<string>();
 
-        public string ObjectId { get; set; }
+        public string PublicId { get; set; }
 
         public void AddError(string error)
         {
