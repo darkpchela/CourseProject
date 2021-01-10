@@ -13,9 +13,11 @@ namespace BusinessLayer.Models.DALModels
 
         public string Description { get; set; }
 
-        public int ThemeId { get; set; }
-
         public int OwnerId { get; set; }
+
+        public int ResourceId { get; set; }
+
+        public int ThemeId { get; set; }
 
         public DateTime CreationDate { get; set; } = DateTime.Now;
 

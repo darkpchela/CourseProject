@@ -15,6 +15,10 @@ namespace BusinessLayer.Models.DALModels
 
         public DateTime CreationDate { get; set; } = DateTime.Now;
 
+        public int OwnerId { get; set; }
+
+        public int ResourceId { get; set; }
+
         public UserModel Owner { get; set; }
 
         public ResourceModel Resource { get; set; }

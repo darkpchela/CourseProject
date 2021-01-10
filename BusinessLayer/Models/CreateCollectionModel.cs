@@ -12,9 +12,9 @@ namespace BusinessLayer.Models
 
         public string Description { get; set; }
 
-        public IEnumerable<OptionalFieldModel> OptionalFields { get; set; }
+        public int ResourceId { get; set; }
 
-        public string ImageUrl { get; set; }
+        public IEnumerable<OptionalFieldModel> OptionalFields { get; set; }
 
         public int OwnerId { get; set; }
 

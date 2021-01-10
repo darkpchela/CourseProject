@@ -58,7 +58,11 @@ namespace CourseProject.Controllers
         [HttpGet]
         public async Task<IActionResult> CreateCollection()
         {
+            var ownerId = GetCurrentUserId();
+            if (ownerId is null)
+                return RedirectToAction(nameof(Account.SignIn), nameof(Account));
             var model = createCollectionTestVM;
+            model.OwnerId = ownerId;
             return View(model);
         }
 
@@ -67,23 +71,27 @@ namespace CourseProject.Controllers
         {
             if (!ModelState.IsValid)
                 return View(model);
-            var imageId = HttpContext.Session.GetString("fileId");
-            if (string.IsNullOrEmpty(imageId))
+            var dtoModel = mapper.Map<CreateCollectionModel>(model);
+            var result = await collectionsManager.CreateAsync(dtoModel);
+            if (!result.Succeed)
             {
-                ModelState.AddModelError("", "Collection image required.");
+                result.Errors.ToList().ForEach(e => ModelState.AddModelError("", e));
                 return View(model);
             }
-            var dtoModel = mapper.Map<CreateCollectionModel>(model);
-            dtoModel.ImageUrl = imageId;
-            dtoModel.OwnerId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            await collectionsManager.CreateAsync(dtoModel);
             return View(model);
         }
 
         [HttpGet]
         public IActionResult CreateItem()
         {
-            return View(new CreateItemVM());
+            var ownerId = GetCurrentUserId();
+            if(ownerId is null)
+                return RedirectToAction(nameof(Account.SignIn), nameof(Account));
+            var model = new CreateItemVM
+            {
+                OwnerId = ownerId
+            };
+            return View(model);
         }
 
         [HttpPost]
@@ -93,7 +101,7 @@ namespace CourseProject.Controllers
                 return View(model);
             var dtoModel = mapper.Map<CreateItemModel>(model);
             var result = await itemsManager.CreateAsync(dtoModel);
-            if(!result.Succeed)
+            if (!result.Succeed)
             {
                 result.Errors.ToList().ForEach(e => ModelState.AddModelError("", e));
                 return View(model);
@@ -114,9 +122,6 @@ namespace CourseProject.Controllers
         [HttpPost]
         public async Task<IActionResult> UploadImage(IFormFile file)
         {
-            var previousId = HttpContext.Session.GetString("fileId");
-            if (!string.IsNullOrEmpty(previousId))
-                await AbortUpload();
             var resourcModel = mapper.Map<CreateResourceModel>(file);
             var res = await resourcesManager.CreateAsync(resourcModel);
             if (res.Succeed)
@@ -163,7 +168,7 @@ namespace CourseProject.Controllers
 
         private int? GetCurrentUserId()
         {
-            var stringId =  User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var stringId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (stringId is null || !int.TryParse(stringId, out int id))
                 return null;
             else

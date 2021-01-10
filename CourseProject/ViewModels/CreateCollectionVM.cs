@@ -12,6 +12,12 @@ namespace CourseProject.ViewModels
         [Required(ErrorMessage = "Theme must me chosen.")]
         public int? ThemeId { get; set; }
 
+        [Required(ErrorMessage = "Image required")]
+        public int? ResourceId { get; set; }
+
+        [Required]
+        public int? OwnerId { get; set; }
+
         [Required(ErrorMessage = "Collection description required.")]
         [StringLength(1024, MinimumLength = 3, ErrorMessage = "Min description length is 3. Maximum is 1024.")]
         public string Description { get; set; }

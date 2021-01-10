@@ -49,7 +49,7 @@
                     </button>
                 </div>
                 <input type="hidden" asp-for="@Model.ResourceId" />
-                <input type="hidden" asp-for="@Model.OwnerId" />
+                <input type="hidden" asp-for="@Model.OwnerId" value="@Model.OwnerId" />
                 <div asp-validation-summary="All" class="text-center">
                 </div>
             </div>

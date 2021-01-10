@@ -1,6 +1,7 @@
 ﻿@model CreateCollectionVM
 @inject IThemesCrudService themesService
 @inject IFieldTypesCrudService fieldTypesService 
+@inject IResourceCrudService resourcesService
 
 <div class="d-flex justify-content-center mt-2">
     <div class="d-flex flex-column align-items-stretch w-75 mt-2" style="max-width: 768px;">
@@ -56,6 +57,8 @@
                     </button>
                 </div>
             </div>
+            <input type="hidden" asp-for="@Model.ResourceId" />
+            <input type="hidden" asp-for="@Model.OwnerId" value="@Model.OwnerId" />
         </form>
     </div>
 </div>
@@ -87,7 +90,8 @@
             success: (file, response) => {
                 console.log(response);
                 if (response.succeed === true) {
-                    $('#dropzone .dz-image img').attr('src', response.uri);
+                    $('#dropzone .dz-image img').attr('src', response.url);
+                    $('#ResourceId').val(response.id);
                 }
                 else {
                     console.log(response.error);
