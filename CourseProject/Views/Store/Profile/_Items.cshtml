@@ -1,8 +1,12 @@
-﻿@model ProfileItemsVM
+﻿@model IList<ItemVM>
+@{ bool isEditable = false;
+    if (User.IsInRole("Admin") || User.FindFirstValue(ClaimTypes.NameIdentifier) == Model.First().Owner.Id.ToString())
+        isEditable = true;
+    ;}
 <div class="d-flex flex-row flex-wrap align-items-baseline justify-content-center">
-    @if (Model.IsEditable)
+    @if (isEditable)
     {
-        <div class="square-25 m-2 pt-2">
+        <div class="square-25 m-1">
             <div class="w-100 h-100 d-flex flex-row justify-content-center ">
                 <a asp-action="CreateItem" asp-controller="Store" class="btn w-50 h-50 align-self-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -16,25 +20,25 @@
             </div>
         </div>
     }
-    @for (int i = 0; i < Model.Items.Count; i++)
+    @for (int i = 0; i < Model.Count; i++)
     {
         <div class="m-1 square-25 text-center">
             <div class="p-2">
-                <a asp-action="Item" asp-controller="Store" asp-route-id="@Model.Items[i].Id" class="btn p-0 btn-outline-info"
+                <a asp-action="Item" asp-controller="Store" asp-route-id="@Model[i].Id" class="btn p-0 btn-outline-info"
                    data-placement="bottom" data-toggle="tooltip" data-html="true" title="tooltip">
                     <img class="img-fluid img-thumbnail"
-                         src="https://yandex.by/images/_crpd/kf5Pv2198/52610cxUM/eRJu4M94jxH2MVUEro1UKqegWWpvswQ7RE_jwPY1avZFULWfTE_H9C90nSwSGlUuFal4J9SkhSQ275vS9-pwPDgOOsiyQJtR_zVcBbdINC-uiWF6X6pIQyhur4iLaXqyMHC5rvhGx7UeNfhtvgpZImkV0KuteGzc7xcWEkbLMWQ5RkKx-iB3tPI5fYz7FVA2_oyFohc3nDI8l5OF9qXG500c-be0N5slLql4HXMHoANldcirIRAYXBsHOnpaF2UYdRYvJUrIE1muqcFsIyl09kYI3XLHgyBmKJP_WWJJ0rdhDA3vJEfzoV6l7HH_r1jnvV1g--XISMhDr2IidncF-IV-b9EWnJ_ZerFV3Hfl8A5C8K3qc2uM5lxfl5n2lWKLUZSRM2DTmz06OUTN81sY96X5uLsduKAov-cCvrp_pRi5Oj-FEgCjiTLpaQjf5QAm-sR5ru8H2N60O5-pconqA7mQkSsAk5vJVr3c1dvzRNu5IQCDHSSooLOjJn72e20IPeab1VrcS8FqqeF8LwVQiv789eaf50hytM_HzUJ5eketrMGXEOvPJaaZHBHHe0T7mc1Ez73ouPDHW0ZmbvN1CC2eE4WyhE8RoqlV-G_VKFpCBJmul8egssjP67Gure6LdQgR_wA7ry1GCZxV2wsov2FtoP9lQLAAFwteHkbjpVRlFvNdwnQfAcqtNRzH8dwG7iQhXgsL9JLs61dNnunyA8mY9XMs76f9VpHwXcfjTINxtSSXAZi8JG-fViJuM4V4sUpH6SrYF1Fa_YncXwl0Nv6EIc7HD9ACOCdPnQrNYrPhnIXzdAvfpQIVKDmnAyRvkVEcb5kQoATPu74W9scJWHGeFx3qmEtdmsV9mLNRxB6myP1-X3OMHiD7a6V65aL7PXg1_7x3x62CgfC9G9u0P-G1HAdtwFD0u-cOolI_-TitOvuFwpSnlVrlDWD7bdiuZsA14lP3NBJYJ-tNDv3M"
+                         src="@Model[i].ImageUrl"
                          alt="picture">
                 </a>
             </div>
             <div>
-                <h5>@Model.Items[i].Name</h5>
+                <h5>@Model[i].Name</h5>
             </div>
-            @if (Model.IsEditable)
+            @if (isEditable)
             {
                 await Html.RenderPartialAsync("Profile/_EditTools", new EditToolsVM
                 {
-                    Id = Model.Items[i].Id,
+                    Id = Model[i].Id,
                     Type = ItemTypes.Item
                 });
             }

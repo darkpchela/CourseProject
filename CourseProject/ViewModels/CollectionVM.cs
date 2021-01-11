@@ -14,6 +14,8 @@ namespace CourseProject.ViewModels
 
         public string Description { get; set; }
 
+        public string ImageUrl { get; set; }
+
         public IList<ItemVM> Items { get; set; }
     }
 }

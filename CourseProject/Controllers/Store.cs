@@ -3,7 +3,6 @@ using BusinessLayer.Interfaces;
 using BusinessLayer.Interfaces.BaseCrud;
 using BusinessLayer.Models;
 using CourseProject.ViewModels;
-using DataAccessLayer.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -17,9 +16,9 @@ namespace CourseProject.Controllers
     {
         private readonly IResourcesManager resourcesManager;
 
-        private readonly ICPUnitOfWork cPUnitOfWork;
-
         private readonly ICollectionsManager collectionsManager;
+
+        private readonly IUserCrudService userCrudService;
 
         private readonly IItemsManager itemsManager;
 
@@ -35,27 +34,24 @@ namespace CourseProject.Controllers
             Description = "It's a test collection"
         };
 
-        public Store(IResourcesManager resourcesManager, ICPUnitOfWork cPUnitOfWork, ICollectionsManager collectionsManager, IItemsManager itemsManager,
-            IItemsCrudService itemsCrudService , ICollectionsCrudService collectionsCrudService, IMapper mapper)
+        public Store(IResourcesManager resourcesManager, ICollectionsManager collectionsManager, IItemsManager itemsManager, IUserCrudService userCrudService,
+            IItemsCrudService itemsCrudService, ICollectionsCrudService collectionsCrudService, IMapper mapper)
         {
             this.resourcesManager = resourcesManager;
-            this.cPUnitOfWork = cPUnitOfWork;
             this.collectionsManager = collectionsManager;
             this.itemsManager = itemsManager;
             this.collectionsCrudService = collectionsCrudService;
             this.itemsCrudService = itemsCrudService;
+            this.userCrudService = userCrudService;
             this.mapper = mapper;
         }
 
-        public IActionResult Profile(int? id)
+        public async Task<IActionResult> Profile(int? id)
         {
-            if (!id.HasValue)
-                id = cPUnitOfWork.UsersRepository.GetAll().FirstOrDefault(u => u.Id.ToString() == User.FindFirstValue(ClaimTypes.NameIdentifier)).Id;
-            var model = new ProfileVM
-            {
-                Username = User.Identity.Name,
-                User = cPUnitOfWork.UsersRepository.GetAll().FirstOrDefault(u => u.Id == id)
-            };
+            if (id is null)
+                id = GetCurrentUserId();
+            var user = await userCrudService.GetAsync(id.Value);
+            var model = mapper.Map<UserVM>(user);
             return View(model);
         }
 
@@ -89,7 +85,7 @@ namespace CourseProject.Controllers
         public IActionResult CreateItem()
         {
             var ownerId = GetCurrentUserId();
-            if(ownerId is null)
+            if (ownerId is null)
                 return RedirectToAction(nameof(Account.SignIn), nameof(Account));
             var model = new CreateItemVM
             {
@@ -156,26 +152,6 @@ namespace CourseProject.Controllers
                 return Json(null);
             var fieldsVM = mapper.Map<IEnumerable<OptionalFieldVM>>(collection.OptionalFields);
             return Json(fieldsVM);
-        }
-
-        public IActionResult _Collections(int id)
-        {
-            var model = new ProfileCollectionsVM
-            {
-                Collections = new List<CollectionVM>(),
-                IsEditable = true
-            };
-            return PartialView("Profile/_Collections", model);
-        }
-
-        public IActionResult _Items()
-        {
-            var model = new ProfileItemsVM
-            {
-                Items = new List<ItemVM>(),
-                IsEditable = true
-            };
-            return PartialView("Profile/_Items", model);
         }
 
         private int? GetCurrentUserId()

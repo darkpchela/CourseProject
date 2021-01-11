@@ -1,4 +1,6 @@
-﻿namespace CourseProject.ViewModels
+﻿using System.Collections.Generic;
+
+namespace CourseProject.ViewModels
 {
     public class UserVM
     {
@@ -9,5 +11,9 @@
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
+
+        public IList<CollectionVM> Collections { get; set; }
+
+        public IList<ItemVM> Items { get; set; }
     }
 }

@@ -10,7 +10,8 @@ namespace CourseProject.MappingProfiles
         public CollectionVMProfile()
         {
             CreateMap<CollectionModel, CollectionVM>()
-                .ForMember(d => d.Items, o => o.MapFrom(s => s.CollectionItems.Select(ci => ci.Item)));
+                .ForMember(d => d.Items, o => o.MapFrom(s => s.CollectionItems.Select(ci => ci.Item)))
+                .ForMember(d => d.ImageUrl, o => o.MapFrom(s => s.Resource.Url));
         }
     }
 }

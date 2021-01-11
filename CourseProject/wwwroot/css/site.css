@@ -52,6 +52,8 @@ html {
 body {
     /* Margin bottom by footer height */
     margin-bottom: 60px;
+    background-color: var(--main-color) !important;
+    color: var(--secondary-color) !important;
 }
 
 .footer {
@@ -69,11 +71,11 @@ body {
     --min-font-size: 12px;
 }
 
-:root[theme='light'] {
-    --main-color: snow;
-    --border-color: rgba(0, 0, 0, 0.4);
-    --secondary-color: rgba(0, 0, 0, 0.7);
-}
+    :root[theme='light'] {
+        --main-color: antiquewhite;
+        --border-color: rgba(0, 0, 0, 0.4);
+        --secondary-color: rgb(40, 27, 4);
+    }
 
 :root[theme='dark'] {
     --main-color: darkslategray;
@@ -82,9 +84,9 @@ body {
 }
 
 * {
-    border-color: var(--border-color) !important;
-    color: var(--secondary-color) !important;
-    background-color: var(--main-color) !important;
+    border-color: var(--border-color);
+    color: var(--secondary-color) ;
+    background-color: var(--main-color);
 }
 
 .border-custom {
@@ -210,21 +212,21 @@ h6:hover {
 }
 
 .btn:hover, .btn:hover *{
-    color: var(--main-color) !important;
-    background-color: var(--secondary-color) !important;
+    color: var(--main-color) ;
+    background-color: var(--secondary-color) ;
 }
 
 .btn-outline-info:focus, .btn-outline-info.focus {
-    box-shadow: 0 0 0 0.2rem var(--border-color) !important;
+    box-shadow: 0 0 0 0.2rem var(--border-color) ;
 }
 
 .text-muted{
-    color: var(--secondary-color) !important;
+    color: var(--secondary-color) ;
     opacity: 0.8;
 }
 
 .form-control:focus{
-    box-shadow: 0 0 0 0.2rem var(--border-color) !important;
+    box-shadow: 0 0 0 0.2rem var(--border-color) ;
 }
 
 /* modified dropzone.css */
