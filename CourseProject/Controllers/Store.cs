@@ -94,7 +94,16 @@ namespace CourseProject.Controllers
         [HttpPost]
         public async Task<IActionResult> EditCollection(EditCollectionVM editCollectionVM)
         {
-            return Json(null);
+            if (!ModelState.IsValid)
+                return View(editCollectionVM);
+            var model = mapper.Map<UpdateCollectionModel>(editCollectionVM);
+            var result = await collectionsManager.UpdateAsync(model);
+            if(!result.Succeed)
+            {
+                result.Errors.ToList().ForEach(e => ModelState.AddModelError("", e));
+                return View(model);
+            }
+            return RedirectToAction(nameof(Collection), nameof(Store), new { id = model.Id });
         }
 
         [HttpGet]

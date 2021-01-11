@@ -9,8 +9,11 @@ namespace DataAccessLayer.Services.Repositories
     {
         private readonly DbSet<TEntity> dbSet;
 
+        private readonly DbContext dbContext;
+
         public DbSetRepository(CPDbContext dbContext)
         {
+            this.dbContext = dbContext;
             dbSet = dbContext.Set<TEntity>();
         }
 
@@ -39,6 +42,7 @@ namespace DataAccessLayer.Services.Repositories
 
         public void Update(TEntity entity)
         {
+            dbContext.ChangeTracker.Clear();
             dbSet.Update(entity);
         }
     }

@@ -15,15 +15,18 @@ namespace BusinessLayer.Services
 
         private readonly IUserCrudService userCrudService;
 
+        private readonly IResourceCrudService resourceCrudService;
+
         private readonly IMapper mapper;
 
         public CollectionsManager(ICollectionsCrudService collectionsCrudService, IThemesCrudService themesCrudService,
-            IUserCrudService userCrudService, IMapper mapper)
+            IUserCrudService userCrudService, IResourceCrudService resourceCrudService, IMapper mapper)
         {
             this.mapper = mapper;
             this.userCrudService = userCrudService;
             this.themesCrudService = themesCrudService;
             this.collectionsCrudService = collectionsCrudService;
+            this.resourceCrudService = resourceCrudService;
         }
 
         public async Task<CreateCollectionResultModel> CreateAsync(CreateCollectionModel createCollectionModel)
@@ -42,6 +45,8 @@ namespace BusinessLayer.Services
             var result = await ValidateUpdateCollectionModel(updateCollectionModel);
             if (!result.Succeed)
                 return result;
+            var collectionModel = mapper.Map<CollectionModel>(updateCollectionModel);
+            await collectionsCrudService.UpdateAsync(collectionModel);
             return result;
         }
 
@@ -54,12 +59,27 @@ namespace BusinessLayer.Services
             var user = await userCrudService.GetAsync(createCollectionModel.OwnerId);
             if (user is null)
                 result.Errors.Add("User not exists");
+            var resource = await resourceCrudService.GetAsync(createCollectionModel.ResourceId);
+            if (resource is null)
+                result.AddError("Resource not exists");
             return result;
         }
 
         private async Task<UpdateCollectionResultModel> ValidateUpdateCollectionModel(UpdateCollectionModel updateCollectionModel)
         {
             var result = new UpdateCollectionResultModel();
+            //var collection = await collectionsCrudService.GetAsync(updateCollectionModel.Id);
+            //if (collection is null)
+            //    result.AddError("Collection not exists");
+            var user = await userCrudService.GetAsync(updateCollectionModel.OwnerId);
+            if (user is null)
+                result.AddError("User not exists");
+            var resource = await resourceCrudService.GetAsync(updateCollectionModel.ResourceId);
+            if (resource is null)
+                result.AddError("Resource not exists");
+            var theme = await themesCrudService.GetAsync(updateCollectionModel.ThemeId);
+            if (theme is null)
+                result.AddError("Theme not exists");
             return result;
         }
     }

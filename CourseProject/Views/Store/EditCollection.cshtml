@@ -47,7 +47,7 @@
                     </div>
                 </div>
                 <div class="w-100 d-flex flex-row justify-content-between mt-2">
-                    <a asp-action="Profile" asp-controller="Store" class="btn p-0">
+                    <a asp-action="Profile" asp-controller="Store" asp-route-id="@Model.OwnerId" class="btn p-0">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                              class="bigger-icon" viewBox="0 0 16 16">
                             <path fill-rule="evenodd"
@@ -73,9 +73,10 @@
 </div>
 
 <div class="d-none">
-    <div id="fieldProto" name='field' data-id="0" class="d-flex flex-row flex-nowrap align-items-center mt-1">
-        <input id="name" name="name" type="text" class="form-control flex-grow-1 mr-1 " placeholder="Field name" />
-        @Html.DropDownList("type", new SelectList(await fieldTypesService.GetAllAsync(), "Id", "Type"), "Select field type", new { @class = "form-control" })
+    <div id="fieldProto" name='field' class="d-flex flex-row flex-nowrap align-items-center mt-1">
+        <input id="id" type="hidden" data-prop="id" />
+        <input id="name" name="name" data-prop="name" type="text" class="form-control flex-grow-1 mr-1 " placeholder="Field name" />
+        @Html.DropDownList("type", new SelectList(await fieldTypesService.GetAllAsync(), "Id", "Type"), "Select field type", new { @class = "form-control", data_prop = "type" })
         <a name='btnDeleteField' href="" class="d-block btn p-0">
             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="tiny-icon" viewBox="0 0 16 16">
                 <path fill-rule="evenodd"
@@ -114,38 +115,46 @@
                 $('#dropzone .dz-preview').remove();
             }
         });
-
-        let fieldsCount = 0;
-        const fieldProtoElem = $('#fieldProto');
-        const fieldsElem = $('#fields');
+    </script>
+    <script>
         const getNewField = (props) => {
-            let field = fieldProtoElem.clone().removeAttr('id');
-            let nameInputElem = field.children('#name');
-            let typeInputElem = field.children('#type');
-            nameInputElem.attr('name', `Fields[${fieldsCount}].Name`).removeAttr('id');
-            typeInputElem.attr('name', `Fields[${fieldsCount}].TypeId`).removeAttr('id');
+            let field = $('#fieldProto').clone().removeAttr('id');
             if (props) {
-                nameInputElem.val(props.name);
-                typeInputElem.val(props.typeId);
+                field.children('#name').val(props.name);
+                field.children('#type').val(props.typeId);
+                field.children('#id').val(props.id);
             }
+            field.children().each(() => $(this).removeAttr('id'))
             field.children('[name=btnDeleteField]').click(e => {
                 e.preventDefault();
                 $(e.target).parents('[name="field"]').remove();
-                fieldsCount--;
+                updateFieldNames();
             });
-            fieldsCount++;
             return field;
         };
-
+        const setFieldName = (field, id) => {
+            let nameInputElem = $(field).find('[data-prop=name]');
+            let typeInputElem = $(field).find('[data-prop=type]');
+            let idInputElem = $(field).find('[data-prop=id]');
+            nameInputElem.attr('name', `Fields[${id}].Name`);
+            typeInputElem.attr('name', `Fields[${id}].TypeId`);
+            idInputElem.attr('name', `Fields[${id}].Id`);
+        };
+        const updateFieldNames = () => {
+            let fields = $('#fields [name=field]');
+            for (let i = 0; i < fields.length; i++) {
+                setFieldName(fields[i], i);
+            }
+        };
         const loadFields = id => {
             $.post("/Store/GetCollectionFields",
                 { id: id },
                 data => {
-                    console.log(data);
                     for (let i = 0; i < data.length; i++) {
                         let field = getNewField(data[i]);
-                        fieldsElem.prepend(field);
+                        $('#fields').prepend(field);
                     }
+                    updateFieldNames();
                 }
             );
         };
@@ -154,6 +163,7 @@
             e.preventDefault();
             let field = getNewField();
             $("#fields #btnAddField").before(field);
+            updateFieldNames();
         });
 
         $('select').focus(e => {
