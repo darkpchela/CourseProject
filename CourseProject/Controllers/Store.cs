@@ -82,6 +82,22 @@ namespace CourseProject.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> EditCollection(int id)
+        {
+            var collection = await collectionsCrudService.GetAsync(id);
+            if (collection is null)
+                return RedirectToAction(nameof(Profile), nameof(Store));
+            var model = mapper.Map<EditCollectionVM>(collection);
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditCollection(EditCollectionVM editCollectionVM)
+        {
+            return Json(null);
+        }
+
+        [HttpGet]
         public IActionResult CreateItem()
         {
             var ownerId = GetCurrentUserId();
@@ -128,6 +144,16 @@ namespace CourseProject.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> GetCollectionFields(int id)
+        {
+            var collection = await collectionsCrudService.GetAsync(id);
+            if (collection is null)
+                return Json(null);
+            var fieldsVM = mapper.Map<IEnumerable<OptionalFieldVM>>(collection.OptionalFields);
+            return Json(fieldsVM);
+        }
+
+        [HttpPost]
         public async Task<IActionResult> UploadImage(IFormFile file)
         {
             var resourcModel = mapper.Map<CreateResourceModel>(file);
@@ -141,17 +167,8 @@ namespace CourseProject.Controllers
         public async Task AbortUpload()
         {
             var fileId = HttpContext.Session.GetInt32("fileId");
-            await resourcesManager.DeleteAsync(fileId.Value);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> GetCollectionFields(int id)
-        {
-            var collection = await collectionsCrudService.GetAsync(id);
-            if (collection is null)
-                return Json(null);
-            var fieldsVM = mapper.Map<IEnumerable<OptionalFieldVM>>(collection.OptionalFields);
-            return Json(fieldsVM);
+            if (fileId.HasValue)
+                await resourcesManager.DeleteAsync(fileId.Value);
         }
 
         private int? GetCurrentUserId()
