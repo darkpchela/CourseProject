@@ -206,6 +206,10 @@ h6:hover {
     border: none !important;
 }
 
+.img-fluid{
+    background-color: var(--secondary-color);
+}
+
 .btn {
     color: var(--secondary-color);
     background-color: var(--main-color);
@@ -231,6 +235,8 @@ h6:hover {
 
 /* modified dropzone.css */
 .dropzone {
+    background-color: var(--main-color);
+    color: var(--secondary-color);
     max-width: inherit !important;
     max-height: inherit !important;
     padding: 0px !important;
