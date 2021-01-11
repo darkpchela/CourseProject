@@ -203,11 +203,11 @@ h6:hover {
 /* modified bootstrap */
 
 .btn, .btn:focus, .btn:active {
-    border: none !important;
+    border: none;
 }
 
 .img-fluid{
-    background-color: var(--secondary-color);
+    background-color:inherit;
 }
 
 .btn {
