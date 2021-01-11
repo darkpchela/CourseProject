@@ -30,7 +30,16 @@
                 <div class="w-100" style="min-width: 300px;">
                     @Model.Description
                 </div>
-                <div id="itemFields">
+                <div id="itemFields" class="border-top-custom mt-1">
+                    @foreach (var field in Model.Fields)
+                    {
+                        <div>
+                            <h6>@field.Name</h6>
+                            <div>
+                                @field.Value
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
