@@ -6,7 +6,7 @@
             New Item
         </h3>
         <div class="align-self-center border-custom p-1">
-            <div id="dropzone" class="dropzone square-25">
+            <div id="dropzone" class="dropzone d-flex p-0 justify-content-center square-25">
             </div>
         </div>
         <form asp-action="CreateItem" asp-controller="Store" method="post" class="mt-2">
@@ -56,6 +56,9 @@
         </form>
     </div>
 </div>
+<div id="tpl" class="d-none">
+    @{await Html.RenderPartialAsync("_DropzoneTemplate"); }
+</div>
 
 <div class="d-none">
     <div id="fieldProto">
@@ -78,18 +81,24 @@
             maxFileSeize: 20,
             method: 'post',
             url: '/Store/UploadImage',
+            previewTemplate: $('#tpl').html(),
             success: (file, response) => {
                 console.log(response);
                 if (response.succeed === true) {
-                    $('#dropzone .dz-image img').attr('src', response.url);
+                    $('#dropzone img').attr('src', response.url);
                     $('#ResourceId').val(response.id);
                 }
                 else {
                     console.log(response.error);
                 }
+            },
+            removedfile: () => {
+                $.post('/Store/AbortUpload');
+                $('#dropzone .dz-preview').remove();
             }
         });
-
+    </script>
+    <script>
         const typesDictionary = {
             "Boolen": {
                 elem: "<input />",

@@ -1,6 +1,6 @@
 ﻿@model CreateCollectionVM
 @inject IThemesCrudService themesService
-@inject IFieldTypesCrudService fieldTypesService 
+@inject IFieldTypesCrudService fieldTypesService
 @inject IResourceCrudService resourcesService
 
 <div class="d-flex justify-content-center mt-2">
@@ -9,13 +9,13 @@
             New Collection
         </h3>
         <div class="align-self-center border-custom rounded p-1">
-            <div id="dropzone" class="dropzone square-25">
+            <div id="dropzone" class="dropzone d-flex p-0 justify-content-center square-25">
             </div>
         </div>
         <form asp-action="CreateCollection" asp-controller="Store" method="post" class="d-flex flex-column align-items-center mt-2">
             <input asp-for="Name" type="text" class="form-control w-75 text-center"
                    placeholder="Collection name">
-            @Html.DropDownListFor(m => m.ThemeId, new SelectList(await themesService.GetAllAsync(), "Id", "Name"), "Select theme", new { @class= "mt-2 form-control w-75 text-center" })
+            @Html.DropDownListFor(m => m.ThemeId, new SelectList(await themesService.GetAllAsync(), "Id", "Name"), "Select theme", new { @class = "mt-2 form-control w-75 text-center" })
             <div class="text-center mt-3 w-75">
                 <h6 class="text-muted">Description(Markdown)</h6>
                 <textarea asp-for="Description" class="form-control form-control w-100 text-center"
@@ -63,17 +63,21 @@
     </div>
 </div>
 
-<div class="d-none">
-<div id="fieldProto" name='field' data-id="0" class="d-flex flex-row flex-nowrap align-items-center mt-1">
-    <input id="name" name="name" type="text" class="form-control flex-grow-1 mr-1 " placeholder="Field name" />
-    @Html.DropDownList("type", new SelectList(await fieldTypesService.GetAllAsync(), "Id", "Type"), "Select field type", new {@class="form-control"})
-    <a name='btnDeleteField' href="" class="d-block btn p-0">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="tiny-icon" viewBox="0 0 16 16">
-            <path fill-rule="evenodd"
-                  d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
-        </svg>
-    </a>
+<div id="tpl" class="d-none">
+    @{await Html.RenderPartialAsync("_DropzoneTemplate"); }
 </div>
+
+<div class="d-none">
+    <div id="fieldProto" name='field' data-id="0" class="d-flex flex-row flex-nowrap align-items-center mt-1">
+        <input id="name" name="name" type="text" class="form-control flex-grow-1 mr-1 " placeholder="Field name" />
+        @Html.DropDownList("type", new SelectList(await fieldTypesService.GetAllAsync(), "Id", "Type"), "Select field type", new { @class = "form-control" })
+        <a name='btnDeleteField' href="" class="d-block btn p-0">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="tiny-icon" viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                      d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+            </svg>
+        </a>
+    </div>
 </div>
 
 @section Scripts{
@@ -86,10 +90,11 @@
             maxFileSeize: 20,
             method: 'post',
             url: '/Store/UploadImage',
+            previewTemplate: $('#tpl').html(),
             success: (file, response) => {
                 console.log(response);
                 if (response.succeed === true) {
-                    $('#dropzone .dz-image img').attr('src', response.url);
+                    $('#dropzone img').attr('src', response.url);
                     $('#ResourceId').val(response.id);
                 }
                 else {
@@ -101,6 +106,8 @@
                 $('#dropzone .dz-preview').remove();
             }
         });
+    </script>
+    <script>
 
         let fieldsCount = 0;
         const fieldProtoElem = $('#fieldProto');
