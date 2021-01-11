@@ -6,5 +6,7 @@ namespace BusinessLayer.Interfaces
     public interface ICollectionsManager
     {
         Task<CreateCollectionResultModel> CreateAsync(CreateCollectionModel model);
+
+        Task<UpdateCollectionResultModel> UpdateAsync(UpdateCollectionModel model);
     }
 }

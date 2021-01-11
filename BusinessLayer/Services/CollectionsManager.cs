@@ -28,18 +28,24 @@ namespace BusinessLayer.Services
 
         public async Task<CreateCollectionResultModel> CreateAsync(CreateCollectionModel createCollectionModel)
         {
-            var result = await ValidateModel(createCollectionModel);
-            if (result.Errors.Count > 0)
+            var result = await ValidateCreateCollectionModel(createCollectionModel);
+            if (!result.Succeed)
                 return result;
             var collectionModel = mapper.Map<CollectionModel>(createCollectionModel);
             await collectionsCrudService.CreateAsync(collectionModel);
-            if (result.Errors.Count == 0)
-                result.Succeed = true;
             result.CollectionId = collectionModel.Id;
             return result;
         }
 
-        private async Task<CreateCollectionResultModel> ValidateModel(CreateCollectionModel createCollectionModel)
+        public async Task<UpdateCollectionResultModel> UpdateAsync(UpdateCollectionModel updateCollectionModel)
+        {
+            var result = await ValidateUpdateCollectionModel(updateCollectionModel);
+            if (!result.Succeed)
+                return result;
+            return result;
+        }
+
+        private async Task<CreateCollectionResultModel> ValidateCreateCollectionModel(CreateCollectionModel createCollectionModel)
         {
             var result = new CreateCollectionResultModel();
             var theme = await themesCrudService.GetAsync(createCollectionModel.ThemeId);
@@ -48,6 +54,12 @@ namespace BusinessLayer.Services
             var user = await userCrudService.GetAsync(createCollectionModel.OwnerId);
             if (user is null)
                 result.Errors.Add("User not exists");
+            return result;
+        }
+
+        private async Task<UpdateCollectionResultModel> ValidateUpdateCollectionModel(UpdateCollectionModel updateCollectionModel)
+        {
+            var result = new UpdateCollectionResultModel();
             return result;
         }
     }

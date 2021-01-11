@@ -2,7 +2,7 @@
 
 namespace BusinessLayer.Models
 {
-    public class CreateItemResultModel
+    public class UpdateCollectionResultModel
     {
         public bool Succeed { get; private set; } = true;
 
