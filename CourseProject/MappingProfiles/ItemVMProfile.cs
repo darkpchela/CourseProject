@@ -12,7 +12,8 @@ namespace CourseProject.MappingProfiles
             CreateMap<ItemModel, ItemVM>()
                 .ForMember(d => d.Fields, o => o.MapFrom(s => s.ItemOptionalFields))
                 .ForMember(d => d.ImageUrl, o => o.MapFrom(s => s.Resource.Url))
-                .ForMember(d => d.Collections, o => o.MapFrom(s => s.CollectionItems.Select(ci => ci.Collection)));
+                .ForMember(d => d.Collections, o => o.MapFrom(s => s.CollectionItems.Select(ci => ci.Collection)))
+                .ForMember(d => d.ItemComments, o => o.MapFrom(s => s.ItemComments.Select(ic => ic.Comment)));
         }
     }
 }

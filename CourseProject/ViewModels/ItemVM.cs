@@ -18,6 +18,8 @@ namespace CourseProject.ViewModels
 
         public IList<ItemLikeVM> ItemLikes { get; set; }
 
+        public IList<CommentVM> ItemComments { get; set; }
+
         public UserVM Owner { get; set; }
     }
 }
