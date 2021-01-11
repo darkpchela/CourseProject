@@ -237,55 +237,26 @@ h6:hover {
 .dropzone {
     background-color: var(--main-color);
     color: var(--secondary-color);
-    max-width: inherit !important;
-    max-height: inherit !important;
-    padding: 0px !important;
-    border: none !important;
-    margin: 0px !important
 }
 
-    .dropzone .dz-preview * {
-        color: var(--main-color) !important;
-        background-color: var(--secondary-color) !important;
-    }
-
-.dz-preview {
-    margin: 0px !important;
-    width: inherit;
-    height: inherit;
+.dz-preview, .dz-preview *{
+    background-color: transparent !important;
 }
 
-.dz-details {
-    display: flex;
-    flex-direction: column;
-    justify-items: center;
+.dz-preview .dz-details, .dz-preview .dz-details * {
+    background-color: rgba(105, 105, 105, 0.5);
 }
 
-.dz-details {
-    border-radius: 10px;
-    margin-top: 10%;
-}
-
-.dz-image {
-    margin: auto !important;
-    height: auto !important;
-    width: auto !important;
-    max-width: inherit;
-}
-
-    .dz-image img {
-        margin: auto;
-        height: auto;
-        width: auto;
-        max-width: inherit;
-    }
-
-.dz-remove {
+.dz-remove{
     display: block;
-    width: 100%;
-    position: absolute;
-    bottom: 0px;
-    z-index: 666;
-    border-bottom: 0px;
+    text-decoration: none;
+    font-weight: bold;
+    color: var(--secondary-color);
     border-radius: 10px;
+}
+
+.dz-remove:hover{
+    outline: none;
+    background-color: var(--border-color);
+    color: var(--secondary-color)
 }

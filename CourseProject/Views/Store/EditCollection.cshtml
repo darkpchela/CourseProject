@@ -15,7 +15,9 @@
                     </a>
                 </div>
             </div>
-            <div id="dropzone" class="dropzone square-25" style="display:none">
+            <div id="dzContainer" style="display:none">
+            <div id="dropzone" class="dropzone d-flex p-0 justify-content-center square-25" >
+            </div>
             </div>
         </div>
         <form asp-action="EditCollection" asp-controller="Store" method="post" class="d-flex flex-column align-items-center mt-2">
@@ -82,6 +84,9 @@
         </a>
     </div>
 </div>
+<div id="tpl" class="d-none">
+    @{await Html.RenderPartialAsync("_DropzoneTemplate"); }
+</div>
 
 @section Scripts{
     <script src="~/lib/dropzone-5.7.0/dist/dropzone.js"></script>
@@ -93,10 +98,11 @@
             maxFileSeize: 20,
             method: 'post',
             url: '/Store/UploadImage',
+            previewTemplate: $('#tpl').html(),
             success: (file, response) => {
                 console.log(response);
                 if (response.succeed === true) {
-                    $('#dropzone .dz-image img').attr('src', response.url);
+                    $('#dropzone img').attr('src', response.url);
                     $('#ResourceId').val(response.id);
                 }
                 else {
@@ -157,7 +163,7 @@
         $('#changeImage').click(e => {
             e.preventDefault();
             $(e.target).parents('[name=imgContainer]').hide();
-            $('#dropzone').show();
+            $('#dzContainer').show();
         });
 
         $(() => {
