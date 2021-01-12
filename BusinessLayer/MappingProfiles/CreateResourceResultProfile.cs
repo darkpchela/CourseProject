@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using BusinessLayer.Models;
 using BusinessLayer.Models.DALModels;
+using BusinessLayer.Models.ResultModels;
 
 namespace BusinessLayer.MappingProfiles
 {
@@ -8,7 +8,7 @@ namespace BusinessLayer.MappingProfiles
     {
         public CreateResourceResultProfile()
         {
-            CreateMap<ResourceModel, CreateResourceResultModel>();
+            CreateMap<ResourceModel, CreateResourceResult>();
         }
     }
 }

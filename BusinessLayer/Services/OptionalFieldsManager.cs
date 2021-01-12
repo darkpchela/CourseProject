@@ -2,6 +2,7 @@
 using BusinessLayer.Interfaces.BaseCrud;
 using BusinessLayer.Models;
 using BusinessLayer.Models.DALModels;
+using BusinessLayer.Models.ResultModels;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -22,7 +23,7 @@ namespace BusinessLayer.Services
             this.fieldTypesCrudService = fieldTypesCrudService;
         }
 
-        public async Task<CreateOptionalFieldResultModel> CreateDefaultAsync(int collectionId)
+        public async Task<CreateOptionalFieldResult> CreateDefaultAsync(int collectionId)
         {
             var result = await ValidateCreateDefaultRequest(collectionId);
             if (!result.Succeed)
@@ -38,9 +39,14 @@ namespace BusinessLayer.Services
             return result;
         }
 
-        private async Task<CreateOptionalFieldResultModel> ValidateCreateDefaultRequest(int collectionId)
+        public Task<DeleteOptionalFieldResult> DeleteFieldAsync(int id)
         {
-            var result = new CreateOptionalFieldResultModel();
+            throw new System.NotImplementedException();
+        }
+
+        private async Task<CreateOptionalFieldResult> ValidateCreateDefaultRequest(int collectionId)
+        {
+            var result = new CreateOptionalFieldResult();
             var collection = await collectionsCrudService.GetAsync(collectionId);
             if (collection is null)
                 result.AddError("Collection not found");

@@ -1,18 +1,14 @@
 ﻿using System.Collections.Generic;
 
-namespace BusinessLayer.Models
+namespace BusinessLayer.Models.ResultModels
 {
-    public class CreateResourceResultModel
+    public class GetResourceResult
     {
-        public int Id { get; set; }
-
         public bool Succeed { get; private set; } = true;
 
-        public string Url { get; set; }
+        public string Uri { get; set; }
 
-        public IList<string> Errors { get; } = new List<string>();
-
-        public string PublicId { get; set; }
+        public IList<string> Errors { get; set; } = new List<string>();
 
         public void AddError(string error)
         {

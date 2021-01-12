@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using BusinessLayer.Models;
+using BusinessLayer.Models.ResultModels;
 using CourseProject.ViewModels;
 
 namespace CourseProject.MappingProfiles
@@ -8,7 +8,7 @@ namespace CourseProject.MappingProfiles
     {
         public CreateOptionalFieldResultVMProfile()
         {
-            CreateMap<CreateOptionalFieldResultModel, CreateOptionalFieldResultVM>()
+            CreateMap<CreateOptionalFieldResult, CreateOptionalFieldResultVM>()
                 .ForMember(d => d.Id, o => o.MapFrom(s => s.OptionalFieldModel.Id))
                 .ForMember(d => d.Name, o => o.MapFrom(s => s.OptionalFieldModel.Name))
                 .ForMember(d => d.TypeId, o => o.MapFrom(s => s.OptionalFieldModel.TypeId));

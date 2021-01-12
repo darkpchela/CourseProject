@@ -3,6 +3,7 @@ using BusinessLayer.Interfaces;
 using BusinessLayer.Interfaces.BaseCrud;
 using BusinessLayer.Models;
 using BusinessLayer.Models.DALModels;
+using BusinessLayer.Models.ResultModels;
 using System.Threading.Tasks;
 
 namespace BusinessLayer.Services
@@ -29,7 +30,7 @@ namespace BusinessLayer.Services
             this.collectionItemCrudService = collectionItemCrudService;
         }
 
-        public async Task<CreateItemResultModel> CreateAsync(CreateItemModel createItemModel)
+        public async Task<CreateItemResult> CreateAsync(CreateItemModel createItemModel)
         {
             var result = await ValidateModel(createItemModel);
             if (result.Errors.Count > 0)
@@ -45,9 +46,9 @@ namespace BusinessLayer.Services
             return result;
         }
 
-        private async Task<CreateItemResultModel> ValidateModel(CreateItemModel createItemModel)
+        private async Task<CreateItemResult> ValidateModel(CreateItemModel createItemModel)
         {
-            var result = new CreateItemResultModel();
+            var result = new CreateItemResult();
             var collection = await collectionsCrudService.GetAsync(createItemModel.CollectionId);
             if (collection is null)
                 result.Errors.Add("Collection not exists");

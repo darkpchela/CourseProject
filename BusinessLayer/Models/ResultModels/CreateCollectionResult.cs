@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 
-namespace BusinessLayer.Models
+namespace BusinessLayer.Models.ResultModels
 {
-    public class GetResourceResultModel
+    public class CreateCollectionResult
     {
         public bool Succeed { get; private set; } = true;
 
-        public string Uri { get; set; }
+        public int CollectionId { get; set; }
 
-        public IList<string> Errors { get; set; } = new List<string>();
+        public IList<string> Errors { get; } = new List<string>();
 
         public void AddError(string error)
         {

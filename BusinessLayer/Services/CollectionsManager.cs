@@ -3,6 +3,7 @@ using BusinessLayer.Interfaces;
 using BusinessLayer.Interfaces.BaseCrud;
 using BusinessLayer.Models;
 using BusinessLayer.Models.DALModels;
+using BusinessLayer.Models.ResultModels;
 using System.Threading.Tasks;
 
 namespace BusinessLayer.Services
@@ -29,7 +30,7 @@ namespace BusinessLayer.Services
             this.resourceCrudService = resourceCrudService;
         }
 
-        public async Task<CreateCollectionResultModel> CreateAsync(CreateCollectionModel createCollectionModel)
+        public async Task<CreateCollectionResult> CreateAsync(CreateCollectionModel createCollectionModel)
         {
             var result = await ValidateCreateCollectionModel(createCollectionModel);
             if (!result.Succeed)
@@ -40,7 +41,7 @@ namespace BusinessLayer.Services
             return result;
         }
 
-        public async Task<UpdateCollectionResultModel> UpdateAsync(UpdateCollectionModel updateCollectionModel)
+        public async Task<UpdateCollectionResult> UpdateAsync(UpdateCollectionModel updateCollectionModel)
         {
             var result = await ValidateUpdateCollectionModel(updateCollectionModel);
             if (!result.Succeed)
@@ -50,9 +51,9 @@ namespace BusinessLayer.Services
             return result;
         }
 
-        private async Task<CreateCollectionResultModel> ValidateCreateCollectionModel(CreateCollectionModel createCollectionModel)
+        private async Task<CreateCollectionResult> ValidateCreateCollectionModel(CreateCollectionModel createCollectionModel)
         {
-            var result = new CreateCollectionResultModel();
+            var result = new CreateCollectionResult();
             var theme = await themesCrudService.GetAsync(createCollectionModel.ThemeId);
             if (theme is null)
                 result.Errors.Add("Theme not exists");
@@ -65,9 +66,9 @@ namespace BusinessLayer.Services
             return result;
         }
 
-        private async Task<UpdateCollectionResultModel> ValidateUpdateCollectionModel(UpdateCollectionModel updateCollectionModel)
+        private async Task<UpdateCollectionResult> ValidateUpdateCollectionModel(UpdateCollectionModel updateCollectionModel)
         {
-            var result = new UpdateCollectionResultModel();
+            var result = new UpdateCollectionResult();
             //var collection = await collectionsCrudService.GetAsync(updateCollectionModel.Id);
             //if (collection is null)
             //    result.AddError("Collection not exists");

@@ -1,12 +1,13 @@
 ﻿using BusinessLayer.Models;
 using BusinessLayer.Models.DALModels;
+using BusinessLayer.Models.ResultModels;
 using System.Threading.Tasks;
 
 namespace BusinessLayer.Interfaces
 {
     public interface IResourcesManager
     {
-        Task<CreateResourceResultModel> CreateAsync(CreateResourceModel createResourceModel);
+        Task<CreateResourceResult> CreateAsync(CreateResourceModel createResourceModel);
 
         Task DeleteAsync(ResourceModel resourceModel);
 

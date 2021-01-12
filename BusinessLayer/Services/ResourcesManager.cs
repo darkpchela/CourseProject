@@ -3,6 +3,7 @@ using BusinessLayer.Interfaces;
 using BusinessLayer.Interfaces.BaseCrud;
 using BusinessLayer.Models;
 using BusinessLayer.Models.DALModels;
+using BusinessLayer.Models.ResultModels;
 using System.Threading.Tasks;
 
 namespace BusinessLayer.Services
@@ -22,9 +23,9 @@ namespace BusinessLayer.Services
             this.mapper = mapper;
         }
 
-        public async Task<CreateResourceResultModel> CreateAsync(CreateResourceModel createResourceModel)
+        public async Task<CreateResourceResult> CreateAsync(CreateResourceModel createResourceModel)
         {
-            var resultModel = new CreateResourceResultModel();
+            var resultModel = new CreateResourceResult();
             var cloudinaryRes = await cloudinaryService.UploadAsync(createResourceModel.Name, createResourceModel.FileStream);
             if (cloudinaryRes.Error != null || cloudinaryRes.Uri is null)
             {

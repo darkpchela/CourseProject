@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace BusinessLayer.Models
+namespace BusinessLayer.Models.ResultModels
 {
-    public class CreateCollectionResultModel
+    public class UpdateCollectionResult
     {
         public bool Succeed { get; private set; } = true;
-
-        public int CollectionId { get; set; }
 
         public IList<string> Errors { get; } = new List<string>();
 
