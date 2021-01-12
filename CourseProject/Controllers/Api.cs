@@ -60,7 +60,7 @@ namespace CourseProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCollectionField(int id)
+        public async Task<IActionResult> CreateField(int id)
         {
             var result = await optionalFieldsManager.CreateDefaultAsync(id);
             var resultVM = mapper.Map<CreateOptionalFieldResultVM>(result);
