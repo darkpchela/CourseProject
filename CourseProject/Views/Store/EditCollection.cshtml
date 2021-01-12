@@ -147,6 +147,17 @@
                 setFieldName(fields[i], i);
             }
         };
+
+        const deleteField = (delVM) => {
+            let succeed = false;
+            $.post("/api/DeleteField", delVM, result => {
+                if (result.succeed === false)
+                    console.log(result.errors)
+                succeed = result.succeed;
+            });
+            return succeed;
+        };
+
         const createNewField = (collectionId) => {
             $.ajax({
                 url: "/api/CreateField",
@@ -170,7 +181,7 @@
                     console.log(e)
                 }
             });
-            
+
         };
         const loadFields = id => {
             $.post("/api/GetCollectionFields",
@@ -193,10 +204,19 @@
 
         $('[name=btnDeleteField]').click(e => {
             e.preventDefault();
-            $(e.target).parents('[name="field"]').remove();
-            updateFieldNames();
+            let collectionId = $('#Id').val();
+            let ownerId = $('#OwnerId').val();
+            let fieldId = $(e.target).parents('[name=field]').find('[data-prop=id]').val();
+            let result = deleteField({
+                CollectionId: collectionId,
+                OwnerId: ownerId,
+                OptionalFieldId: fieldId
+            });
+            if (result === true) {
+                $(e.target).parents('[name="field"]').remove();
+                updateFieldNames();
+            }
         });
-
 
         $('#changeImage').click(e => {
             e.preventDefault();
@@ -209,7 +229,7 @@
         $(() => {
             let id = $('#Id').val();
             loadFields(id);
-            
+
         });
     </script>
 }

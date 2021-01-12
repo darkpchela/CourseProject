@@ -34,6 +34,7 @@ namespace BusinessLayer.Services.BaseCrud
         public async Task DeleteAsync(int id)
         {
             await BaseRepository.Delete(id);
+            await cPUnitOfWork.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<TModel>> GetAllAsync()

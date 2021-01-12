@@ -69,7 +69,7 @@ namespace BusinessLayer.Services
         private async Task<DeleteOptionalFieldResult> ValidateDeleteOptionalFieldModel(DeleteOptionalFieldModel model)
         {
             var result = new DeleteOptionalFieldResult();
-            var user = await userCrudService.GetAsync(model.UserId);
+            var user = await userCrudService.GetAsync(model.OwnerId);
             if (user is null)
                 result.AddError("User not found");
             var collection = await collectionsCrudService.GetAsync(model.CollectionId);
@@ -80,9 +80,9 @@ namespace BusinessLayer.Services
                 result.AddError("Optional field not found");
             if (!result.Succeed)
                 return result;
-            if (!collection.OptionalFields.Contains(field))
+            if (!collection.OptionalFields.Any(f => f.Id == field.Id))
                 result.AddError("Optional field not found");
-            if (!model.IsAdminRequest && collection.Owner != user)
+            if (!model.IsAdminRequest && collection.OwnerId != user.Id)
                 result.AddError("Access denied");
             return result;
         }

@@ -4,7 +4,7 @@ namespace BusinessLayer.Models.ResultModels
 {
     public abstract class ResultModel<TError>
     {
-        public bool Succeed { get; private set; }
+        public bool Succeed { get; private set; } = true;
 
         public IList<TError> Errors { get; } = new List<TError>();
 

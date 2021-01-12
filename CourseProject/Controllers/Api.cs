@@ -76,7 +76,7 @@ namespace CourseProject.Controllers
             if (User.IsInRole("Admin"))
                 dtoModel.IsAdminRequest = true;
             else
-                dtoModel.UserId = userId;
+                dtoModel.OwnerId = userId;
             var result = await optionalFieldsManager.DeleteAsync(dtoModel);
             return Json(result);
         }
