@@ -119,7 +119,7 @@
     </script>
     <script>
         const getFieldElem = (props) => {
-            let field = $('#fieldProto').clone().removeAttr('id');
+            let field = $('#fieldProto').clone(true).removeAttr('id');
             let nameInput = field.children('#name');
             let typeInput = field.children('#type');
             let idInput = field.children('#id');
@@ -131,11 +131,6 @@
             nameInput.removeAttr('id');
             typeInput.removeAttr('id');
             idInput.removeAttr('id');
-            field.children('[name=btnDeleteField]').click(e => {
-                e.preventDefault();
-                $(e.target).parents('[name="field"]').remove();
-                updateFieldNames();
-            });
             return field;
         };
         const setFieldName = (field, id) => {
@@ -160,7 +155,15 @@
                     id: collectionId
                 },
                 success: (data) => {
-                    console.log(data)
+                    if (data.succeed === true) {
+                        let field = getFieldElem(data);
+                        field.find('select [value=""]').remove();
+                        $('#fields #btnAddField').before(field);
+                        updateFieldNames();
+                    }
+                    else {
+                        console.log(data.errors);
+                    }
                 },
                 error: (e) => {
                     console.log(e.responseText)
@@ -188,19 +191,25 @@
             createNewField(id);
         });
 
-        $('select').focus(e => {
-            $(e.target).children('[value=""]').remove();
+        $('[name=btnDeleteField]').click(e => {
+            e.preventDefault();
+            $(e.target).parents('[name="field"]').remove();
+            updateFieldNames();
         });
+
 
         $('#changeImage').click(e => {
             e.preventDefault();
             $(e.target).parents('[name=imgContainer]').hide();
             $('#dzContainer').show();
         });
-
+        $('#type').focus(e => {
+            $(e.target).children('[value=""]').remove();
+        });
         $(() => {
             let id = $('#Id').val();
             loadFields(id);
+            
         });
     </script>
 }
