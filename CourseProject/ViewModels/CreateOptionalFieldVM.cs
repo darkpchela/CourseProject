@@ -4,7 +4,10 @@ namespace CourseProject.ViewModels
 {
     public class CreateOptionalFieldVM
     {
-        public int Id { get; set; }
+        //public int Id { get; set; }
+
+        [Required]
+        public int? CollectionId { get; set; }
 
         [Required(ErrorMessage = "Choose optional field type.")]
         public int? TypeId { get; set; }

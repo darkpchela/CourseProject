@@ -2,10 +2,12 @@
 using BusinessLayer.Interfaces;
 using BusinessLayer.Interfaces.BaseCrud;
 using BusinessLayer.Models;
+using BusinessLayer.Models.DALModels;
 using CourseProject.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CourseProject.Controllers
@@ -18,11 +20,16 @@ namespace CourseProject.Controllers
 
         private readonly ICollectionsCrudService collectionsCrudService;
 
-        public Api(IMapper mapper, IResourcesManager resourcesManager, ICollectionsCrudService collectionsCrudService)
+        private readonly IFieldTypesCrudService fieldTypesCrudService;
+
+        private readonly IOptionalFieldsCrudService optionalFieldsCrudService;
+
+        public Api(IMapper mapper, IResourcesManager resourcesManager, ICollectionsCrudService collectionsCrudService, IFieldTypesCrudService fieldTypesCrudService)
         {
             this.mapper = mapper;
             this.resourcesManager = resourcesManager;
             this.collectionsCrudService = collectionsCrudService;
+            this.fieldTypesCrudService = fieldTypesCrudService;
         }
 
         [HttpPost]
@@ -51,6 +58,19 @@ namespace CourseProject.Controllers
                 return Json(null);
             var fieldsVM = mapper.Map<IEnumerable<OptionalFieldVM>>(collection.OptionalFields);
             return Json(fieldsVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateCollectionField(int id)
+        {
+            var createVM = new OptionalFieldModel
+            {
+                Name ="Unnamed",
+                TypeId = (await fieldTypesCrudService.GetAllAsync()).FirstOrDefault().Id,
+                CollectionId = id
+            };
+            return null;
+
         }
     }
 }
