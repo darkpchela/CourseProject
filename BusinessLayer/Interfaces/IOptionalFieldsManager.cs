@@ -8,6 +8,6 @@ namespace BusinessLayer.Interfaces
     {
         Task<CreateOptionalFieldResult> CreateDefaultAsync(int collectionId);
 
-        Task<DeleteOptionalFieldResult> DeleteFieldAsync(int id);
+        Task<DeleteOptionalFieldResult> DeleteAsync(DeleteOptionalFieldModel deleteFieldModel);
     }
 }
