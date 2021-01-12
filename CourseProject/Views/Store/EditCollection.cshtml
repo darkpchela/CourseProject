@@ -148,9 +148,9 @@
             }
         };
 
-        const deleteField = (delVM) => {
+        const deleteField = async (delFieldVM) => {
             let succeed = false;
-            $.post("/api/DeleteField", delVM, result => {
+            await $.post("/api/DeleteField", delFieldVM, result => {
                 if (result.succeed === false)
                     console.log(result.errors)
                 succeed = result.succeed;
@@ -202,18 +202,19 @@
             createNewField(id);
         });
 
-        $('[name=btnDeleteField]').click(e => {
+        $('[name=btnDeleteField]').click(async (e) => {
             e.preventDefault();
             let collectionId = $('#Id').val();
             let ownerId = $('#OwnerId').val();
             let fieldId = $(e.target).parents('[name=field]').find('[data-prop=id]').val();
-            let result = deleteField({
+            let result = await deleteField({
                 CollectionId: collectionId,
                 OwnerId: ownerId,
                 OptionalFieldId: fieldId
             });
+            console.log(result)
             if (result === true) {
-                $(e.target).parents('[name="field"]').remove();
+                $(e.target).parents('[name=field]').remove();
                 updateFieldNames();
             }
         });
