@@ -22,7 +22,7 @@ namespace BusinessLayer.Services
             this.fieldTypesCrudService = fieldTypesCrudService;
         }
 
-        public async Task<CreateOptionalFieldResult> CreateDefaultAsync(int collectionId)
+        public async Task<CreateOptionalFieldResultModel> CreateDefaultAsync(int collectionId)
         {
             var result = await ValidateCreateDefaultRequest(collectionId);
             if (!result.Succeed)
@@ -38,9 +38,9 @@ namespace BusinessLayer.Services
             return result;
         }
 
-        private async Task<CreateOptionalFieldResult> ValidateCreateDefaultRequest(int collectionId)
+        private async Task<CreateOptionalFieldResultModel> ValidateCreateDefaultRequest(int collectionId)
         {
-            var result = new CreateOptionalFieldResult();
+            var result = new CreateOptionalFieldResultModel();
             var collection = await collectionsCrudService.GetAsync(collectionId);
             if (collection is null)
                 result.AddError("Collection not found");

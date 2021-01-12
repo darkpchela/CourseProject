@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace BusinessLayer.Models
 {
-    public class CreateOptionalFieldResult
+    public class CreateOptionalFieldResultModel
     {
         public bool Succeed { get; private set; } = true;
 

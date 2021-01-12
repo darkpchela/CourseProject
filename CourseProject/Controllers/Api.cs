@@ -6,6 +6,7 @@ using BusinessLayer.Models.DALModels;
 using CourseProject.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,26 +21,24 @@ namespace CourseProject.Controllers
 
         private readonly ICollectionsCrudService collectionsCrudService;
 
-        private readonly IFieldTypesCrudService fieldTypesCrudService;
+        private readonly IOptionalFieldsManager optionalFieldsManager;
 
-        private readonly IOptionalFieldsCrudService optionalFieldsCrudService;
-
-        public Api(IMapper mapper, IResourcesManager resourcesManager, ICollectionsCrudService collectionsCrudService, IFieldTypesCrudService fieldTypesCrudService)
+        public Api(IMapper mapper, IResourcesManager resourcesManager, ICollectionsCrudService collectionsCrudService, IOptionalFieldsManager optionalFieldsManager)
         {
             this.mapper = mapper;
             this.resourcesManager = resourcesManager;
             this.collectionsCrudService = collectionsCrudService;
-            this.fieldTypesCrudService = fieldTypesCrudService;
+            this.optionalFieldsManager = optionalFieldsManager;
         }
 
         [HttpPost]
         public async Task<IActionResult> UploadImage(IFormFile file)
         {
             var resourcModel = mapper.Map<CreateResourceModel>(file);
-            var res = await resourcesManager.CreateAsync(resourcModel);
-            if (res.Succeed)
-                HttpContext.Session.SetInt32("fileId", res.Id);
-            return Json(res);
+            var result = await resourcesManager.CreateAsync(resourcModel);
+            if (result.Succeed)
+                HttpContext.Session.SetInt32("fileId", result.Id);
+            return Json(result);
         }
 
         [HttpPost]
@@ -63,17 +62,9 @@ namespace CourseProject.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCollectionField(int id)
         {
-            var collection = await collectionsCrudService.GetAsync(id);
-            if(collection is null)
-                return Json
-            var createVM = new OptionalFieldModel
-            {
-                Name ="Unnamed",
-                TypeId = (await fieldTypesCrudService.GetAllAsync()).FirstOrDefault().Id,
-                CollectionId = id
-            };
-            return null;
-
+            var result = await optionalFieldsManager.CreateDefaultAsync(id);
+            var resultVM = mapper.Map<CreateOptionalFieldResultVM>(result);
+            return Json(resultVM);
         }
     }
 }

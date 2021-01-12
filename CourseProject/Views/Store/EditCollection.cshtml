@@ -118,14 +118,19 @@
         });
     </script>
     <script>
-        const getNewField = (props) => {
+        const getFieldElem = (props) => {
             let field = $('#fieldProto').clone().removeAttr('id');
+            let nameInput = field.children('#name');
+            let typeInput = field.children('#type');
+            let idInput = field.children('#id');
             if (props) {
                 field.children('#name').val(props.name);
                 field.children('#type').val(props.typeId);
                 field.children('#id').val(props.id);
             }
-            field.children().each(() => $(this).removeAttr('id'))
+            nameInput.removeAttr('id');
+            typeInput.removeAttr('id');
+            idInput.removeAttr('id');
             field.children('[name=btnDeleteField]').click(e => {
                 e.preventDefault();
                 $(e.target).parents('[name="field"]').remove();
@@ -147,12 +152,29 @@
                 setFieldName(fields[i], i);
             }
         };
+        const createNewField = (collectionId) => {
+            $.ajax({
+                url: "/api/CreateCollectionField",
+                method: "POST",
+                data: {
+                    id: collectionId
+                },
+                success: (data) => {
+                    console.log(data)
+                },
+                error: (e) => {
+                    console.log(e.responseText)
+                    console.log(e)
+                }
+            });
+            
+        };
         const loadFields = id => {
             $.post("/api/GetCollectionFields",
                 { id: id },
                 data => {
                     for (let i = 0; i < data.length; i++) {
-                        let field = getNewField(data[i]);
+                        let field = getFieldElem(data[i]);
                         $('#fields').prepend(field);
                     }
                     updateFieldNames();
@@ -162,9 +184,8 @@
 
         $('#btnAddField').click(e => {
             e.preventDefault();
-            let field = getNewField();
-            $("#fields #btnAddField").before(field);
-            updateFieldNames();
+            let id = $('#Id').val();
+            createNewField(id);
         });
 
         $('select').focus(e => {
