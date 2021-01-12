@@ -5,12 +5,13 @@
 <div class="d-flex justify-content-center mt-2">
     <div class="d-flex flex-column align-items-stretch w-75 mt-2" style="max-width: 768px;">
         <h3 class="text-center">
-            New Collection
+            Edit Collection
         </h3>
+
         <div class="align-self-center p-1">
             <div name="imgContainer">
                 <div class="square-25 d-flex justify-content-center align-items-center">
-                    <a id="changeImage" class="btn p-0">
+                    <a id="changeImage" href="" class="btn p-0">
                         <img class="img-fluid img-thumbnail" src="@Model.ImageUrl" />
                     </a>
                 </div>
@@ -20,6 +21,7 @@
                 </div>
             </div>
         </div>
+
         <form asp-action="EditCollection" asp-controller="Store" method="post" class="d-flex flex-column align-items-center mt-2">
             <input asp-for="Name" type="text" value="@Model.Name" class="form-control w-75 text-center"
                    placeholder="Collection name">
@@ -30,6 +32,7 @@
                           placeholder="Collection description"
                           style="min-height: 20vh;">@Model.Description</textarea>
             </div>
+
             <div class="text-center mt-3 w-75">
                 <h6 class="text-muted">Optional fields</h6>
                 <div id='fields' name="Fields"
@@ -46,6 +49,7 @@
                         </a>
                     </div>
                 </div>
+
                 <div class="w-100 d-flex flex-row justify-content-between mt-2">
                     <a asp-action="Profile" asp-controller="Store" asp-route-id="@Model.OwnerId" class="btn p-0">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
@@ -64,6 +68,7 @@
                         </svg>
                     </button>
                 </div>
+
             </div>
             <input type="hidden" asp-for="@Model.ResourceId" value="@Model.ResourceId" />
             <input type="hidden" asp-for="@Model.OwnerId" value="@Model.OwnerId" />
@@ -106,6 +111,7 @@
                 if (response.succeed === true) {
                     $('#dropzone img').attr('src', response.url);
                     $('#ResourceId').val(response.id);
+                    $('#ImageUrl').val(response.url);
                 }
                 else {
                     console.log(response.error);
@@ -216,9 +222,11 @@
             $(e.target).parents('[name=imgContainer]').hide();
             $('#dzContainer').show();
         });
+
         $('#type').focus(e => {
             $(e.target).children('[value=""]').remove();
         });
+
         $(() => {
             let id = $('#Id').val();
             loadFields(id);

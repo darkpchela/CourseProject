@@ -23,5 +23,7 @@ namespace CourseProject.ViewModels
         public string Description { get; set; }
 
         public IList<CreateCollectionOptionalFieldVM> Fields { get; set; }
+
+        public string ImageUrl { get; set; }
     }
 }
