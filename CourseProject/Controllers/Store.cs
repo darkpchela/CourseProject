@@ -162,24 +162,6 @@ namespace CourseProject.Controllers
             return Json(fieldsVM);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> UploadImage(IFormFile file)
-        {
-            var resourcModel = mapper.Map<CreateResourceModel>(file);
-            var res = await resourcesManager.CreateAsync(resourcModel);
-            if (res.Succeed)
-                HttpContext.Session.SetInt32("fileId", res.Id);
-            return Json(res);
-        }
-
-        [HttpPost]
-        public async Task AbortUpload()
-        {
-            var fileId = HttpContext.Session.GetInt32("fileId");
-            if (fileId.HasValue)
-                await resourcesManager.DeleteAsync(fileId.Value);
-        }
-
         private int? GetCurrentUserId()
         {
             var stringId = User.FindFirstValue(ClaimTypes.NameIdentifier);

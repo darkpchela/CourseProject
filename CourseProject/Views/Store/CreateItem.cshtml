@@ -80,7 +80,7 @@
             maxFiles: 1,
             maxFileSeize: 20,
             method: 'post',
-            url: '/Store/UploadImage',
+            url: '/api/UploadImage',
             previewTemplate: $('#tpl').html(),
             success: (file, response) => {
                 console.log(response);
@@ -93,7 +93,7 @@
                 }
             },
             removedfile: () => {
-                $.post('/Store/AbortUpload');
+                $.post('/api/AbortUpload');
                 $('#dropzone .dz-preview').remove();
             }
         });
