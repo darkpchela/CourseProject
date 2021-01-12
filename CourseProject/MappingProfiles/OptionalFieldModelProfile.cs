@@ -8,7 +8,7 @@ namespace CourseProject.MappingProfiles
     {
         public OptionalFieldModelProfile()
         {
-            CreateMap<CreateOptionalFieldVM, OptionalFieldModel>();
+            CreateMap<CreateCollectionOptionalFieldVM, OptionalFieldModel>();
             CreateMap<EditOptionalFieldVM, OptionalFieldModel>();
         }
     }

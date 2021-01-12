@@ -22,6 +22,6 @@ namespace CourseProject.ViewModels
         [StringLength(1024, MinimumLength = 3, ErrorMessage = "Min description length is 3. Maximum is 1024.")]
         public string Description { get; set; }
 
-        public IList<CreateOptionalFieldVM> Fields { get; set; }
+        public IList<CreateCollectionOptionalFieldVM> Fields { get; set; }
     }
 }

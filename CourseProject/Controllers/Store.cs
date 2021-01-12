@@ -115,7 +115,7 @@ namespace CourseProject.Controllers
         [HttpGet]
         public IActionResult CreateItem()
         {
-            var model = new CreateItemModel();
+            var model = new CreateItemVM();
             var ownerId = User.IsInRole("Admin") ? GetRememberedUserId() : GetCurrentUserId();
             if (ownerId == 0)
                 return RedirectToAction(nameof(Home.Index), nameof(Home));
