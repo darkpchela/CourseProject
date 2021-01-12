@@ -152,16 +152,6 @@ namespace CourseProject.Controllers
             return View(itemVM);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> GetCollectionFields(int id)
-        {
-            var collection = await collectionsCrudService.GetAsync(id);
-            if (collection is null)
-                return Json(null);
-            var fieldsVM = mapper.Map<IEnumerable<OptionalFieldVM>>(collection.OptionalFields);
-            return Json(fieldsVM);
-        }
-
         private int? GetCurrentUserId()
         {
             var stringId = User.FindFirstValue(ClaimTypes.NameIdentifier);

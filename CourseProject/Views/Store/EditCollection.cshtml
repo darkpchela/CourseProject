@@ -148,7 +148,7 @@
             }
         };
         const loadFields = id => {
-            $.post("/Store/GetCollectionFields",
+            $.post("/api/GetCollectionFields",
                 { id: id },
                 data => {
                     for (let i = 0; i < data.length; i++) {
