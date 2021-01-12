@@ -75,7 +75,7 @@ namespace CourseProject.Controllers
                 return View(model);
             var dtoModel = mapper.Map<CreateCollectionModel>(model);
             dtoModel.RequesterId = GetCurrentUserId();
-            dtoModel.IsAdminRequest = User.IsInRole("Admin") ? true : false;
+            dtoModel.IsAdminRequest = User.IsInRole("Admin");
             var result = await collectionsManager.CreateAsync(dtoModel);
             if (!result.Succeed)
             {
@@ -102,7 +102,7 @@ namespace CourseProject.Controllers
                 return View(editCollectionVM);
             var model = mapper.Map<UpdateCollectionModel>(editCollectionVM);
             model.RequesterId = GetCurrentUserId();
-            model.IsAdminRequest = User.IsInRole("Admin") ? true : false;
+            model.IsAdminRequest = User.IsInRole("Admin");
             var result = await collectionsManager.UpdateAsync(model);
             if (!result.Succeed)
             {
@@ -116,10 +116,10 @@ namespace CourseProject.Controllers
         public IActionResult CreateItem()
         {
             var model = new CreateItemModel();
-            var userId = User.IsInRole("Admin") ? GetRememberedUserId() : GetCurrentUserId();
-            if (userId == 0)
+            var ownerId = User.IsInRole("Admin") ? GetRememberedUserId() : GetCurrentUserId();
+            if (ownerId == 0)
                 return RedirectToAction(nameof(Home.Index), nameof(Home));
-            model.OwnerId = userId;
+            model.OwnerId = ownerId;
             return View(model);
         }
 
@@ -129,6 +129,8 @@ namespace CourseProject.Controllers
             if (!ModelState.IsValid)
                 return View(createItemVM);
             var dtoModel = mapper.Map<CreateItemModel>(createItemVM);
+            dtoModel.RequesterId = GetCurrentUserId();
+            dtoModel.IsAdminRequest = User.IsInRole("Admin");
             var result = await itemsManager.CreateAsync(dtoModel);
             if (!result.Succeed)
             {

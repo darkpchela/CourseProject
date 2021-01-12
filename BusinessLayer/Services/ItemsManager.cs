@@ -32,7 +32,7 @@ namespace BusinessLayer.Services
 
         public async Task<CreateItemResult> CreateAsync(CreateItemModel createItemModel)
         {
-            var result = await ValidateModel(createItemModel);
+            var result = await ValidateCreateModel(createItemModel);
             if (result.Errors.Count > 0)
                 return result;
             var itemModel = mapper.Map<ItemModel>(createItemModel);
@@ -47,15 +47,20 @@ namespace BusinessLayer.Services
             return result;
         }
 
-        private async Task<CreateItemResult> ValidateModel(CreateItemModel createItemModel)
+        private async Task<CreateItemResult> ValidateCreateModel(CreateItemModel createItemModel)
         {
             var result = new CreateItemResult();
             var collection = await collectionsCrudService.GetAsync(createItemModel.CollectionId);
             if (collection is null)
-                result.Errors.Add("Collection not exists");
-            var user = await userCrudService.GetAsync(createItemModel.OwnerId);
-            if (user is null)
-                result.Errors.Add("User not exists");
+                result.AddError("Collection not found");
+            var owner = await userCrudService.GetAsync(createItemModel.OwnerId);
+            if (owner is null)
+                result.AddError("User not exists");
+            if (!result.Succeed)
+                return result;
+
+            if (!createItemModel.IsAdminRequest && createItemModel.RequesterId != owner.Id)
+                result.AddError("Access denied");
             return result;
         }
     }
