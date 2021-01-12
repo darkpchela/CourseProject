@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace CourseProject.Controllers
@@ -65,6 +66,19 @@ namespace CourseProject.Controllers
             var result = await optionalFieldsManager.CreateDefaultAsync(id);
             var resultVM = mapper.Map<CreateOptionalFieldResultVM>(result);
             return Json(resultVM);
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> DeleteField(DeleteOptionalFieldVM model)
+        {
+            int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId);
+            var dtoModel = mapper.Map<DeleteOptionalFieldModel>(model);
+            if (User.IsInRole("Admin"))
+                dtoModel.IsAdminRequest = true;
+            else
+                dtoModel.UserId = userId;
+            var result = await optionalFieldsManager.DeleteAsync(dtoModel);
+            return Json(result);
         }
     }
 }
