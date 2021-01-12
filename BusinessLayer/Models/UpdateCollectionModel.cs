@@ -5,6 +5,10 @@ namespace BusinessLayer.Models
 {
     public class UpdateCollectionModel
     {
+        public bool IsAdminRequest { get; set; }
+
+        public int RequesterId { get; set; }
+
         public int Id { get; set; }
 
         public string Name { get; set; }

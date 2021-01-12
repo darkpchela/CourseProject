@@ -49,9 +49,11 @@ namespace CourseProject.Controllers
         {
             if (id is null)
                 id = GetCurrentUserId();
-            RememberUserId(id.Value);
             var user = await userCrudService.GetAsync(id.Value);
+            if (user is null)
+                return RedirectToAction(nameof(Home.Index), nameof(Home));
             var model = mapper.Map<UserVM>(user);
+            RememberUserId(id.Value);
             return View(model);
         }
 
@@ -99,6 +101,8 @@ namespace CourseProject.Controllers
             if (!ModelState.IsValid)
                 return View(editCollectionVM);
             var model = mapper.Map<UpdateCollectionModel>(editCollectionVM);
+            model.RequesterId = GetCurrentUserId();
+            model.IsAdminRequest = User.IsInRole("Admin") ? true : false;
             var result = await collectionsManager.UpdateAsync(model);
             if (!result.Succeed)
             {

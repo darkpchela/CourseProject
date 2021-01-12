@@ -4,6 +4,7 @@ using BusinessLayer.Interfaces.BaseCrud;
 using BusinessLayer.Models;
 using BusinessLayer.Models.DALModels;
 using BusinessLayer.Models.ResultModels;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BusinessLayer.Services
@@ -54,18 +55,19 @@ namespace BusinessLayer.Services
         private async Task<CreateCollectionResult> ValidateCreateCollectionModel(CreateCollectionModel createCollectionModel)
         {
             var result = new CreateCollectionResult();
-            var theme = await themesCrudService.GetAsync(createCollectionModel.ThemeId);
-            if (theme is null)
-                result.Errors.Add("Theme not found");
-            var user = await userCrudService.GetAsync(createCollectionModel.OwnerId);
-            if (user is null)
+            var owner = await userCrudService.GetAsync(createCollectionModel.OwnerId);
+            if (owner is null)
                 result.Errors.Add("User not found");
             var resource = await resourceCrudService.GetAsync(createCollectionModel.ResourceId);
             if (resource is null)
                 result.AddError("Resource not found");
+            var theme = await themesCrudService.GetAsync(createCollectionModel.ThemeId);
+            if (theme is null)
+                result.Errors.Add("Theme not found");
             if (!result.Succeed)
                 return result;
-            if (!createCollectionModel.IsAdminRequest && createCollectionModel.RequesterId != user.Id)
+
+            if (!createCollectionModel.IsAdminRequest && createCollectionModel.RequesterId != owner.Id)
                 result.AddError("Access denied");
             return result;
         }
@@ -73,18 +75,25 @@ namespace BusinessLayer.Services
         private async Task<UpdateCollectionResult> ValidateUpdateCollectionModel(UpdateCollectionModel updateCollectionModel)
         {
             var result = new UpdateCollectionResult();
-            //var collection = await collectionsCrudService.GetAsync(updateCollectionModel.Id);
-            //if (collection is null)
-            //    result.AddError("Collection not exists");
-            var user = await userCrudService.GetAsync(updateCollectionModel.OwnerId);
-            if (user is null)
-                result.AddError("User not exists");
+            var collection = await collectionsCrudService.GetAsync(updateCollectionModel.Id);
+            if (collection is null)
+                result.AddError("Collection not found");
+            var owner = await userCrudService.GetAsync(updateCollectionModel.OwnerId);
+            if (owner is null)
+                result.AddError("User not found");
             var resource = await resourceCrudService.GetAsync(updateCollectionModel.ResourceId);
             if (resource is null)
-                result.AddError("Resource not exists");
+                result.AddError("Resource not foun");
             var theme = await themesCrudService.GetAsync(updateCollectionModel.ThemeId);
             if (theme is null)
-                result.AddError("Theme not exists");
+                result.AddError("Theme not found");
+            if (!result.Succeed)
+                return result;
+
+            if (collection.OwnerId != owner.Id)
+                result.AddError("Owner matching failed");
+            if (!updateCollectionModel.IsAdminRequest && owner.Id != updateCollectionModel.RequesterId)
+                result.AddError("Access denied");
             return result;
         }
     }
