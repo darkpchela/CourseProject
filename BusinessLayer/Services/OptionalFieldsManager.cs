@@ -57,9 +57,9 @@ namespace BusinessLayer.Services
         private async Task<CreateOptionalFieldResult> ValidateCreateDefaultFieldModel(CreateDefaultOptionalFieldModel model)
         {
             var result = new CreateOptionalFieldResult();
-            var user = await userCrudService.GetAsync(model.OwnerId);
-            if (user is null)
-                result.AddError("user not found");
+            var owner = await userCrudService.GetAsync(model.OwnerId);
+            if (owner is null)
+                result.AddError("User not found");
             var collection = await collectionsCrudService.GetAsync(model.CollectionId);
             if (collection is null)
                 result.AddError("Collection not found");
@@ -68,7 +68,8 @@ namespace BusinessLayer.Services
                 result.AddError("Available field types not found ");
             if (!result.Succeed)
                 return result;
-            if (!model.IsAdminRequest && collection.OwnerId != user.Id)
+
+            if (!model.IsAdminRequest && collection.OwnerId != owner.Id)
                 result.AddError("Access denied");
             return result;
         }
@@ -76,8 +77,8 @@ namespace BusinessLayer.Services
         private async Task<DeleteOptionalFieldResult> ValidateDeleteOptionalFieldModel(DeleteOptionalFieldModel model)
         {
             var result = new DeleteOptionalFieldResult();
-            var user = await userCrudService.GetAsync(model.OwnerId);
-            if (user is null)
+            var owner = await userCrudService.GetAsync(model.OwnerId);
+            if (owner is null)
                 result.AddError("User not found");
             var collection = await collectionsCrudService.GetAsync(model.CollectionId);
             if (collection is null)
@@ -87,9 +88,10 @@ namespace BusinessLayer.Services
                 result.AddError("Optional field not found");
             if (!result.Succeed)
                 return result;
+
             if (!collection.OptionalFields.Any(f => f.Id == field.Id))
                 result.AddError("Optional field not found");
-            if (!model.IsAdminRequest && collection.OwnerId != user.Id)
+            if (!model.IsAdminRequest && collection.OwnerId != owner.Id)
                 result.AddError("Access denied");
             return result;
         }
