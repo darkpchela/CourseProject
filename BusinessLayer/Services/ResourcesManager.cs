@@ -40,6 +40,8 @@ namespace BusinessLayer.Services
 
         public async Task DeleteAsync(ResourceModel resourceModel)
         {
+            if (resourceModel is null)
+                return;
             await cloudinaryService.DeleteAsync(resourceModel.PublicId);
             await resourceCrudService.DeleteAsync(resourceModel.Id);
         }

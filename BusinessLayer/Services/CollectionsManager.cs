@@ -4,7 +4,6 @@ using BusinessLayer.Interfaces.BaseCrud;
 using BusinessLayer.Models;
 using BusinessLayer.Models.DALModels;
 using BusinessLayer.Models.ResultModels;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BusinessLayer.Services
