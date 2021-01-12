@@ -63,6 +63,9 @@ namespace CourseProject.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCollectionField(int id)
         {
+            var collection = await collectionsCrudService.GetAsync(id);
+            if(collection is null)
+                return Json
             var createVM = new OptionalFieldModel
             {
                 Name ="Unnamed",

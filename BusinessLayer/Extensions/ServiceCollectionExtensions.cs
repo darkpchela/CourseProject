@@ -43,6 +43,7 @@ namespace BusinessLayer.Extensions
             services.AddTransient<ICollectionsManager, CollectionsManager>();
             services.AddTransient<IItemsManager, ItemsManager>();
             services.AddTransient<IResourcesManager, ResourcesManager>();
+            services.AddTransient<IOptionalFieldsManager, OptionalFieldsManager>();
             return services;
         }
 
