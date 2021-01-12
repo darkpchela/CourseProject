@@ -11,7 +11,7 @@ namespace BusinessLayer.Interfaces.BaseCrud
 
         Task<IEnumerable<TModel>> GetAllAsync();
 
-        Task Update(TModel model);
+        Task UpdateAsync(TModel model);
 
         Task DeleteAsync(int id);
     }

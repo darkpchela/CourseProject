@@ -8,7 +8,8 @@ namespace CourseProject.MappingProfiles
     {
         public EditCollectionVMProfile()
         {
-            CreateMap<CollectionModel, EditCollectionVM>();
+            CreateMap<CollectionModel, EditCollectionVM>()
+                .ForMember(d => d.ImageUrl, o => o.MapFrom(s => s.Resource.Url));
         }
     }
 }

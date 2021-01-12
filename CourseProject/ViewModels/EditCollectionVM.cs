@@ -1,5 +1,4 @@
-﻿using BusinessLayer.Models.DALModels;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace CourseProject.ViewModels
@@ -28,7 +27,6 @@ namespace CourseProject.ViewModels
 
         public IList<EditOptionalFieldVM> Fields { get; set; }
 
-        public ResourceModel Resource { get; set; }
-
+        public string ImageUrl { get; set; }
     }
 }

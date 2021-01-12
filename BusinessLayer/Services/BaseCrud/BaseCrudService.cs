@@ -50,11 +50,11 @@ namespace BusinessLayer.Services.BaseCrud
             return model;
         }
 
-        public Task Update(TModel model)
+        public async Task UpdateAsync(TModel model)
         {
             var entity = mapper.Map<TEntity>(model);
             BaseRepository.Update(entity);
-            return Task.CompletedTask;
+            await cPUnitOfWork.SaveChangesAsync();
         }
     }
 }
