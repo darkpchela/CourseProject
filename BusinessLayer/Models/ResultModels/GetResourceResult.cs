@@ -1,20 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace BusinessLayer.Models.ResultModels
+﻿namespace BusinessLayer.Models.ResultModels
 {
-    public class GetResourceResult
+    public class GetResourceResult : ResultModel<string>
     {
-        public bool Succeed { get; private set; } = true;
-
-        public string Uri { get; set; }
-
-        public IList<string> Errors { get; set; } = new List<string>();
-
-        public void AddError(string error)
-        {
-            if (Succeed)
-                Succeed = false;
-            Errors.Add(error);
-        }
+        public string Url { get; set; }
     }
 }

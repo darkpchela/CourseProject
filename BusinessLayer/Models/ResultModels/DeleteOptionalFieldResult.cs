@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BusinessLayer.Models.ResultModels
 {
-    public class DeleteOptionalFieldResult
+    public class DeleteOptionalFieldResult : ResultModel<string>
     {
     }
 }
