@@ -6,7 +6,7 @@ namespace BusinessLayer.Interfaces
 {
     public interface IOptionalFieldsManager
     {
-        Task<CreateOptionalFieldResult> CreateDefaultAsync(int collectionId);
+        Task<CreateOptionalFieldResult> CreateDefaultAsync(CreateDefaultOptionalFieldModel createDefaultFieldModel);
 
         Task<DeleteOptionalFieldResult> DeleteAsync(DeleteOptionalFieldModel deleteFieldModel);
     }

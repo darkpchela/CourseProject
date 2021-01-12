@@ -4,6 +4,7 @@ using BusinessLayer.Interfaces.BaseCrud;
 using BusinessLayer.Models;
 using BusinessLayer.Models.DALModels;
 using CourseProject.ViewModels;
+using CourseProject.ViewModels.ApiModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -61,9 +62,15 @@ namespace CourseProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateField(int id)
+        public async Task<IActionResult> CreateField(CreateDefaultOptionalFieldVM model)
         {
-            var result = await optionalFieldsManager.CreateDefaultAsync(id);
+            int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId);
+            var dtoModel = mapper.Map<CreateDefaultOptionalFieldModel>(model);
+            if (User.IsInRole("Admin"))
+                dtoModel.IsAdminRequest = true;
+            else
+                dtoModel.OwnerId = userId;
+            var result = await optionalFieldsManager.CreateDefaultAsync(dtoModel);
             var resultVM = mapper.Map<CreateOptionalFieldResultVM>(result);
             return Json(resultVM);
         }

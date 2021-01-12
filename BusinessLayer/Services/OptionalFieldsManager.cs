@@ -29,14 +29,14 @@ namespace BusinessLayer.Services
             this.userCrudService = userCrudService;
         }
 
-        public async Task<CreateOptionalFieldResult> CreateDefaultAsync(int collectionId)
+        public async Task<CreateOptionalFieldResult> CreateDefaultAsync(CreateDefaultOptionalFieldModel createDefaultFieldModel)
         {
-            var result = await ValidateCreateDefaultRequest(collectionId);
+            var result = await ValidateCreateDefaultFieldModel(createDefaultFieldModel);
             if (!result.Succeed)
                 return result;
             var model = new OptionalFieldModel
             {
-                CollectionId = collectionId,
+                CollectionId = createDefaultFieldModel.CollectionId,
                 Name = "Unnamed",
                 TypeId = (await fieldTypesCrudService.GetAllAsync()).First().Id
             };
@@ -54,15 +54,22 @@ namespace BusinessLayer.Services
             return result;
         }
 
-        private async Task<CreateOptionalFieldResult> ValidateCreateDefaultRequest(int collectionId)
+        private async Task<CreateOptionalFieldResult> ValidateCreateDefaultFieldModel(CreateDefaultOptionalFieldModel model)
         {
             var result = new CreateOptionalFieldResult();
-            var collection = await collectionsCrudService.GetAsync(collectionId);
+            var user = await userCrudService.GetAsync(model.OwnerId);
+            if (user is null)
+                result.AddError("user not found");
+            var collection = await collectionsCrudService.GetAsync(model.CollectionId);
             if (collection is null)
                 result.AddError("Collection not found");
             var type = (await fieldTypesCrudService.GetAllAsync()).FirstOrDefault();
             if (type is null)
                 result.AddError("Available field types not found ");
+            if (!result.Succeed)
+                return result;
+            if (!model.IsAdminRequest && collection.OwnerId != user.Id)
+                result.AddError("Access denied");
             return result;
         }
 

@@ -1,4 +1,4 @@
-﻿namespace CourseProject.ViewModels
+﻿namespace CourseProject.ViewModels.ApiModels
 {
     public class DeleteOptionalFieldVM
     {

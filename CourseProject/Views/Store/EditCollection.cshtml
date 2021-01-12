@@ -158,27 +158,16 @@
             return succeed;
         };
 
-        const createNewField = (collectionId) => {
-            $.ajax({
-                url: "/api/CreateField",
-                method: "POST",
-                data: {
-                    id: collectionId
-                },
-                success: (data) => {
-                    if (data.succeed === true) {
-                        let field = getFieldElem(data);
-                        field.find('select [value=""]').remove();
-                        $('#fields #btnAddField').before(field);
-                        updateFieldNames();
-                    }
-                    else {
-                        console.log(data.errors);
-                    }
-                },
-                error: (e) => {
-                    console.log(e.responseText)
-                    console.log(e)
+        const createNewField = async (createFieldVM) => {
+            await $.post("/api/CreateField", createFieldVM, result => {
+                if (result.succeed === true) {
+                    let field = getFieldElem(result.optionalFieldModel);
+                    field.find('select [value=""]').remove();
+                    $('#fields #btnAddField').before(field);
+                    updateFieldNames();
+                }
+                else {
+                    console.log(result.errors);
                 }
             });
 
@@ -196,10 +185,14 @@
             );
         };
 
-        $('#btnAddField').click(e => {
+        $('#btnAddField').click(async e => {
             e.preventDefault();
-            let id = $('#Id').val();
-            createNewField(id);
+            let collectionId = $('#Id').val();
+            let ownerId = $('#OwnerId').val();
+            await createNewField({
+                CollectionId: collectionId,
+                OwnerId: ownerId
+            });
         });
 
         $('[name=btnDeleteField]').click(async (e) => {
@@ -212,7 +205,6 @@
                 OwnerId: ownerId,
                 OptionalFieldId: fieldId
             });
-            console.log(result)
             if (result === true) {
                 $(e.target).parents('[name=field]').remove();
                 updateFieldNames();
