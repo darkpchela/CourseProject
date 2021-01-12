@@ -6,6 +6,10 @@ namespace BusinessLayer.Models
 {
     public class CreateCollectionModel
     {
+        public bool IsAdminRequest { get; set; }
+
+        public int RequesterId { get; set; }
+
         public string Name { get; set; }
 
         public int ThemeId { get; set; }

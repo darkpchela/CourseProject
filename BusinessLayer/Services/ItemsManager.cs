@@ -43,6 +43,7 @@ namespace BusinessLayer.Services
                 ItemId = itemModel.Id
             };
             await collectionItemCrudService.CreateAsync(collectionItem);
+            result.ItemId = itemModel.Id;
             return result;
         }
 

@@ -5,7 +5,6 @@ using BusinessLayer.Models;
 using CourseProject.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -50,6 +49,7 @@ namespace CourseProject.Controllers
         {
             if (id is null)
                 id = GetCurrentUserId();
+            RememberUserId(id.Value);
             var user = await userCrudService.GetAsync(id.Value);
             var model = mapper.Map<UserVM>(user);
             return View(model);
@@ -58,9 +58,9 @@ namespace CourseProject.Controllers
         [HttpGet]
         public async Task<IActionResult> CreateCollection()
         {
-            var ownerId = GetCurrentUserId();
-            if (ownerId is null)
-                return RedirectToAction(nameof(Account.SignIn), nameof(Account));
+            var ownerId = User.IsInRole("Admin") ? GetRememberedUserId() : GetCurrentUserId();
+            if (ownerId == 0)
+                return RedirectToAction(nameof(Home.Index), nameof(Home));
             var model = createCollectionTestVM;
             model.OwnerId = ownerId;
             return View(model);
@@ -72,13 +72,15 @@ namespace CourseProject.Controllers
             if (!ModelState.IsValid)
                 return View(model);
             var dtoModel = mapper.Map<CreateCollectionModel>(model);
+            dtoModel.RequesterId = GetCurrentUserId();
+            dtoModel.IsAdminRequest = User.IsInRole("Admin") ? true : false;
             var result = await collectionsManager.CreateAsync(dtoModel);
             if (!result.Succeed)
             {
                 result.Errors.ToList().ForEach(e => ModelState.AddModelError("", e));
                 return View(model);
             }
-            return View(model);
+            return RedirectToAction(nameof(Collection), nameof(Store), new { id = result.CollectionId });
         }
 
         [HttpGet]
@@ -98,7 +100,7 @@ namespace CourseProject.Controllers
                 return View(editCollectionVM);
             var model = mapper.Map<UpdateCollectionModel>(editCollectionVM);
             var result = await collectionsManager.UpdateAsync(model);
-            if(!result.Succeed)
+            if (!result.Succeed)
             {
                 result.Errors.ToList().ForEach(e => ModelState.AddModelError("", e));
                 return View(model);
@@ -109,29 +111,27 @@ namespace CourseProject.Controllers
         [HttpGet]
         public IActionResult CreateItem()
         {
-            var ownerId = GetCurrentUserId();
-            if (ownerId is null)
-                return RedirectToAction(nameof(Account.SignIn), nameof(Account));
-            var model = new CreateItemVM
-            {
-                OwnerId = ownerId
-            };
+            var model = new CreateItemModel();
+            var userId = User.IsInRole("Admin") ? GetRememberedUserId() : GetCurrentUserId();
+            if (userId == 0)
+                return RedirectToAction(nameof(Home.Index), nameof(Home));
+            model.OwnerId = userId;
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateItem(CreateItemVM model)
+        public async Task<IActionResult> CreateItem(CreateItemVM createItemVM)
         {
             if (!ModelState.IsValid)
-                return View(model);
-            var dtoModel = mapper.Map<CreateItemModel>(model);
+                return View(createItemVM);
+            var dtoModel = mapper.Map<CreateItemModel>(createItemVM);
             var result = await itemsManager.CreateAsync(dtoModel);
             if (!result.Succeed)
             {
                 result.Errors.ToList().ForEach(e => ModelState.AddModelError("", e));
-                return View(model);
+                return View(createItemVM);
             }
-            return View(model);
+            return RedirectToAction(nameof(Item), nameof(Store), new { id = result.ItemId });
         }
 
         public async Task<IActionResult> Collection(int id)
@@ -139,6 +139,7 @@ namespace CourseProject.Controllers
             var collection = await collectionsCrudService.GetAsync(id);
             if (collection is null)
                 return RedirectToAction(nameof(Home.Index), nameof(Home));
+            RememberUserId(collection.OwnerId);
             var collectionVM = mapper.Map<CollectionVM>(collection);
             return View(collectionVM);
         }
@@ -148,17 +149,30 @@ namespace CourseProject.Controllers
             var item = await itemsCrudService.GetAsync(id);
             if (item is null)
                 return RedirectToAction(nameof(Home.Index), nameof(Home));
+            RememberUserId(item.OwnerId);
             var itemVM = mapper.Map<ItemVM>(item);
             return View(itemVM);
         }
 
-        private int? GetCurrentUserId()
+
+        private int GetCurrentUserId()
         {
-            var stringId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (stringId is null || !int.TryParse(stringId, out int id))
-                return null;
-            else
-                return id;
+            int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId);
+            return userId;
+        }
+
+        private void RememberUserId(int userId)
+        {
+            if (User.IsInRole("Admin"))
+                HttpContext.Session.SetInt32("userId", userId);
+        }
+
+        private int GetRememberedUserId()
+        {
+            var id = HttpContext.Session.GetInt32("userId");
+            if (!id.HasValue)
+                return 0;
+            return id.Value;
         }
     }
 }
