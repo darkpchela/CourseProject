@@ -3,24 +3,24 @@
 <div class="d-flex justify-content-center mt-2">
     <div class="d-flex flex-column align-items-stretch w-75 mt-2" style="max-width: 768px;">
         <h3 class="text-center">
-            New Item
+            Edit Item
         </h3>
 
         <div class="align-self-center p-1">
-            <div name="imgContainer" style="display: none;">
+            <div name="imgContainer">
                 <div class="square-25 d-flex justify-content-center align-items-center">
                     <a id="changeImage" href="" class="btn p-0">
                         <img class="img-fluid img-thumbnail" src="@Model.ImageUrl" />
                     </a>
                 </div>
             </div>
-            <div id="dzContainer">
+            <div id="dzContainer" style="display: none;">
                 <div id="dropzone" class="dropzone d-flex p-0 justify-content-center square-25">
                 </div>
             </div>
         </div>
 
-        <form asp-action="CreateItem" asp-controller="Store" method="post" class="d-flex flex-column align-items-center mt-2">
+        <form asp-action="EditItem" asp-controller="Store" method="post" class="d-flex flex-column align-items-center mt-2">
             <input type="text" class="form-control w-75 text-center" asp-for="@Model.Name" placeholder="Item name">
 
             @{
@@ -68,11 +68,13 @@
             <input type="hidden" asp-for="@Model.ResourceId" value="@Model.ResourceId" />
             <input type="hidden" asp-for="@Model.OwnerId" value="@Model.OwnerId" />
             <input type="hidden" asp-for="@Model.ImageUrl" value="@Model.ImageUrl" />
-            <div id="cashedFields" class="d-none">
-                @Html.Raw(Json.Serialize(Model.Fields))
-            </div>
+            <input type="hidden" asp-for="@Model.ItemId" value="@Model.ItemId" />
         </form>
     </div>
+</div>
+
+<div id="cashedFields" class="d-none">
+    @Html.Raw(Json.Serialize(Model.Fields))
 </div>
 
 <div id="tpl" class="d-none">
@@ -92,10 +94,10 @@
     </div>
 </div>
 
-@section Scripts{ 
+@section Scripts{
 
-<script src="~/lib/dropzone-5.7.0/dist/dropzone.js"></script>
-<script>
+    <script src="~/lib/dropzone-5.7.0/dist/dropzone.js"></script>
+    <script>
         Dropzone.autoDiscover = false;
         $('#dropzone').dropzone({
             addRemoveLinks: true,
@@ -120,14 +122,13 @@
                 $('#dropzone .dz-preview').remove();
             }
         });
-        $(() => {
-            if ($('#ImageUrl').val() != "") {
-                $('#dzContainer').hide()
-                $('[name=imgContainer]').show();
-            };
+        $('#changeImage').click(e => {
+            e.preventDefault();
+            $(e.target).parents('[name=imgContainer]').hide();
+            $('#dzContainer').show();
         });
-</script>
-<script>
+    </script>
+    <script>
         const getInputFuncDictionary = {
             "Boolen": (value) => {
                 if (value != 'true')
@@ -248,5 +249,5 @@
             }
             updateFieldNames();
         });
-</script>
+    </script>
 }
