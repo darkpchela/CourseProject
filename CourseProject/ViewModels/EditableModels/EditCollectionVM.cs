@@ -6,7 +6,7 @@ namespace CourseProject.ViewModels
     public class EditCollectionVM
     {
         [Required]
-        public int? Id { get; set; }
+        public int? CollectionId { get; set; }
 
         [Required(ErrorMessage = "Collection name is required.")]
         [StringLength(64, MinimumLength = 3, ErrorMessage = "Min name legth is 3. Maximum is 64.")]

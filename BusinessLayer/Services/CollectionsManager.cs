@@ -74,7 +74,7 @@ namespace BusinessLayer.Services
         private async Task<UpdateCollectionResult> ValidateUpdateCollectionModel(UpdateCollectionModel updateCollectionModel)
         {
             var result = new UpdateCollectionResult();
-            var collection = await collectionsCrudService.GetAsync(updateCollectionModel.Id);
+            var collection = await collectionsCrudService.GetAsync(updateCollectionModel.CollectionId);
             if (collection is null)
                 result.AddError("Collection not found");
             var owner = await userCrudService.GetAsync(updateCollectionModel.OwnerId);

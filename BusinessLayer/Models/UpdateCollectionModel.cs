@@ -9,7 +9,7 @@ namespace BusinessLayer.Models
 
         public int RequesterId { get; set; }
 
-        public int Id { get; set; }
+        public int CollectionId { get; set; }
 
         public string Name { get; set; }
 

@@ -4,7 +4,7 @@
     string editLink = $"Edit{Model.Type}";
 }
 <div class="position-relative">
-    <a name='btnDelete' asp-action="@delLink" asp-controller="Store" asp-route-id="@Model.Id" 
+    <a name='btnDelete' asp-action="@delLink" asp-controller="Store" asp-route-id="@Model.ItemId" 
        class="btn p-0 position-absolute medium-icon" style="bottom: 5px; left: 5px;">
         <svg xmlns="http://www.w3.org/2000/svg" 
              class="h-100" viewBox="0 0 16 16" fill="currentColor">
@@ -14,7 +14,7 @@
                   d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
         </svg>
     </a>
-    <a name="btnEdit" asp-action="@editLink" asp-controller="Store" asp-route-id="@Model.Id" 
+    <a name="btnEdit" asp-action="@editLink" asp-controller="Store" asp-route-id="@Model.ItemId" 
        class="btn p-0 position-absolute medium-icon" style="bottom: 5px; right: 5px;">
         <svg xmlns="http://www.w3.org/2000/svg"
              fill="currentColor" class="h-100" viewBox="0 0 16 16">

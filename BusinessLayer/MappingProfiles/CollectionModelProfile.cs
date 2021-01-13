@@ -9,7 +9,8 @@ namespace BusinessLayer.MappingProfiles
         public CollectionModelProfile()
         {
             CreateMap<CreateCollectionModel, CollectionModel>();
-            CreateMap<UpdateCollectionModel, CollectionModel>();
+            CreateMap<UpdateCollectionModel, CollectionModel>()
+                .ForMember(d => d.Id, o => o.MapFrom(s => s.CollectionId));
         }
     }
 }

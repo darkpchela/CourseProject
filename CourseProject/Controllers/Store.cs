@@ -109,7 +109,7 @@ namespace CourseProject.Controllers
                 result.Errors.ToList().ForEach(e => ModelState.AddModelError("", e));
                 return View(model);
             }
-            return RedirectToAction(nameof(Collection), nameof(Store), new { id = model.Id });
+            return RedirectToAction(nameof(Collection), nameof(Store), new { id = model.CollectionId });
         }
 
         [HttpGet]
