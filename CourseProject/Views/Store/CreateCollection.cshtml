@@ -49,8 +49,9 @@
                         </a>
                     </div>
                 </div>
+            </div>
 
-                <div class="w-100 d-flex flex-row justify-content-between mt-2">
+                <div class="w-75 d-flex flex-row justify-content-between mt-2">
                     <a asp-action="Profile" asp-controller="Store" asp-route-id="@Model.OwnerId" class="btn p-0">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                              class="bigger-icon" viewBox="0 0 16 16">
@@ -58,8 +59,6 @@
                                   d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
                         </svg>
                     </a>
-                    <div asp-validation-summary="All" class="text-danger font-weight-bold">
-                    </div>
                     <button type="submit" class="btn p-0">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                              class="bigger-icon" viewBox="0 0 16 16">
@@ -69,11 +68,13 @@
                     </button>
                 </div>
 
+
+            <div asp-validation-summary="All" class="text-danger font-weight-bold">
             </div>
             <input type="hidden" asp-for="@Model.ResourceId" value="@Model.ResourceId" />
             <input type="hidden" asp-for="@Model.OwnerId" value="@Model.OwnerId" />
             <input type="hidden" asp-for="@Model.ImageUrl" value="@Model.ImageUrl" />
-            <input id="cashedFields" type="hidden" value=@Html.Raw(Json.Serialize(Model.Fields))  />
+            <input id="cashedFields" type="hidden" value=@Html.Raw(Json.Serialize(Model.Fields)) />
         </form>
     </div>
 </div>
@@ -122,6 +123,12 @@
                 $.post('/api/AbortUpload');
                 $('#dropzone .dz-preview').remove();
             }
+        });
+        $(() => {
+            if ($('#ImageUrl').val() != "") {
+                $('#dzContainer').hide()
+                $('[name=imgContainer]').show();
+            };
         });
     </script>
     <script>
@@ -182,10 +189,6 @@
         });
 
         $(() => {
-            if ($('#ImageUrl').val() != "") {
-                $('#dzContainer').hide()
-                $('[name=imgContainer]').show();
-            }
             let cashedFields = JSON.parse($('#cashedFields').val());
             for (let i = 0; i < cashedFields.length; i++) {
                 let field = getFieldElem(cashedFields[i]);

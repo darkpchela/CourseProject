@@ -25,5 +25,7 @@ namespace CourseProject.ViewModels
         public string Tags { get; set; }
 
         public IList<EditItemOptionalFieldVM> Fields { get; set; }
+
+        public string ImageUrl { get; set; }
     }
 }
