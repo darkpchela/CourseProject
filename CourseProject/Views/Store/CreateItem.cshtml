@@ -68,6 +68,9 @@
             <input type="hidden" asp-for="@Model.ResourceId" value="@Model.ResourceId" />
             <input type="hidden" asp-for="@Model.OwnerId" value="@Model.OwnerId" />
             <input type="hidden" asp-for="@Model.ImageUrl" value="@Model.ImageUrl" />
+            <div id="cashedFields" class="d-none">
+                @Html.Raw(Json.Serialize(Model.Fields))
+            </div>
         </form>
     </div>
 </div>
@@ -76,10 +79,12 @@
 </div>
 
 <div class="d-none">
-    <div id="fieldProto">
+    <div id="fieldProto" name="field">
         <div class="border-custom rounded ">
             <div name="fieldBody" class="d-flex flex-row flex-nowrap justify-content-between p-1">
-                <input name="fieldId" type="hidden" />
+                <input data-prop="id" type="hidden" />
+                <input data-prop="name" type="hidden" />
+                <input data-prop="type" type="hidden" />
                 <label name="fieldName" class="d-inline-block text-center p-1 w-50">FieldName</label>
             </div>
         </div>
@@ -149,26 +154,53 @@
             }
         };
 
-        let fieldsCount = 0;
-        const fieldProtoElem = $('#fieldProto');
         const fieldsElem = $('#fields');
         const setUpCheckBox = (jqElem) => {
+            console.log(jqElem.val())
+            if (jqElem.val() == "") {
+                jqElem.val('false');
+            }
+            console.log(jqElem.val())
+
+            jqElem.prop("checked", jqElem.val());
             jqElem.change(e => {
                 $(e.target).val() == 'false' ? $(e.target).val('true') : $(e.target).val('false');
             });
         };
-        const createField = (typeObj, name, id) => {
-            let field = fieldProtoElem.clone().removeAttr('id');
-            field.find('[name="fieldName"]').attr('name', `Fields[${fieldsCount}].Name`).text(name);
-            field.find('[name=fieldId]').attr('name', `Fields[${fieldsCount}].OptionalFieldId`).val(id);
-            console.log(id);
+        const updateFieldNames = () => {
+            let fields = $('#fields [name=field]');
+            for (let i = 0; i < fields.length; i++) {
+                setFieldName(fields[i], i);
+            }
+        };
+        const setFieldName = (field, id) => {
+            let valueInputElem = $(field).find('[data-prop=value]');
+            let idInputElem = $(field).find('[data-prop=id]');
+            let nameInputElem = $(field).find('[data-prop=name]');
+            let typeInputElem = $(field).find('[data-prop=type]');
+            valueInputElem.attr('name', `Fields[${id}].Value`);
+            idInputElem.attr('name', `Fields[${id}].OptionalFieldId`);
+            nameInputElem.attr('name', `Fields[${id}].Name`);
+            typeInputElem.attr('name', `Fields[${id}].Type`);
+        };
+
+        const getFieldElem = (fieldVM) => {
+            let field = $('#fieldProto').clone(true).removeAttr('id');
+            field.find('[name=fieldName]').text(fieldVM.name);
+            field.find('[data-prop=name]').val(fieldVM.name);
+            field.find('[data-prop=id]').val(fieldVM.optionalFieldId);
+            field.find('[data-prop=type]').val(fieldVM.type);
+            console.log(fieldVM)
+            let typeObj = typesDictionary[fieldVM.type];
             let inputElem = $(typeObj['elem'], {
-                name: `Fields[${fieldsCount}].Value`,
                 type: typeObj['type'],
                 class: typeObj['class']
             });
+            inputElem.attr('data-prop', 'value')
+            inputElem.val(fieldVM.value);
             field.find('[name=fieldBody]').append(inputElem);
-            fieldsCount++;
+            if (fieldVM.type == 'Boolen')
+                setUpCheckBox(field);
             return field;
         };
         const loadFields = id => {
@@ -176,22 +208,16 @@
             $.post("/api/GetCollectionFields",
                 { id: id },
                 data => {
-                    console.log(data);
                     for (let i = 0; i < data.length; i++) {
-                        let fieldName = data[i]['name'];
-                        let fieldType = data[i]['type'];
-                        let id = data[i]['id'];
-                        let field = createField(typesDictionary[fieldType], fieldName, id);
+                        let field = getFieldElem(data[i]);
                         fieldsElem.append(field);
-                        if (fieldType == 'Boolen') {
-                            setUpCheckBox(field);
-                        }
                     }
+                        updateFieldNames();
                 }
             );
         };
 
-        $('select').change(e => {
+        $('#CollectionId').change(e => {
             $(e.target).children('[value=""]').remove();
             e.preventDefault();
             let id = $(e.target).val();
@@ -199,10 +225,12 @@
         });
 
         $(() => {
-            if ($('#CollectionId').val() != "") {
-                let id = $('#CollectionId').val();
-                loadFields(id);
+            let cashedFields = JSON.parse($('#cashedFields').text());
+            for (let i = 0; i < cashedFields.length; i++) {
+                let field = getFieldElem(cashedFields[i]);
+                fieldsElem.append(field);
             }
+            updateFieldNames();
         });
     </script>
 }

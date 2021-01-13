@@ -74,7 +74,9 @@
             <input type="hidden" asp-for="@Model.ResourceId" value="@Model.ResourceId" />
             <input type="hidden" asp-for="@Model.OwnerId" value="@Model.OwnerId" />
             <input type="hidden" asp-for="@Model.ImageUrl" value="@Model.ImageUrl" />
-            <input id="cashedFields" type="hidden" value=@Html.Raw(Json.Serialize(Model.Fields)) />
+            <div id="cashedFields" class="d-none">
+                @Html.Raw(Json.Serialize(Model.Fields))
+            </div>
         </form>
     </div>
 </div>
@@ -189,10 +191,10 @@
         });
 
         $(() => {
-            let cashedFields = JSON.parse($('#cashedFields').val());
+            let cashedFields = JSON.parse($('#cashedFields').text());
             for (let i = 0; i < cashedFields.length; i++) {
                 let field = getFieldElem(cashedFields[i]);
-                $('#fields').prepend(field);
+                $('#fields #btnAdd').before(field);
             }
             updateFieldNames();
         });

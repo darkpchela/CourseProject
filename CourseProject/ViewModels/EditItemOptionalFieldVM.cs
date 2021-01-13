@@ -8,6 +8,10 @@ namespace CourseProject.ViewModels
         public int? OptionalFieldId { get; set; }
 
         [Required(ErrorMessage = "Field must not be empty")]
-        public string? Value { get; set; }
+        public string Value { get; set; }
+
+        public string Name { get; set; }
+
+        public string Type { get; set; }
     }
 }
