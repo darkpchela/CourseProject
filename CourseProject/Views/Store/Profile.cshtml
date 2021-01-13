@@ -22,31 +22,39 @@
             </div>
         </div>
         <div class="mt-2">
-            <div id="collections" >
+            <div id="collections">
                 <h5 class="text-center">Collections</h5>
-                @{await Html.RenderPartialAsync("Profile/_Collections", Model.Collections);}
+                @{await Html.RenderPartialAsync("Profile/_Collections", new ProfileCollectionsVM
+                    {
+                        AllowEdit = User.IsInRole("Admin") || User.FindFirstValue(ClaimTypes.NameIdentifier) == Model.Id.ToString(),
+                        Collections = Model.Collections
+                    });}
             </div>
             <div id="items">
                 <h5 class="text-center">Items</h5>
-                @{await Html.RenderPartialAsync("Profile/_Items", Model.Items); }
+                @{await Html.RenderPartialAsync("Profile/_Items", new ProfileItemsVM
+                    {
+                        AllowEdit = User.IsInRole("Admin") || User.FindFirstValue(ClaimTypes.NameIdentifier) == Model.Id.ToString(),
+                        Items = Model.Items
+                    }); }
             </div>
         </div>
     </div>
 </div>
-@section Scripts{ 
-<script>
-    $('#btnGetCollections').click(e => {
-        e.preventDefault();
-        $('#items').hide();
-        $('#collections').show();
-    });
-    $('#btnGetItems').click(e => {
-        e.preventDefault();
-        $('#collections').hide();
-        $('#items').show();
-    });
-    $(() => {
-        $('#btnGetCollections').click();
-    });
-</script>
+@section Scripts{
+    <script>
+        $('#btnGetCollections').click(e => {
+            e.preventDefault();
+            $('#items').hide();
+            $('#collections').show();
+        });
+        $('#btnGetItems').click(e => {
+            e.preventDefault();
+            $('#collections').hide();
+            $('#items').show();
+        });
+        $(() => {
+            $('#btnGetCollections').click();
+        });
+    </script>
 }

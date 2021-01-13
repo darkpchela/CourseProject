@@ -2,10 +2,10 @@
 
 namespace CourseProject.ViewModels
 {
-    public class ProfileCollectionsVM
+    public class ProfileItemsVM
     {
-        public IList<CollectionVM> Collections { get; set; }
-
         public bool AllowEdit { get; set; }
+
+        public IList<ItemVM> Items { get; set; }
     }
 }

@@ -100,16 +100,16 @@ namespace CourseProject.Controllers
         {
             if (!ModelState.IsValid)
                 return View(editCollectionVM);
-            var model = mapper.Map<UpdateCollectionModel>(editCollectionVM);
-            model.RequesterId = GetCurrentUserId();
-            model.IsAdminRequest = User.IsInRole("Admin");
-            var result = await collectionsManager.UpdateAsync(model);
+            var dtoModel = mapper.Map<UpdateCollectionModel>(editCollectionVM);
+            dtoModel.RequesterId = GetCurrentUserId();
+            dtoModel.IsAdminRequest = User.IsInRole("Admin");
+            var result = await collectionsManager.UpdateAsync(dtoModel);
             if (!result.Succeed)
             {
                 result.Errors.ToList().ForEach(e => ModelState.AddModelError("", e));
-                return View(model);
+                return View(editCollectionVM);
             }
-            return RedirectToAction(nameof(Collection), nameof(Store), new { id = model.CollectionId });
+            return RedirectToAction(nameof(Collection), nameof(Store), new { id = dtoModel.CollectionId });
         }
 
         [HttpGet]

@@ -1,10 +1,6 @@
-﻿@model IList<ItemVM>
-@{ bool isEditable = false;
-    if (User.IsInRole("Admin") || User.FindFirstValue(ClaimTypes.NameIdentifier) == Model.First().Owner.Id.ToString())
-        isEditable = true;
-    ;}
+﻿@model ProfileItemsVM
 <div class="d-flex flex-row flex-wrap align-items-baseline justify-content-center">
-    @if (isEditable)
+    @if (Model.AllowEdit)
     {
         <div class="square-25 m-1">
             <div class="w-100 h-100 d-flex flex-row justify-content-center ">
@@ -20,25 +16,25 @@
             </div>
         </div>
     }
-    @for (int i = 0; i < Model.Count; i++)
+    @for (int i = 0; i < Model.Items.Count; i++)
     {
         <div class="m-1 square-25 text-center">
             <div class="p-2">
-                <a asp-action="Item" asp-controller="Store" asp-route-id="@Model[i].Id" class="btn p-0 btn-outline-info"
+                <a asp-action="Item" asp-controller="Store" asp-route-id="@Model.Items[i].Id" class="btn p-0 btn-outline-info"
                    data-placement="bottom" data-toggle="tooltip" data-html="true" title="tooltip">
                     <img class="img-fluid img-thumbnail"
-                         src="@Model[i].ImageUrl"
+                         src="@Model.Items[i].ImageUrl"
                          alt="picture">
                 </a>
             </div>
             <div>
-                <h5>@Model[i].Name</h5>
+                <h5>@Model.Items[i].Name</h5>
             </div>
-            @if (isEditable)
+            @if (Model.AllowEdit)
             {
                 await Html.RenderPartialAsync("Profile/_EditTools", new EditToolsVM
                 {
-                    ItemId = Model[i].Id,
+                    ItemId = Model.Items[i].Id,
                     Type = ItemTypes.Item
                 });
             }
