@@ -87,8 +87,8 @@
 
 <div class="d-none">
     <div id="fieldProto" name='field' class="d-flex flex-row flex-nowrap align-items-center mt-1">
-        <input id="id" type="hidden" data-prop="id" />
-        <input id="name" name="name" data-prop="name" type="text" class="form-control flex-grow-1 mr-1 " placeholder="Field name" />
+        <input type="hidden" data-prop="id" />
+        <input data-prop="name" type="text" class="form-control flex-grow-1 mr-1 " placeholder="Field name" />
         @Html.DropDownList("type", new SelectList(await fieldTypesService.GetAllAsync(), "Id", "Type"), "Select field type", new { @class = "form-control", data_prop = "type" })
         <a name='btnDeleteField' href="" class="d-block btn p-0">
             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="tiny-icon" viewBox="0 0 16 16">
@@ -136,17 +136,15 @@
     <script>
         const getFieldElem = (props) => {
             let field = $('#fieldProto').clone(true).removeAttr('id');
-            let nameInput = field.children('#name');
-            let typeInput = field.children('#type');
-            let idInput = field.children('#id');
+            let nameInput = field.find('[data-prop=name]');
+            let typeInput = field.children('[data-prop=type]');
+            let idInput = field.children('[data-prop=id]');
             if (props) {
-                field.children('#name').val(props.name);
-                field.children('#type').val(props.typeId);
-                field.children('#id').val(props.id);
+                nameInput.val(props.name);
+                typeInput.val(props.typeId);
+                idInput.val(props.id);
             }
-            nameInput.removeAttr('id');
             typeInput.removeAttr('id');
-            idInput.removeAttr('id');
             return field;
         };
 
@@ -194,7 +192,7 @@
             let cashedFields = JSON.parse($('#cashedFields').text());
             for (let i = 0; i < cashedFields.length; i++) {
                 let field = getFieldElem(cashedFields[i]);
-                $('#fields #btnAdd').before(field);
+                $('#fields #btnAddField').before(field);
             }
             updateFieldNames();
         });
