@@ -129,8 +129,8 @@
         const typesDictionary = {
             "Boolen": {
                 elem: "<input />",
-                type: "Checkbox",
-                class: "d-inline-block text-center form-control w-75"
+                type: "hidden",
+                class: ""
             },
             "Date": {
                 elem: "<input />",
@@ -156,15 +156,16 @@
 
         const fieldsElem = $('#fields');
         const setUpCheckBox = (jqElem) => {
-            console.log(jqElem.val())
-            if (jqElem.val() == "") {
-                jqElem.val('false');
-            }
-            console.log(jqElem.val())
-
-            jqElem.prop("checked", jqElem.val());
-            jqElem.change(e => {
-                $(e.target).val() == 'false' ? $(e.target).val('true') : $(e.target).val('false');
+            let checkbox = $('<input />', {
+                type: 'Checkbox',
+                class: 'd-inline-block text-center form-control w-75'
+            });
+            jqElem.before(checkbox);
+            console.log(jqElem.val());
+            jqElem.val() == 'true' ? checkbox.prop('checked', true) : jqElem.val('false');
+            checkbox.change(e => {
+                e.preventDefault();
+                $(e.target).is(':checked') ? jqElem.val('true') : jqElem.val('false');
             });
         };
         const updateFieldNames = () => {
@@ -190,17 +191,19 @@
             field.find('[data-prop=name]').val(fieldVM.name);
             field.find('[data-prop=id]').val(fieldVM.optionalFieldId);
             field.find('[data-prop=type]').val(fieldVM.type);
-            console.log(fieldVM)
             let typeObj = typesDictionary[fieldVM.type];
             let inputElem = $(typeObj['elem'], {
                 type: typeObj['type'],
                 class: typeObj['class']
             });
+            field.find('[name=fieldBody]').append(inputElem);
             inputElem.attr('data-prop', 'value')
             inputElem.val(fieldVM.value);
-            field.find('[name=fieldBody]').append(inputElem);
-            if (fieldVM.type == 'Boolen')
-                setUpCheckBox(field);
+            if (fieldVM.type == 'Boolen') {
+                console.log(fieldVM)
+                console.log(fieldVM.value)
+                setUpCheckBox(inputElem);
+            }
             return field;
         };
         const loadFields = id => {
