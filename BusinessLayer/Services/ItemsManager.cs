@@ -47,6 +47,11 @@ namespace BusinessLayer.Services
             return result;
         }
 
+        public Task<UpdateItemResult> UpdateAsync(UpdateItemModel updateItemModel)
+        {
+            throw new System.NotImplementedException();
+        }
+
         private async Task<CreateItemResult> ValidateCreateModel(CreateItemModel createItemModel)
         {
             var result = new CreateItemResult();

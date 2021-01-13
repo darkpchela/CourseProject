@@ -91,8 +91,10 @@ namespace CourseProject.Controllers
             var collection = await collectionsCrudService.GetAsync(id);
             if (collection is null)
                 return RedirectToAction(nameof(Profile), nameof(Store));
-            var model = mapper.Map<EditCollectionVM>(collection);
-            return View(model);
+            if (!User.IsInRole("Admin") && collection.OwnerId != GetCurrentUserId())
+                return RedirectToAction(nameof(Home.Index), nameof(Home));
+            var editVM = mapper.Map<EditCollectionVM>(collection);
+            return View(editVM);
         }
 
         [HttpPost]
@@ -138,6 +140,35 @@ namespace CourseProject.Controllers
                 return View(createItemVM);
             }
             return RedirectToAction(nameof(Item), nameof(Store), new { id = result.ItemId });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditItem(int id)
+        {
+            var item = await itemsCrudService.GetAsync(id);
+            if (item is null)
+                return RedirectToAction(nameof(Profile), nameof(Store));
+            if (!User.IsInRole("Admin") && item.OwnerId != GetCurrentUserId())
+                return RedirectToAction(nameof(Home.Index), nameof(Home));
+            var editVM = mapper.Map<EditItemVM>(item);
+            return View(editVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditItem(EditItemVM editItemVM)
+        {
+            if (!ModelState.IsValid)
+                return View(editItemVM);
+            var dtoModel = mapper.Map<UpdateItemModel>(editItemVM);
+            dtoModel.RequesterId = GetCurrentUserId();
+            dtoModel.IsAdminRequest = User.IsInRole("Admin");
+            var result = await itemsManager.UpdateAsync(dtoModel);
+            if (!result.Succeed)
+            {
+                result.Errors.ToList().ForEach(e => ModelState.AddModelError("", e));
+                return View(editItemVM);
+            }
+            return RedirectToAction(nameof(Item), nameof(Store), new { id = dtoModel.ItemId });
         }
 
         public async Task<IActionResult> Collection(int id)
