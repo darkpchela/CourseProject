@@ -5,7 +5,7 @@ namespace CourseProject.ViewModels
     public class EditOptionalFieldVM
     {
         [Required]
-        public int? Id { get; set; }
+        public int? FieldId { get; set; }
 
         [Required(ErrorMessage = "Field type required")]
         public int TypeId { get; set; }

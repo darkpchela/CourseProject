@@ -180,7 +180,7 @@
             let nameInputElem = $(field).find('[data-prop=name]');
             let typeInputElem = $(field).find('[data-prop=type]');
             valueInputElem.attr('name', `Fields[${id}].Value`);
-            idInputElem.attr('name', `Fields[${id}].OptionalFieldId`);
+            idInputElem.attr('name', `Fields[${id}].FieldId`);
             nameInputElem.attr('name', `Fields[${id}].Name`);
             typeInputElem.attr('name', `Fields[${id}].Type`);
         };
@@ -189,7 +189,7 @@
             let field = $('#fieldProto').clone(true).removeAttr('id');
             field.find('[name=fieldName]').text(fieldVM.name);
             field.find('[data-prop=name]').val(fieldVM.name);
-            field.find('[data-prop=id]').val(fieldVM.optionalFieldId);
+            field.find('[data-prop=id]').val(fieldVM.fieldId);
             field.find('[data-prop=type]').val(fieldVM.type);
             let typeObj = typesDictionary[fieldVM.type];
             let inputElem = $(typeObj['elem'], {

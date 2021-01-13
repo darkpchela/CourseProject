@@ -1,10 +1,6 @@
 ﻿using AutoMapper;
 using BusinessLayer.Models.DALModels;
 using CourseProject.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CourseProject.MappingProfiles
 {
@@ -12,7 +8,8 @@ namespace CourseProject.MappingProfiles
     {
         public ItemOptionalFieldModelProfile()
         {
-            CreateMap<EditItemOptionalFieldVM, ItemOptionalFieldModel>();
+            CreateMap<EditItemOptionalFieldVM, ItemOptionalFieldModel>()
+                .ForMember(d => d.OptionalFieldId, o => o.MapFrom(s => s.FieldId));
         }
     }
 }

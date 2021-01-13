@@ -132,7 +132,7 @@
             if (props) {
                 field.children('#name').val(props.name);
                 field.children('#type').val(props.typeId);
-                field.children('#id').val(props.id);
+                field.children('#id').val(props.fieldId);
             }
             nameInput.removeAttr('id');
             typeInput.removeAttr('id');
@@ -145,7 +145,7 @@
             let idInputElem = $(field).find('[data-prop=id]');
             nameInputElem.attr('name', `Fields[${id}].Name`);
             typeInputElem.attr('name', `Fields[${id}].TypeId`);
-            idInputElem.attr('name', `Fields[${id}].Id`);
+            idInputElem.attr('name', `Fields[${id}].FieldId`);
         };
         const updateFieldNames = () => {
             let fields = $('#fields [name=field]');

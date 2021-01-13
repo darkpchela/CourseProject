@@ -9,7 +9,8 @@ namespace CourseProject.MappingProfiles
         public OptionalFieldVMProfile()
         {
             CreateMap<OptionalFieldModel, OptionalFieldVM>()
-              .ForMember(d => d.Type, o => o.MapFrom(s => s.Type.Type));
+              .ForMember(d => d.Type, o => o.MapFrom(s => s.Type.Type))
+              .ForMember(d => d.FieldId, o => o.MapFrom(s => s.Id));
         }
     }
 }

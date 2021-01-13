@@ -5,7 +5,7 @@ namespace CourseProject.ViewModels
     public class EditItemOptionalFieldVM
     {
         [Required]
-        public int? OptionalFieldId { get; set; }
+        public int? FieldId { get; set; }
 
         [Required(ErrorMessage = "Field must not be empty")]
         public string Value { get; set; }
