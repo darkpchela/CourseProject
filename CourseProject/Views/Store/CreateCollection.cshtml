@@ -73,6 +73,7 @@
             <input type="hidden" asp-for="@Model.ResourceId" value="@Model.ResourceId" />
             <input type="hidden" asp-for="@Model.OwnerId" value="@Model.OwnerId" />
             <input type="hidden" asp-for="@Model.ImageUrl" value="@Model.ImageUrl" />
+            <input id="cashedFields" type="hidden" value=@Html.Raw(Json.Serialize(Model.Fields))  />
         </form>
     </div>
 </div>
@@ -82,9 +83,10 @@
 </div>
 
 <div class="d-none">
-    <div id="fieldProto" name='field' data-id="0" class="d-flex flex-row flex-nowrap align-items-center mt-1">
-        <input id="name" name="name" type="text" class="form-control flex-grow-1 mr-1 " placeholder="Field name" />
-        @Html.DropDownList("type", new SelectList(await fieldTypesService.GetAllAsync(), "Id", "Type"), "Select field type", new { @class = "form-control" })
+    <div id="fieldProto" name='field' class="d-flex flex-row flex-nowrap align-items-center mt-1">
+        <input id="id" type="hidden" data-prop="id" />
+        <input id="name" name="name" data-prop="name" type="text" class="form-control flex-grow-1 mr-1 " placeholder="Field name" />
+        @Html.DropDownList("type", new SelectList(await fieldTypesService.GetAllAsync(), "Id", "Type"), "Select field type", new { @class = "form-control", data_prop = "type" })
         <a name='btnDeleteField' href="" class="d-block btn p-0">
             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="tiny-icon" viewBox="0 0 16 16">
                 <path fill-rule="evenodd"
@@ -180,11 +182,16 @@
         });
 
         $(() => {
-            console.log($('#ImageUrl').val())
             if ($('#ImageUrl').val() != "") {
                 $('#dzContainer').hide()
                 $('[name=imgContainer]').show();
             }
+            let cashedFields = JSON.parse($('#cashedFields').val());
+            for (let i = 0; i < cashedFields.length; i++) {
+                let field = getFieldElem(cashedFields[i]);
+                $('#fields').prepend(field);
+            }
+            updateFieldNames();
         });
     </script>
 }
