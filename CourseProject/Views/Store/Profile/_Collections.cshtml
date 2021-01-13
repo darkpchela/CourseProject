@@ -40,7 +40,7 @@
             {
                 await Html.RenderPartialAsync("Profile/_EditTools", new EditToolsVM
                 {
-                    Id = Model[i].Id,
+                    ItemId = Model[i].Id,
                     Type = ItemTypes.Collection
                 });
             }

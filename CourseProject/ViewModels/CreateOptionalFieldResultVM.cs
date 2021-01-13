@@ -8,7 +8,7 @@ namespace CourseProject.ViewModels
 
         public IEnumerable<string> Errors { get; set; }
 
-        public int Id { get; set; }
+        public int FieldId { get; set; }
 
         public string Name { get; set; }
 

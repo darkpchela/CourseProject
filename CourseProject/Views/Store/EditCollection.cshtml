@@ -68,7 +68,6 @@
                         </svg>
                     </button>
                 </div>
-
             </div>
             <input type="hidden" asp-for="@Model.ResourceId" value="@Model.ResourceId" />
             <input type="hidden" asp-for="@Model.OwnerId" value="@Model.OwnerId" />
@@ -78,10 +77,14 @@
     </div>
 </div>
 
+<div id="cashedFields" class="d-none">
+    @Html.Raw(Json.Serialize(Model.Fields))
+</div>
+
 <div class="d-none">
     <div id="fieldProto" name='field' class="d-flex flex-row flex-nowrap align-items-center mt-1">
-        <input id="id" type="hidden" data-prop="id" />
-        <input id="name" name="name" data-prop="name" type="text" class="form-control flex-grow-1 mr-1 " placeholder="Field name" />
+        <input type="hidden" data-prop="id" />
+        <input name="name" data-prop="name" type="text" class="form-control flex-grow-1 mr-1 " placeholder="Field name" />
         @Html.DropDownList("type", new SelectList(await fieldTypesService.GetAllAsync(), "Id", "Type"), "Select field type", new { @class = "form-control", data_prop = "type" })
         <a name='btnDeleteField' href="" class="d-block btn p-0">
             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="tiny-icon" viewBox="0 0 16 16">
@@ -122,23 +125,28 @@
                 $('#dropzone .dz-preview').remove();
             }
         });
+
+        $('#changeImage').click(e => {
+            e.preventDefault();
+            $(e.target).parents('[name=imgContainer]').hide();
+            $('#dzContainer').show();
+        });
     </script>
     <script>
         const getFieldElem = (props) => {
             let field = $('#fieldProto').clone(true).removeAttr('id');
-            let nameInput = field.children('#name');
-            let typeInput = field.children('#type');
-            let idInput = field.children('#id');
+            let nameInput = field.children('[data-prop=name]');
+            let typeInput = field.children('[data-prop=type]');
+            let idInput = field.children('[data-prop=id]');
             if (props) {
-                field.children('#name').val(props.name);
-                field.children('#type').val(props.typeId);
-                field.children('#id').val(props.fieldId);
+                nameInput.val(props.name);
+                typeInput.val(props.typeId);
+                idInput.val(props.fieldId);
             }
-            nameInput.removeAttr('id');
             typeInput.removeAttr('id');
-            idInput.removeAttr('id');
             return field;
         };
+
         const setFieldName = (field, id) => {
             let nameInputElem = $(field).find('[data-prop=name]');
             let typeInputElem = $(field).find('[data-prop=type]');
@@ -147,6 +155,7 @@
             typeInputElem.attr('name', `Fields[${id}].TypeId`);
             idInputElem.attr('name', `Fields[${id}].FieldId`);
         };
+
         const updateFieldNames = () => {
             let fields = $('#fields [name=field]');
             for (let i = 0; i < fields.length; i++) {
@@ -167,7 +176,7 @@
         const createNewField = async (createFieldVM) => {
             await $.post("/api/CreateField", createFieldVM, result => {
                 if (result.succeed === true) {
-                    let field = getFieldElem(result.optionalFieldModel);
+                    let field = getFieldElem(result);
                     field.find('select [value=""]').remove();
                     $('#fields #btnAddField').before(field);
                     updateFieldNames();
@@ -178,22 +187,10 @@
             });
 
         };
-        const loadFields = id => {
-            $.post("/api/GetCollectionFields",
-                { id: id },
-                data => {
-                    for (let i = 0; i < data.length; i++) {
-                        let field = getFieldElem(data[i]);
-                        $('#fields').prepend(field);
-                    }
-                    updateFieldNames();
-                }
-            );
-        };
 
         $('#btnAddField').click(async e => {
             e.preventDefault();
-            let collectionId = $('#Id').val();
+            let collectionId = $('#CollectionId').val();
             let ownerId = $('#OwnerId').val();
             await createNewField({
                 CollectionId: collectionId,
@@ -203,7 +200,7 @@
 
         $('[name=btnDeleteField]').click(async (e) => {
             e.preventDefault();
-            let collectionId = $('#Id').val();
+            let collectionId = $('#CollectionId').val();
             let ownerId = $('#OwnerId').val();
             let fieldId = $(e.target).parents('[name=field]').find('[data-prop=id]').val();
             let result = await deleteField({
@@ -217,20 +214,17 @@
             }
         });
 
-        $('#changeImage').click(e => {
-            e.preventDefault();
-            $(e.target).parents('[name=imgContainer]').hide();
-            $('#dzContainer').show();
-        });
-
         $('#type').focus(e => {
             $(e.target).children('[value=""]').remove();
         });
 
         $(() => {
-            let id = $('#Id').val();
-            loadFields(id);
-
+            let cashedFields = JSON.parse($('#cashedFields').text());
+            for (let i = 0; i < cashedFields.length; i++) {
+                let field = getFieldElem(cashedFields[i]);
+                $('#fields #btnAddField').before(field);
+            }
+            updateFieldNames();
         });
     </script>
 }
