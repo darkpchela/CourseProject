@@ -52,6 +52,18 @@ namespace CourseProject.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> DeleteCollection()
+        {
+            return Json(true);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteItem()
+        {
+            return Json(true);
+        }
+
+        [HttpPost]
         public async Task<IActionResult> GetCollectionFields(int id)
         {
             var collection = await collectionsCrudService.GetAsync(id);
