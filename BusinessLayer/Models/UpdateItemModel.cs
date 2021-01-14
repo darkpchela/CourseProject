@@ -26,6 +26,5 @@ namespace BusinessLayer.Models
 
         public IEnumerable<ItemOptionalFieldModel> OptionalFields { get; set; }
 
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
     }
 }

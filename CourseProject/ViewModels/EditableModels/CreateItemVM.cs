@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using CourseProject.ViewModels.EditableModels;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace CourseProject.ViewModels
@@ -24,7 +25,7 @@ namespace CourseProject.ViewModels
 
         public string Tags { get; set; }
 
-        public IList<EditItemOptionalFieldVM> Fields { get; set; }
+        public IList<CreateItemOptionalFieldVM> Fields { get; set; }
 
         public string ImageUrl { get; set; }
     }

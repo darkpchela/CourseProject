@@ -85,9 +85,10 @@
     <div id="fieldProto" name="field">
         <div class="border-custom rounded ">
             <div name="fieldBody" class="d-flex flex-row flex-nowrap justify-content-between p-1">
-                <input data-prop="id" type="hidden" />
+                <input data-prop="fieldId" type="hidden" />
                 <input data-prop="name" type="hidden" />
                 <input data-prop="type" type="hidden" />
+                <input data-prop="itemFieldId" type="hidden" />
                 <label name="fieldName" class="d-inline-block text-center p-1 w-50">FieldName</label>
             </div>
         </div>
@@ -199,23 +200,20 @@
             }
         };
         const setFieldName = (field, id) => {
-            let valueInputElem = $(field).find('[data-prop=value]');
-            let idInputElem = $(field).find('[data-prop=id]');
-            let nameInputElem = $(field).find('[data-prop=name]');
-            let typeInputElem = $(field).find('[data-prop=type]');
-            valueInputElem.attr('name', `Fields[${id}].Value`);
-            idInputElem.attr('name', `Fields[${id}].FieldId`);
-            nameInputElem.attr('name', `Fields[${id}].Name`);
-            typeInputElem.attr('name', `Fields[${id}].Type`);
+            $(field).find('[data-prop=value]').attr('name', `Fields[${id}].Value`);
+            $(field).find('[data-prop=fieldId]').attr('name', `Fields[${id}].FieldId`);
+            $(field).find('[data-prop=name]').attr('name', `Fields[${id}].Name`);
+            $(field).find('[data-prop=type]').attr('name', `Fields[${id}].Type`);
+            $(field).find('[data-prop=itemFieldId]').attr('name', `Fields[${id}].ItemFieldId`);
         };
 
         const getFieldElem = (fieldVM) => {
             let field = $('#fieldProto').clone(true).removeAttr('id');
             field.find('[name=fieldName]').text(fieldVM.name);
             field.find('[data-prop=name]').val(fieldVM.name);
-            field.find('[data-prop=id]').val(fieldVM.fieldId);
+            field.find('[data-prop=fieldId]').val(fieldVM.fieldId);
             field.find('[data-prop=type]').val(fieldVM.type);
-            console.log(fieldVM.type)
+            field.find('[data-prop=itemFieldId]').val(fieldVM.itemFieldId);
             let inputElem = getInputFuncDictionary[fieldVM.type](fieldVM.value);
             field.find('[name=fieldBody]').append(inputElem);
             return field;

@@ -1,11 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CourseProject.ViewModels
+namespace CourseProject.ViewModels.EditableModels
 {
-    public class EditItemOptionalFieldVM
+    public class CreateItemOptionalFieldVM
     {
-        public int ItemFieldId { get; set; }
-
         [Required]
         public int? FieldId { get; set; }
 
