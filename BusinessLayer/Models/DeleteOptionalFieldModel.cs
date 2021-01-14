@@ -1,8 +1,12 @@
-﻿namespace BusinessLayer.Models
+﻿using BusinessLayer.Interfaces;
+
+namespace BusinessLayer.Models
 {
-    public class DeleteOptionalFieldModel
+    public class DeleteOptionalFieldModel : IAuthenticatableModel
     {
         public bool IsAdminRequest { get; set; }
+
+        public int RequesterId { get; set; }
 
         public int OwnerId { get; set; }
 

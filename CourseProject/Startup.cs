@@ -38,6 +38,7 @@ namespace CourseProject
             services.AddAutomapperProfiles(Assembly.GetExecutingAssembly());
             services.AddCloudinaryService(Configuration);
             services.AddBusinessLayerDependencies();
+            services.AddHttpContextAccessor();
             services.AddControllersWithViews();
  
         }

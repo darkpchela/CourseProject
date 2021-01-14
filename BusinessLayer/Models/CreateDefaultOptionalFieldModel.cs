@@ -1,8 +1,12 @@
-﻿namespace BusinessLayer.Models
+﻿using BusinessLayer.Interfaces;
+
+namespace BusinessLayer.Models
 {
-    public class CreateDefaultOptionalFieldModel
+    public class CreateDefaultOptionalFieldModel : IAuthenticatableModel
     {
         public bool IsAdminRequest { get; set; }
+
+        public int RequesterId { get; set; }
 
         public int OwnerId { get; set; }
 

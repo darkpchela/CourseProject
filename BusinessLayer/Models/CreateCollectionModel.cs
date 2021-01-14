@@ -1,10 +1,11 @@
-﻿using BusinessLayer.Models.DALModels;
+﻿using BusinessLayer.Interfaces;
+using BusinessLayer.Models.DALModels;
 using System;
 using System.Collections.Generic;
 
 namespace BusinessLayer.Models
 {
-    public class CreateCollectionModel
+    public class CreateCollectionModel : IAuthenticatableModel
     {
         public bool IsAdminRequest { get; set; }
 

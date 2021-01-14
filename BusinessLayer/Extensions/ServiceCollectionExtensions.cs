@@ -44,6 +44,7 @@ namespace BusinessLayer.Extensions
             services.AddTransient<IItemsManager, ItemsManager>();
             services.AddTransient<IResourcesManager, ResourcesManager>();
             services.AddTransient<IOptionalFieldsManager, OptionalFieldsManager>();
+            services.AddTransient<IModelAuthenticator, ModelAuthenticator>();
             return services;
         }
 
