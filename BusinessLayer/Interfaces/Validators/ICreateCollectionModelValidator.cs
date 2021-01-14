@@ -2,7 +2,7 @@
 
 namespace BusinessLayer.Interfaces.Validators
 {
-    public interface IUpdateCollectionModelValidator : IValidator<UpdateCollectionModel>
+    public interface ICreateCollectionModelValidator : IValidator<CreateCollectionModel>
     {
     }
 }

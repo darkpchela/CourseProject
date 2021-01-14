@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Interfaces.Validators
 {
-    public interface IValidator<TModel, TResult> where TModel : class where TResult : ResultModel<string>, new()
+    public interface IValidator<TModel> where TModel : class
     {
-        Task<TResult> ValidateAsync(TModel model);
+        Task<ValidationResult> ValidateAsync(TModel model);
     }
 }

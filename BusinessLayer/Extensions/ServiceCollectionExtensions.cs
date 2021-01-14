@@ -25,7 +25,7 @@ namespace BusinessLayer.Extensions
             return services;
         }
 
-        public static IServiceCollection AddBusinessLayerDependencies(this IServiceCollection services)
+        public static IServiceCollection AddBusinessLayerDependencies(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddTransient<ICollectionItemCrudService, CollectionItemCrudService>();
             services.AddTransient<ICollectionsCrudService, CollectionsCrudService>();
@@ -46,6 +46,7 @@ namespace BusinessLayer.Extensions
             services.AddTransient<IItemsManager, ItemsManager>();
             services.AddTransient<IResourcesManager, ResourcesManager>();
             services.AddTransient<IOptionalFieldsManager, OptionalFieldsManager>();
+            services.AddCloudinaryService(configuration);
             services.AddValidators();
             return services;
         }
@@ -59,7 +60,13 @@ namespace BusinessLayer.Extensions
 
         public static IServiceCollection AddValidators(this IServiceCollection services)
         {
+            services.AddTransient<ICreateCollectionModelValidator, CreateCollectionModelValidator>();
             services.AddTransient<IUpdateCollectionModelValidator, UpdateCollectionModelValidator>();
+            services.AddTransient<ICreateItemModelValidator, CreateItemModelValidator>();
+            services.AddTransient<IUpdateItemModelValidator, UpdateItemModelValidator>();
+            services.AddTransient<ICreateDefaultOptionalFieldModelValidator, CreateDefaultOptionalFieldModelValidator>();
+            services.AddTransient<IDeleteOptionalFieldModelValidator, DeleteOptionalFieldModelValidator>();
+            services.AddTransient<IValidationUnitOfWork, ValidationUnitOfWork>();
             return services;
         }
     }

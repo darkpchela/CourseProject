@@ -8,26 +8,30 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Services.Validators
 {
-    public class UpdateCollectionModelValidator : DefaultValidator<UpdateCollectionModel>, IUpdateCollectionModelValidator
+    public class UpdateItemModelValidator : DefaultValidator<UpdateItemModel>, IUpdateItemModelValidator
     {
-        private readonly ICollectionsCrudService collectionsCrudService;
+        private readonly IItemsCrudService itemsCrudService;
 
-        private readonly IThemesCrudService themesCrudService;
+        private readonly ICollectionsCrudService collectionsCrudService;
 
         private readonly IUserCrudService userCrudService;
 
         private readonly IResourceCrudService resourceCrudService;
 
-        public UpdateCollectionModelValidator(IHttpContextAccessor httpContextAccessor, ICollectionsCrudService collectionsCrudService, IThemesCrudService themesCrudService, IUserCrudService userCrudService, IResourceCrudService resourceCrudService) : base(httpContextAccessor)
+        public UpdateItemModelValidator(IHttpContextAccessor httpContextAccessor, IItemsCrudService itemsCrudService,
+            ICollectionsCrudService collectionsCrudService, IUserCrudService userCrudService, IResourceCrudService resourceCrudService) : base(httpContextAccessor)
         {
+            this.itemsCrudService = itemsCrudService;
             this.collectionsCrudService = collectionsCrudService;
-            this.themesCrudService = themesCrudService;
             this.userCrudService = userCrudService;
             this.resourceCrudService = resourceCrudService;
         }
 
-        protected override async Task BaseValidation(UpdateCollectionModel model)
+        protected async override Task BaseValidation(UpdateItemModel model)
         {
+            var item = await itemsCrudService.GetAsync(model.ItemId);
+            if (item is null)
+                result.AddError("Item not found");
             var collection = await collectionsCrudService.GetAsync(model.CollectionId);
             if (collection is null)
                 result.AddError("Collection not found");
@@ -37,18 +41,14 @@ namespace BusinessLayer.Services.Validators
             var resource = await resourceCrudService.GetAsync(model.ResourceId);
             if (resource is null)
                 result.AddError("Resource not found");
-            var theme = await themesCrudService.GetAsync(model.ThemeId);
-            if (theme is null)
-                result.AddError("Theme not found");
         }
 
-        protected async override Task OptionalValidation(UpdateCollectionModel model)
+        protected async override Task OptionalValidation(UpdateItemModel model)
         {
             Authenticate(model);
             var collection = await collectionsCrudService.GetAsync(model.CollectionId);
-            if (model.OwnerId != collection.OwnerId)
-                result.AddError("Owner matching error");
-            if (!collection.OptionalFields.Select(of => of.Id).OrderBy(i => i).SequenceEqual(model.OptionalFields.Select(of => of.Id).OrderBy(i => i)))
+            if (!collection.OptionalFields.Select(of => of.Id).OrderBy(i => i).SequenceEqual(
+                model.OptionalFields.Select(of => of.OptionalFieldId).OrderBy(i => i)))
                 result.AddError("Optional fields matching error");
         }
     }

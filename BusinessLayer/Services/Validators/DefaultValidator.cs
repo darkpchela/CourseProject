@@ -6,20 +6,20 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Services.Validators
 {
-    public abstract class Validator<TModel, TResultModel> : IValidator<TModel, TResultModel> where TModel : class where TResultModel : ResultModel<string>, new()
+    public abstract class DefaultValidator<TModel> : IValidator<TModel> where TModel : class
     {
-        protected TResultModel result;
+        protected ValidationResult result;
 
         protected readonly IHttpContextAccessor httpContextAccessor;
 
-        public Validator(IHttpContextAccessor httpContextAccessor)
+        public DefaultValidator(IHttpContextAccessor httpContextAccessor)
         {
             this.httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<TResultModel> ValidateAsync(TModel model)
+        public async Task<ValidationResult> ValidateAsync(TModel model)
         {
-            result = new TResultModel();
+            result = new ValidationResult();
             await BaseValidation(model);
             if (!result.Succeed)
                 return result;

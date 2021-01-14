@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BusinessLayer.Models.ResultModels
+﻿namespace BusinessLayer.Models.ResultModels
 {
     public class DeleteOptionalFieldResult : ResultModel<string>
     {
+        public DeleteOptionalFieldResult(ResultModel<string> result) : base(result)
+        {
+        }
     }
 }

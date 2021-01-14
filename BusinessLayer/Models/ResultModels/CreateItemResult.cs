@@ -3,5 +3,9 @@
     public class CreateItemResult : ResultModel<string>
     {
         public int ItemId { get; set; }
+
+        public CreateItemResult(ResultModel<string> result) : base(result)
+        {
+        }
     }
 }
