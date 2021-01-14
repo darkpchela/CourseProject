@@ -1,13 +1,10 @@
 ﻿using BusinessLayer.Interfaces;
+using BusinessLayer.Interfaces.Validators;
 
 namespace BusinessLayer.Models
 {
     public class CreateDefaultOptionalFieldModel : IAuthenticatableModel
     {
-        public bool IsAdminRequest { get; set; }
-
-        public int RequesterId { get; set; }
-
         public int OwnerId { get; set; }
 
         public int CollectionId { get; set; }

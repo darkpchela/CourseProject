@@ -1,4 +1,5 @@
 ﻿using BusinessLayer.Interfaces;
+using BusinessLayer.Interfaces.Validators;
 using BusinessLayer.Models.DALModels;
 using System;
 using System.Collections.Generic;
@@ -7,9 +8,6 @@ namespace BusinessLayer.Models
 {
     public class UpdateItemModel : IAuthenticatableModel
     {
-        public bool IsAdminRequest { get; set; }
-
-        public int RequesterId { get; set; }
 
         public int ItemId { get; set; }
 

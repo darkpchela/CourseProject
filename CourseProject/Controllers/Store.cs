@@ -74,8 +74,6 @@ namespace CourseProject.Controllers
             if (!ModelState.IsValid)
                 return View(model);
             var dtoModel = mapper.Map<CreateCollectionModel>(model);
-            dtoModel.RequesterId = GetCurrentUserId();
-            dtoModel.IsAdminRequest = User.IsInRole("Admin");
             var result = await collectionsManager.CreateAsync(dtoModel);
             if (!result.Succeed)
             {
@@ -103,8 +101,6 @@ namespace CourseProject.Controllers
             if (!ModelState.IsValid)
                 return View(editCollectionVM);
             var dtoModel = mapper.Map<UpdateCollectionModel>(editCollectionVM);
-            dtoModel.RequesterId = GetCurrentUserId();
-            dtoModel.IsAdminRequest = User.IsInRole("Admin");
             var result = await collectionsManager.UpdateAsync(dtoModel);
             if (!result.Succeed)
             {
@@ -131,8 +127,6 @@ namespace CourseProject.Controllers
             if (!ModelState.IsValid)
                 return View(createItemVM);
             var dtoModel = mapper.Map<CreateItemModel>(createItemVM);
-            dtoModel.RequesterId = GetCurrentUserId();
-            dtoModel.IsAdminRequest = User.IsInRole("Admin");
             var result = await itemsManager.CreateAsync(dtoModel);
             if (!result.Succeed)
             {
@@ -160,8 +154,6 @@ namespace CourseProject.Controllers
             if (!ModelState.IsValid)
                 return View(editItemVM);
             var dtoModel = mapper.Map<UpdateItemModel>(editItemVM);
-            dtoModel.RequesterId = GetCurrentUserId();
-            dtoModel.IsAdminRequest = User.IsInRole("Admin");
             var result = await itemsManager.UpdateAsync(dtoModel);
             if (!result.Succeed)
             {

@@ -78,10 +78,6 @@ namespace CourseProject.Controllers
         {
             int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId);
             var dtoModel = mapper.Map<CreateDefaultOptionalFieldModel>(model);
-            if (User.IsInRole("Admin"))
-                dtoModel.IsAdminRequest = true;
-            else
-                dtoModel.OwnerId = userId;
             var result = await optionalFieldsManager.CreateDefaultAsync(dtoModel);
             var resultVM = mapper.Map<CreateOptionalFieldResultVM>(result);
             return Json(resultVM);
@@ -92,10 +88,6 @@ namespace CourseProject.Controllers
         {
             int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId);
             var dtoModel = mapper.Map<DeleteOptionalFieldModel>(model);
-            if (User.IsInRole("Admin"))
-                dtoModel.IsAdminRequest = true;
-            else
-                dtoModel.OwnerId = userId;
             var result = await optionalFieldsManager.DeleteAsync(dtoModel);
             return Json(result);
         }

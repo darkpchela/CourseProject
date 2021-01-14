@@ -1,4 +1,4 @@
-﻿using BusinessLayer.Interfaces;
+﻿using BusinessLayer.Interfaces.Validators;
 using BusinessLayer.Models.DALModels;
 using System;
 using System.Collections.Generic;
@@ -7,10 +7,6 @@ namespace BusinessLayer.Models
 {
     public class CreateCollectionModel : IAuthenticatableModel
     {
-        public bool IsAdminRequest { get; set; }
-
-        public int RequesterId { get; set; }
-
         public string Name { get; set; }
 
         public int ThemeId { get; set; }

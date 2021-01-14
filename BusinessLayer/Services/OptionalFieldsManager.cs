@@ -69,8 +69,8 @@ namespace BusinessLayer.Services
             if (!result.Succeed)
                 return result;
 
-            if (!model.IsAdminRequest && collection.OwnerId != owner.Id)
-                result.AddError("Access denied");
+            //if (!model.IsAdminRequest && collection.OwnerId != owner.Id)
+            //    result.AddError("Access denied");
             return result;
         }
 
@@ -91,8 +91,8 @@ namespace BusinessLayer.Services
 
             if (!collection.OptionalFields.Any(f => f.Id == field.Id))
                 result.AddError("Optional field not found");
-            if (!model.IsAdminRequest && collection.OwnerId != owner.Id)
-                result.AddError("Access denied");
+            //if (!model.IsAdminRequest && collection.OwnerId != owner.Id)
+            //    result.AddError("Access denied");
             return result;
         }
     }

@@ -76,11 +76,11 @@ namespace BusinessLayer.Services
             if (!result.Succeed)
                 return result;
 
-            if (!createItemModel.IsAdminRequest && createItemModel.RequesterId != owner.Id)
-                result.AddError("Access denied");
-            if (!collection.OptionalFields.Select(of => of.Id).OrderBy(i => i)
-                .SequenceEqual(createItemModel.OptionalFields.Select(of => of.OptionalFieldId).OrderBy(i => i)))
-                result.AddError("Matching fields failed");
+            //if (!createItemModel.IsAdminRequest && createItemModel.RequesterId != owner.Id)
+            //    result.AddError("Access denied");
+            //if (!collection.OptionalFields.Select(of => of.Id).OrderBy(i => i)
+            //    .SequenceEqual(createItemModel.OptionalFields.Select(of => of.OptionalFieldId).OrderBy(i => i)))
+            //    result.AddError("Matching fields failed");
             return result;
         }
 
@@ -102,11 +102,11 @@ namespace BusinessLayer.Services
             if (!result.Succeed)
                 return result;
 
-            if (!updateItemModel.IsAdminRequest && updateItemModel.RequesterId != owner.Id)
-                result.AddError("Access denied");
-            if (!collection.OptionalFields.Select(of => of.Id).OrderBy(i => i)
-                .SequenceEqual(updateItemModel.OptionalFields.Select(of => of.OptionalFieldId).OrderBy(i => i)))
-                result.AddError("Matching fields failed");
+            //if (!updateItemModel.IsAdminRequest && updateItemModel.RequesterId != owner.Id)
+            //    result.AddError("Access denied");
+            //if (!collection.OptionalFields.Select(of => of.Id).OrderBy(i => i)
+            //    .SequenceEqual(updateItemModel.OptionalFields.Select(of => of.OptionalFieldId).OrderBy(i => i)))
+            //    result.AddError("Matching fields failed");
             return result;
         }
     }

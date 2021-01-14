@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using BusinessLayer.Interfaces;
 using BusinessLayer.Interfaces.BaseCrud;
+using BusinessLayer.Interfaces.Validators;
 using BusinessLayer.Services;
 using BusinessLayer.Services.BaseCrud;
+using BusinessLayer.Services.Validators;
 using CloudinaryDotNet;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -44,7 +46,7 @@ namespace BusinessLayer.Extensions
             services.AddTransient<IItemsManager, ItemsManager>();
             services.AddTransient<IResourcesManager, ResourcesManager>();
             services.AddTransient<IOptionalFieldsManager, OptionalFieldsManager>();
-            services.AddTransient<IModelAuthenticator, ModelAuthenticator>();
+            services.AddValidators();
             return services;
         }
 
@@ -52,6 +54,12 @@ namespace BusinessLayer.Extensions
         {
             services.AddCloudinary(new Account(configuration["Cloudinary:CloudName"], configuration["Cloudinary:ClientId"], configuration["Cloudinary:ClientSecret"]));
             services.AddTransient<ICloudinaryService, CloudinaryService>();
+            return services;
+        }
+
+        public static IServiceCollection AddValidators(this IServiceCollection services)
+        {
+            services.AddTransient<IUpdateCollectionModelValidator, UpdateCollectionModelValidator>();
             return services;
         }
     }
