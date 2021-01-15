@@ -25,12 +25,19 @@ namespace CourseProject.Controllers
 
         private readonly IOptionalFieldsManager optionalFieldsManager;
 
-        public Api(IMapper mapper, IResourcesManager resourcesManager, ICollectionsCrudService collectionsCrudService, IOptionalFieldsManager optionalFieldsManager)
+        private readonly IItemsManager itemsManager;
+
+        private readonly ICollectionsManager collectionsManager;
+
+        public Api(IMapper mapper, IResourcesManager resourcesManager, ICollectionsCrudService collectionsCrudService, IOptionalFieldsManager optionalFieldsManager, IItemsManager itemsManager,
+            ICollectionsManager collectionsManager)
         {
             this.mapper = mapper;
             this.resourcesManager = resourcesManager;
             this.collectionsCrudService = collectionsCrudService;
             this.optionalFieldsManager = optionalFieldsManager;
+            this.itemsManager = itemsManager;
+            this.collectionsManager = collectionsManager;
         }
 
         [HttpPost]
@@ -54,13 +61,17 @@ namespace CourseProject.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteCollection(DeleteCollectionVM model)
         {
-            return Json(true);
+            var dtoModel = mapper.Map<DeleteCollectionModel>(model);
+            var result = await collectionsManager.DeleteAsync(dtoModel);
+            return Json(result);
         }
 
         [HttpPost]
         public async Task<IActionResult> DeleteItem(DeleteItemVM model)
         {
-            return Json(true);
+            var dtoModel = mapper.Map<DeleteItemModel>(model);
+            var result = await itemsManager.DeleteAsync(dtoModel);
+            return Json(result);
         }
 
         [HttpPost]
