@@ -1,4 +1,4 @@
-﻿namespace BusinessLayer.Interfaces.Validators
+﻿namespace BusinessLayer.Interfaces.Authenticators
 {
     public interface IAuthenticatableModel
     {

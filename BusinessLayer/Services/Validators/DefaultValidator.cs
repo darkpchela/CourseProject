@@ -30,14 +30,5 @@ namespace BusinessLayer.Services.Validators
         protected abstract Task BaseValidation(TModel model);
 
         protected abstract Task OptionalValidation(TModel model);
-
-        protected virtual void Authenticate(IAuthenticatableModel model)
-        {
-            var isAdminRequest = httpContextAccessor.HttpContext.User.IsInRole("Admin");
-            var userId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            int.TryParse(userId, out int requesterId);
-            if (!isAdminRequest && model.OwnerId != requesterId)
-                result.AddError("Access denied");
-        }
     }
 }

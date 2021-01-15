@@ -44,7 +44,6 @@ namespace BusinessLayer.Services.Validators
 
         protected async override Task OptionalValidation(UpdateCollectionModel model)
         {
-            Authenticate(model);
             var collection = await collectionsCrudService.GetAsync(model.CollectionId);
             if (model.OwnerId != collection.OwnerId)
                 result.AddError("Owner matching error");

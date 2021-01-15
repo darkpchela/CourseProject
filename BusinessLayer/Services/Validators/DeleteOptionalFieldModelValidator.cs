@@ -37,7 +37,6 @@ namespace BusinessLayer.Services.Validators
 
         protected async override Task OptionalValidation(DeleteOptionalFieldModel model)
         {
-            Authenticate(model);
             var collection = await collectionsCrudService.GetAsync(model.CollectionId);
             var field = await optionalFieldsCrudService.GetAsync(model.OptionalFieldId);
             if (!collection.OptionalFields.Any(f => f.Id == field.Id))

@@ -36,7 +36,6 @@ namespace BusinessLayer.Services.Validators
 
         protected async override Task OptionalValidation(CreateCollectionModel model)
         {
-            Authenticate(model);
         }
     }
 }

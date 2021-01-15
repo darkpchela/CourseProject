@@ -39,7 +39,6 @@ namespace BusinessLayer.Services.Validators
 
         protected async override Task OptionalValidation(CreateItemModel model)
         {
-            Authenticate(model);
             var collection = await collectionsCrudService.GetAsync(model.CollectionId);
             if (!collection.OptionalFields.Select(of => of.Id).OrderBy(i => i).SequenceEqual(
                 model.OptionalFields.Select(of => of.OptionalFieldId).OrderBy(i => i)))

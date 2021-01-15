@@ -16,9 +16,14 @@ namespace BusinessLayer.Services.Validators
 
         public IDeleteOptionalFieldModelValidator DeleteOptionalFieldModelValidator { get; set; }
 
+        public IDeleteCollectionModelValidator DeleteCollectionModelValidator { get; set; }
+
+        public IDeleteItemModelValidator DeleteItemModelValidator { get; set; }
+
         public ValidationUnitOfWork(ICreateCollectionModelValidator createCollectionModelValidator, IUpdateCollectionModelValidator updateCollectionModelValidator,
             ICreateItemModelValidator createItemModelValidator, IUpdateItemModelValidator updateItemModelValidator,
-            ICreateDefaultOptionalFieldModelValidator createDefaultOptionalFieldModelValidator, IDeleteOptionalFieldModelValidator deleteOptionalFieldModelValidator)
+            ICreateDefaultOptionalFieldModelValidator createDefaultOptionalFieldModelValidator, IDeleteOptionalFieldModelValidator deleteOptionalFieldModelValidator, IDeleteItemModelValidator deleteItemModelValidator,
+            IDeleteCollectionModelValidator deleteCollectionModelValidator)
         {
             this.CreateCollectionModelValidator = createCollectionModelValidator;
             this.UpdateCollectionModelValidator = updateCollectionModelValidator;
@@ -26,6 +31,8 @@ namespace BusinessLayer.Services.Validators
             this.UpdateItemModelValidator = updateItemModelValidator;
             this.CreateDefaultOptionalFieldModelValidator = createDefaultOptionalFieldModelValidator;
             this.DeleteOptionalFieldModelValidator = deleteOptionalFieldModelValidator;
+            this.DeleteItemModelValidator = deleteItemModelValidator;
+            this.DeleteCollectionModelValidator = deleteCollectionModelValidator;
         }
     }
 }

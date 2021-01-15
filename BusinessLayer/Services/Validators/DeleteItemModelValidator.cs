@@ -31,7 +31,6 @@ namespace BusinessLayer.Services.Validators
 
         protected async override Task OptionalValidation(DeleteItemModel model)
         {
-            Authenticate(model);
             var owner = await userCrudService.GetAsync(model.OwnerId);
         }
     }
