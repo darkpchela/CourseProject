@@ -1,7 +1,6 @@
 ﻿using BusinessLayer.Interfaces.BaseCrud;
 using BusinessLayer.Interfaces.Validators;
 using BusinessLayer.Models;
-using Microsoft.AspNetCore.Http;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,9 +14,7 @@ namespace BusinessLayer.Services.Validators
 
         private readonly IResourceCrudService resourceCrudService;
 
-        public CreateItemModelValidator(IHttpContextAccessor httpContextAccessor,
-            ICollectionsCrudService collectionsCrudService, IUserCrudService userCrudService,
-            IResourceCrudService resourceCrudService) : base(httpContextAccessor)
+        public CreateItemModelValidator(ICollectionsCrudService collectionsCrudService, IUserCrudService userCrudService, IResourceCrudService resourceCrudService)
         {
             this.collectionsCrudService = collectionsCrudService;
             this.userCrudService = userCrudService;

@@ -15,9 +15,9 @@ namespace BusinessLayer.Services
 
         private readonly IFieldTypesCrudService fieldTypesCrudService;
 
-        private readonly IValidationUnitOfWork validationUnitOfWork;
+        private readonly IModelValidatorsStore validationUnitOfWork;
 
-        public OptionalFieldsManager(IOptionalFieldsCrudService optionalFieldsCrudService, IFieldTypesCrudService fieldTypesCrudService, IValidationUnitOfWork validationUnitOfWork)
+        public OptionalFieldsManager(IOptionalFieldsCrudService optionalFieldsCrudService, IFieldTypesCrudService fieldTypesCrudService, IModelValidatorsStore validationUnitOfWork)
         {
             this.optionalFieldsCrudService = optionalFieldsCrudService;
             this.fieldTypesCrudService = fieldTypesCrudService;

@@ -2,7 +2,7 @@
 
 namespace BusinessLayer.Services.Validators
 {
-    public class ValidationUnitOfWork : IValidationUnitOfWork
+    public class ModelValidatorsStore : IModelValidatorsStore
     {
         public ICreateCollectionModelValidator CreateCollectionModelValidator { get; set; }
 
@@ -20,7 +20,7 @@ namespace BusinessLayer.Services.Validators
 
         public IDeleteItemModelValidator DeleteItemModelValidator { get; set; }
 
-        public ValidationUnitOfWork(ICreateCollectionModelValidator createCollectionModelValidator, IUpdateCollectionModelValidator updateCollectionModelValidator,
+        public ModelValidatorsStore(ICreateCollectionModelValidator createCollectionModelValidator, IUpdateCollectionModelValidator updateCollectionModelValidator,
             ICreateItemModelValidator createItemModelValidator, IUpdateItemModelValidator updateItemModelValidator,
             ICreateDefaultOptionalFieldModelValidator createDefaultOptionalFieldModelValidator, IDeleteOptionalFieldModelValidator deleteOptionalFieldModelValidator, IDeleteItemModelValidator deleteItemModelValidator,
             IDeleteCollectionModelValidator deleteCollectionModelValidator)

@@ -15,11 +15,11 @@ namespace BusinessLayer.Services
 
         private readonly ICollectionItemCrudService collectionItemCrudService;
 
-        private readonly IValidationUnitOfWork validationUnitOfWork;
+        private readonly IModelValidatorsStore validationUnitOfWork;
 
         private readonly IMapper mapper;
 
-        public ItemsManager(IItemsCrudService itemsCrudService, ICollectionItemCrudService collectionItemCrudService, IValidationUnitOfWork validationUnitOfWork, IMapper mapper)
+        public ItemsManager(IItemsCrudService itemsCrudService, ICollectionItemCrudService collectionItemCrudService, IModelValidatorsStore validationUnitOfWork, IMapper mapper)
         {
             this.itemsCrudService = itemsCrudService;
             this.mapper = mapper;
@@ -43,6 +43,11 @@ namespace BusinessLayer.Services
             await collectionItemCrudService.CreateAsync(collectionItem);
             result.ItemId = itemModel.Id;
             return result;
+        }
+
+        public Task<DeleteItemResult> DeleteAsync(DeleteItemModel deleteItemModel)
+        {
+            throw new System.NotImplementedException();
         }
 
         public async Task<UpdateItemResult> UpdateAsync(UpdateItemModel updateItemModel)

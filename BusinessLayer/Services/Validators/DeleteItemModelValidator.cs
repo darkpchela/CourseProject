@@ -1,20 +1,17 @@
 ﻿using BusinessLayer.Interfaces.BaseCrud;
+using BusinessLayer.Interfaces.Validators;
 using BusinessLayer.Models;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BusinessLayer.Services.Validators
 {
-    public class DeleteItemModelValidator : DefaultValidator<DeleteItemModel>
+    public class DeleteItemModelValidator : DefaultValidator<DeleteItemModel>, IDeleteItemModelValidator
     {
         private readonly IItemsCrudService itemsCrudService;
 
         private readonly IUserCrudService userCrudService;
 
-        public DeleteItemModelValidator(IHttpContextAccessor httpContextAccessor, IItemsCrudService itemsCrudService) : base(httpContextAccessor)
+        public DeleteItemModelValidator(IItemsCrudService itemsCrudService)
         {
             this.itemsCrudService = itemsCrudService;
         }

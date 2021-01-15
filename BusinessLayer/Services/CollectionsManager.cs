@@ -13,11 +13,11 @@ namespace BusinessLayer.Services
     {
         private readonly ICollectionsCrudService collectionsCrudService;
 
-        private readonly IValidationUnitOfWork validationUnitOfWork;
+        private readonly IModelValidatorsStore validationUnitOfWork;
 
         private readonly IMapper mapper;
 
-        public CollectionsManager(ICollectionsCrudService collectionsCrudService, IValidationUnitOfWork validationUnitOfWork, IMapper mapper)
+        public CollectionsManager(ICollectionsCrudService collectionsCrudService, IModelValidatorsStore validationUnitOfWork, IMapper mapper)
         {
             this.mapper = mapper;
             this.collectionsCrudService = collectionsCrudService;

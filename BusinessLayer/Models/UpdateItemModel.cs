@@ -1,14 +1,11 @@
-﻿using BusinessLayer.Interfaces;
-using BusinessLayer.Interfaces.Validators;
+﻿using BusinessLayer.Interfaces.Authenticators;
 using BusinessLayer.Models.DALModels;
-using System;
 using System.Collections.Generic;
 
 namespace BusinessLayer.Models
 {
     public class UpdateItemModel : IAuthenticatableModel
     {
-
         public int ItemId { get; set; }
 
         public string Name { get; set; }
@@ -24,6 +21,5 @@ namespace BusinessLayer.Models
         public IEnumerable<TagModel> Tags { get; set; }
 
         public IEnumerable<ItemOptionalFieldModel> OptionalFields { get; set; }
-
     }
 }

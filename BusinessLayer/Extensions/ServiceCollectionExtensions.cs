@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using BusinessLayer.Interfaces;
+using BusinessLayer.Interfaces.Authenticators;
 using BusinessLayer.Interfaces.BaseCrud;
 using BusinessLayer.Interfaces.Validators;
 using BusinessLayer.Services;
+using BusinessLayer.Services.Authenticators;
 using BusinessLayer.Services.BaseCrud;
 using BusinessLayer.Services.Validators;
 using CloudinaryDotNet;
@@ -27,6 +29,20 @@ namespace BusinessLayer.Extensions
 
         public static IServiceCollection AddBusinessLayerDependencies(this IServiceCollection services, IConfiguration configuration)
         {
+
+            services.AddBaseCrudServices();
+            services.AddTransient<ICollectionsManager, CollectionsManager>();
+            services.AddTransient<IItemsManager, ItemsManager>();
+            services.AddTransient<IResourcesManager, ResourcesManager>();
+            services.AddTransient<IOptionalFieldsManager, OptionalFieldsManager>();
+            services.AddCloudinaryService(configuration);
+            services.AddAuthenticators();
+            services.AddValidators();
+            return services;
+        }
+
+        private static IServiceCollection AddBaseCrudServices(this IServiceCollection services)
+        {
             services.AddTransient<ICollectionItemCrudService, CollectionItemCrudService>();
             services.AddTransient<ICollectionsCrudService, CollectionsCrudService>();
             services.AddTransient<ICommentsCrudService, CommentsCrudService>();
@@ -42,31 +58,41 @@ namespace BusinessLayer.Extensions
             services.AddTransient<IUserRegistService, UserRegistService>();
             services.AddTransient<IFieldTypesCrudService, FieldTypesCrudService>();
             services.AddTransient<IResourceCrudService, ResourceCrudService>();
-            services.AddTransient<ICollectionsManager, CollectionsManager>();
-            services.AddTransient<IItemsManager, ItemsManager>();
-            services.AddTransient<IResourcesManager, ResourcesManager>();
-            services.AddTransient<IOptionalFieldsManager, OptionalFieldsManager>();
-            services.AddCloudinaryService(configuration);
-            services.AddValidators();
             return services;
         }
 
-        public static IServiceCollection AddCloudinaryService(this IServiceCollection services, IConfiguration configuration)
+        private static IServiceCollection AddCloudinaryService(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddCloudinary(new Account(configuration["Cloudinary:CloudName"], configuration["Cloudinary:ClientId"], configuration["Cloudinary:ClientSecret"]));
             services.AddTransient<ICloudinaryService, CloudinaryService>();
             return services;
         }
 
-        public static IServiceCollection AddValidators(this IServiceCollection services)
+        private static IServiceCollection AddAuthenticators(this IServiceCollection services)
+        {
+            services.AddTransient<ICreateCollectionModelAuthenticator, CreateCollectionModelAuthenticator>();
+            services.AddTransient<ICreateItemModelAuthenticator, CreateItemModelAuthenticator>();
+            services.AddTransient<ICreateOptionalFieldModelAuthenticator, CreateOptionalFieldModelAuthenticator>();
+            services.AddTransient<IDeleteCollectionModelAuthenticator, DeleteCollectionModelAuthenticator>();
+            services.AddTransient<IDeleteItemModelAuthenticator, DeleteItemModelAuthenticator>();
+            services.AddTransient<IDeleteOptionalFieldModelAuthenticator, DeleteOptionalFieldModelAuthenticator>();
+            services.AddTransient<IUpdateCollectionModelAuthenticator, UpdateCollectionModelAuthenticator>();
+            services.AddTransient<IUpdateItemModelAuthenticator, UpdateItemModelAuthenticator>();
+            services.AddTransient<IModelAuthenticatorsStore, ModelAuthenticatorsStore>();
+            return services;
+        }
+
+        private static IServiceCollection AddValidators(this IServiceCollection services)
         {
             services.AddTransient<ICreateCollectionModelValidator, CreateCollectionModelValidator>();
             services.AddTransient<IUpdateCollectionModelValidator, UpdateCollectionModelValidator>();
             services.AddTransient<ICreateItemModelValidator, CreateItemModelValidator>();
             services.AddTransient<IUpdateItemModelValidator, UpdateItemModelValidator>();
+            services.AddTransient<IDeleteItemModelValidator, DeleteItemModelValidator>();
             services.AddTransient<ICreateDefaultOptionalFieldModelValidator, CreateDefaultOptionalFieldModelValidator>();
             services.AddTransient<IDeleteOptionalFieldModelValidator, DeleteOptionalFieldModelValidator>();
-            services.AddTransient<IValidationUnitOfWork, ValidationUnitOfWork>();
+            services.AddTransient<IDeleteCollectionModelValidator, DeleteCollectionModelValidator>();
+            services.AddTransient<IModelValidatorsStore, ModelValidatorsStore>();
             return services;
         }
     }

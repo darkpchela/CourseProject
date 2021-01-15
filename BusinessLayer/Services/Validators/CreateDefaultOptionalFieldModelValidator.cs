@@ -1,7 +1,6 @@
 ﻿using BusinessLayer.Interfaces.BaseCrud;
 using BusinessLayer.Interfaces.Validators;
 using BusinessLayer.Models;
-using Microsoft.AspNetCore.Http;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,7 +14,7 @@ namespace BusinessLayer.Services.Validators
 
         private readonly IUserCrudService userCrudService;
 
-        public CreateDefaultOptionalFieldModelValidator(IHttpContextAccessor httpContextAccessor, ICollectionsCrudService collectionsCrudService, IFieldTypesCrudService fieldTypesCrudService, IUserCrudService userCrudService) : base(httpContextAccessor)
+        public CreateDefaultOptionalFieldModelValidator(ICollectionsCrudService collectionsCrudService, IFieldTypesCrudService fieldTypesCrudService, IUserCrudService userCrudService)
         {
             this.collectionsCrudService = collectionsCrudService;
             this.fieldTypesCrudService = fieldTypesCrudService;

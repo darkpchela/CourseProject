@@ -1,6 +1,6 @@
 ﻿namespace BusinessLayer.Interfaces.Validators
 {
-    public interface IValidationUnitOfWork
+    public interface IModelValidatorsStore
     {
         ICreateCollectionModelValidator CreateCollectionModelValidator { get; }
 

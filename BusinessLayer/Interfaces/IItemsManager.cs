@@ -10,6 +10,6 @@ namespace BusinessLayer.Interfaces
 
         Task<UpdateItemResult> UpdateAsync(UpdateItemModel updateItemModel);
 
-        Task<DeleteItemResult> DeleteAsync(DeleteItemModel deleteItemModel)
+        Task<DeleteItemResult> DeleteAsync(DeleteItemModel deleteItemModel);
     }
 }
