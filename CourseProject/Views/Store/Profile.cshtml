@@ -55,6 +55,30 @@
         });
         $(() => {
             $('#btnGetCollections').click();
+            $('[name=btnDeleteCollection]').click(e => {
+                e.preventDefault();
+                let link = $(e.target).parents('a');
+                let id = link.attr('data-id');
+                console.log(id)
+                $.post('/api/DeleteCollection', { 'CollectionId': id }, (result) => {
+                    if (result.succeed === true)
+                        link.parents('[name=collection]').remove()
+                    else
+                        console.log(result.errors)
+                });
+            });
+            $('[name=btnDeleteItem]').click(e => {
+                e.preventDefault();
+                let link = $(e.target).parents('a');
+                let id = link.attr('data-id');
+                console.log(id)
+                $.post('/api/DeleteItem', { 'ItemId': id }, (result) => {
+                    if (result.succeed === true)
+                        link.parents('[name=item]').remove()
+                    else
+                        console.log(result.errors)
+                });
+            });
         });
     </script>
 }

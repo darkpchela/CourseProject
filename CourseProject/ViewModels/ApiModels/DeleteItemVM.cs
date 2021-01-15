@@ -2,6 +2,6 @@
 {
     public class DeleteItemVM
     {
-        private int ItemId { get; set; }
+        public int ItemId { get; set; }
     }
 }
