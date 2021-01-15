@@ -4,6 +4,10 @@
     {
         public int CollectionId { get; set; }
 
+        public CreateCollectionResult()
+        {
+        }
+
         public CreateCollectionResult(ResultModel<string> result) : base(result)
         {
         }
