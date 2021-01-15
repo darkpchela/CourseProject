@@ -1,4 +1,4 @@
-﻿namespace BusinessLayer.Interfaces.Authenticators
+﻿namespace BusinessLayer.Interfaces.Authentication
 {
     public interface IModelAuthenticatorsStore
     {

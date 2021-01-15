@@ -1,6 +1,6 @@
-﻿using BusinessLayer.Interfaces.Validators;
+﻿using BusinessLayer.Interfaces.Validation;
 
-namespace BusinessLayer.Services.Validators
+namespace BusinessLayer.Services.Validation
 {
     public class ModelValidatorsStore : IModelValidatorsStore
     {

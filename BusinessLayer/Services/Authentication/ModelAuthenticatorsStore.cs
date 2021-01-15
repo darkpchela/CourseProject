@@ -1,6 +1,6 @@
-﻿using BusinessLayer.Interfaces.Authenticators;
+﻿using BusinessLayer.Interfaces.Authentication;
 
-namespace BusinessLayer.Services.Authenticators
+namespace BusinessLayer.Services.Authentication
 {
     public class ModelAuthenticatorsStore : IModelAuthenticatorsStore
     {

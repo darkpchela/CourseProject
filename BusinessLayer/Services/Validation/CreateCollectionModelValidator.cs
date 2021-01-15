@@ -1,9 +1,9 @@
 ﻿using BusinessLayer.Interfaces.BaseCrud;
-using BusinessLayer.Interfaces.Validators;
+using BusinessLayer.Interfaces.Validation;
 using BusinessLayer.Models;
 using System.Threading.Tasks;
 
-namespace BusinessLayer.Services.Validators
+namespace BusinessLayer.Services.Validation
 {
     public class CreateCollectionModelValidator : DefaultValidator<CreateCollectionModel>, ICreateCollectionModelValidator
     {

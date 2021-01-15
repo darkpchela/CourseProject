@@ -1,4 +1,4 @@
-﻿namespace BusinessLayer.Interfaces.Validators
+﻿namespace BusinessLayer.Interfaces.Validation
 {
     public interface IModelValidatorsStore
     {

@@ -1,9 +1,9 @@
-﻿using BusinessLayer.Interfaces.Authenticators;
+﻿using BusinessLayer.Interfaces.Authentication;
 using BusinessLayer.Models;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 
-namespace BusinessLayer.Services.Authenticators
+namespace BusinessLayer.Services.Authentication
 {
     public class CreateItemModelAuthenticator : DefaultAuthenticator<CreateItemModel>, ICreateItemModelAuthenticator
     {

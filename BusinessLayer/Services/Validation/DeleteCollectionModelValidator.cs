@@ -1,11 +1,11 @@
-﻿using BusinessLayer.Interfaces.Validators;
+﻿using BusinessLayer.Interfaces.Validation;
 using BusinessLayer.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLayer.Services.Validators
+namespace BusinessLayer.Services.Validation
 {
     public class DeleteCollectionModelValidator : DefaultValidator<DeleteCollectionModel>, IDeleteCollectionModelValidator
     {

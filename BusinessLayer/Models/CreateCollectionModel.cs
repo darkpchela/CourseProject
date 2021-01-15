@@ -1,4 +1,4 @@
-﻿using BusinessLayer.Interfaces.Authenticators;
+﻿using BusinessLayer.Interfaces.Authentication;
 using BusinessLayer.Models.DALModels;
 using System;
 using System.Collections.Generic;

@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using BusinessLayer.Interfaces;
-using BusinessLayer.Interfaces.Authenticators;
+using BusinessLayer.Interfaces.Authentication;
 using BusinessLayer.Interfaces.BaseCrud;
-using BusinessLayer.Interfaces.Validators;
+using BusinessLayer.Interfaces.Validation;
 using BusinessLayer.Services;
-using BusinessLayer.Services.Authenticators;
+using BusinessLayer.Services.Authentication;
 using BusinessLayer.Services.BaseCrud;
-using BusinessLayer.Services.Validators;
+using BusinessLayer.Services.Validation;
 using CloudinaryDotNet;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

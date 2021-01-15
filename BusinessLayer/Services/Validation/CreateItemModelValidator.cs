@@ -1,10 +1,10 @@
 ﻿using BusinessLayer.Interfaces.BaseCrud;
-using BusinessLayer.Interfaces.Validators;
+using BusinessLayer.Interfaces.Validation;
 using BusinessLayer.Models;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BusinessLayer.Services.Validators
+namespace BusinessLayer.Services.Validation
 {
     public class CreateItemModelValidator : DefaultValidator<CreateItemModel>, ICreateItemModelValidator
     {

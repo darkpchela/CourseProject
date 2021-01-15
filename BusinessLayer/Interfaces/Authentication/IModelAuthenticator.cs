@@ -1,7 +1,7 @@
 ﻿using BusinessLayer.Models.ResultModels;
 using System.Threading.Tasks;
 
-namespace BusinessLayer.Interfaces.Authenticators
+namespace BusinessLayer.Interfaces.Authentication
 {
     public interface IModelAuthenticator<TModel> where TModel : IAuthenticatableModel
     {

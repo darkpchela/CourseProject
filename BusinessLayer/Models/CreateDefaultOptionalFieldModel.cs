@@ -1,4 +1,4 @@
-﻿using BusinessLayer.Interfaces.Authenticators;
+﻿using BusinessLayer.Interfaces.Authentication;
 
 namespace BusinessLayer.Models
 {

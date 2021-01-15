@@ -1,10 +1,10 @@
-﻿using BusinessLayer.Interfaces.Authenticators;
+﻿using BusinessLayer.Interfaces.Authentication;
 using BusinessLayer.Models.ResultModels;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace BusinessLayer.Services.Authenticators
+namespace BusinessLayer.Services.Authentication
 {
     public abstract class DefaultAuthenticator<TModel> : IModelAuthenticator<TModel> where TModel : IAuthenticatableModel
     {

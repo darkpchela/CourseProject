@@ -1,10 +1,10 @@
-﻿using BusinessLayer.Interfaces.Authenticators;
+﻿using BusinessLayer.Interfaces.Authentication;
 using BusinessLayer.Interfaces.BaseCrud;
 using BusinessLayer.Models;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 
-namespace BusinessLayer.Services.Authenticators
+namespace BusinessLayer.Services.Authentication
 {
     public class DeleteCollectionModelAuthenticator : DefaultAuthenticator<DeleteCollectionModel>, IDeleteCollectionModelAuthenticator
     {

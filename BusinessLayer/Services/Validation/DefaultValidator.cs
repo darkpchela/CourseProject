@@ -1,8 +1,8 @@
-﻿using BusinessLayer.Interfaces.Validators;
+﻿using BusinessLayer.Interfaces.Validation;
 using BusinessLayer.Models.ResultModels;
 using System.Threading.Tasks;
 
-namespace BusinessLayer.Services.Validators
+namespace BusinessLayer.Services.Validation
 {
     public abstract class DefaultValidator<TModel> : IValidator<TModel> where TModel : class
     {

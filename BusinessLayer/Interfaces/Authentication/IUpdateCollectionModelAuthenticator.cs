@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BusinessLayer.Interfaces.Authenticators
+namespace BusinessLayer.Interfaces.Authentication
 {
     public interface IUpdateCollectionModelAuthenticator : IModelAuthenticator<UpdateCollectionModel>
     {
