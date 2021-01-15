@@ -76,9 +76,8 @@ namespace CourseProject.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateField(CreateDefaultOptionalFieldVM model)
         {
-            int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId);
-            var dtoModel = mapper.Map<CreateDefaultOptionalFieldModel>(model);
-            var result = await optionalFieldsManager.CreateDefaultAsync(dtoModel);
+            var dtoModel = mapper.Map<CreateOptionalFieldModel>(model);
+            var result = await optionalFieldsManager.CreateAsync(dtoModel);
             var resultVM = mapper.Map<CreateOptionalFieldResultVM>(result);
             return Json(resultVM);
         }
@@ -86,7 +85,6 @@ namespace CourseProject.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteField(DeleteOptionalFieldVM model)
         {
-            int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId);
             var dtoModel = mapper.Map<DeleteOptionalFieldModel>(model);
             var result = await optionalFieldsManager.DeleteAsync(dtoModel);
             return Json(result);

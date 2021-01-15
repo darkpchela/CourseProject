@@ -1,4 +1,5 @@
-﻿using BusinessLayer.Interfaces;
+﻿using AutoMapper;
+using BusinessLayer.Interfaces;
 using BusinessLayer.Interfaces.Authentication;
 using BusinessLayer.Interfaces.BaseCrud;
 using BusinessLayer.Interfaces.Validation;
@@ -14,30 +15,30 @@ namespace BusinessLayer.Services
     {
         private readonly IOptionalFieldsCrudService optionalFieldsCrudService;
 
-        private readonly IFieldTypesCrudService fieldTypesCrudService;
-
         private readonly IModelValidatorsStore validatorsStore;
 
         private readonly IModelAuthenticatorsStore authenticatorsStore;
 
-        public OptionalFieldsManager(IOptionalFieldsCrudService optionalFieldsCrudService, IFieldTypesCrudService fieldTypesCrudService, IModelValidatorsStore validatorsStore, IModelAuthenticatorsStore authenticatorsStore)
+        private readonly IMapper mapper;
+
+        public OptionalFieldsManager(IOptionalFieldsCrudService optionalFieldsCrudService, IModelValidatorsStore validatorsStore, IModelAuthenticatorsStore authenticatorsStore, IMapper mapper)
         {
             this.optionalFieldsCrudService = optionalFieldsCrudService;
-            this.fieldTypesCrudService = fieldTypesCrudService;
             this.validatorsStore = validatorsStore;
             this.authenticatorsStore = authenticatorsStore;
+            this.mapper = mapper;
         }
 
-        public async Task<CreateOptionalFieldResult> CreateDefaultAsync(CreateDefaultOptionalFieldModel createDefaultFieldModel)
+        public async Task<CreateOptionalFieldResult> CreateAsync(CreateOptionalFieldModel createFieldModel)
         {
-            var validResult = await validatorsStore.CreateDefaultOptionalFieldModelValidator.ValidateAsync(createDefaultFieldModel);
+            var validResult = await validatorsStore.CreateDefaultOptionalFieldModelValidator.ValidateAsync(createFieldModel);
             if (!validResult.Succeed)
                 return new CreateOptionalFieldResult(validResult);
-            var authResult = await authenticatorsStore.CreateOptionalFieldModelAuthenticator.AuthenticateAsync(createDefaultFieldModel);
+            var authResult = await authenticatorsStore.CreateOptionalFieldModelAuthenticator.AuthenticateAsync(createFieldModel);
             if (!authResult.Succeed)
                 return new CreateOptionalFieldResult(authResult);
             var result = new CreateOptionalFieldResult();
-            var model = await GetDefaultFieldModel(createDefaultFieldModel.CollectionId);
+            var model = mapper.Map<OptionalFieldModel>(createFieldModel);
             await optionalFieldsCrudService.CreateAsync(model);
             result.OptionalFieldModel = model;
             return result;
@@ -54,16 +55,6 @@ namespace BusinessLayer.Services
             var result = new DeleteOptionalFieldResult();
             await optionalFieldsCrudService.DeleteAsync(deleteFieldModel.OptionalFieldId);
             return result;
-        }
-
-        private async Task<OptionalFieldModel> GetDefaultFieldModel(int collectionId)
-        {
-            return new OptionalFieldModel
-            {
-                CollectionId = collectionId,
-                Name = "Unnamed",
-                TypeId = (await fieldTypesCrudService.GetAllAsync()).First().Id
-            };
         }
     }
 }

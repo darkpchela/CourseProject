@@ -27,7 +27,7 @@
                 var user = await userService.GetAsync(int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "0"));
                 if (user != null)
                 {
-                    @Html.DropDownListFor(m => m.CollectionId, new SelectList(user.Collections, "Id", "Name"), "Select collection", new { @class = "mt-2 form-control w-75 text-center" });
+                @Html.DropDownListFor(m => m.CollectionId, new SelectList(user.Collections, "Id", "Name"), "Select collection", new { @class = "mt-2 form-control w-75 text-center" });
                 }
             }
 
@@ -183,6 +183,13 @@
                     class: "d-inline-block text-center form-control w-75",
                     value: value,
                     'data-prop': 'value'
+                });
+                elem.val(value);
+                return elem;
+            },
+            "null": (value) => {
+                let elem = $('<input />', {
+                    type: 'hidden'
                 });
                 elem.val(value);
                 return elem;

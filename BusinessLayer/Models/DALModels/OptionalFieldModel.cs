@@ -8,7 +8,7 @@ namespace BusinessLayer.Models.DALModels
     {
         public int Id { get; set; }
 
-        public int TypeId { get; set; }
+        public int? TypeId { get; set; }
 
         public string Name { get; set; }
 

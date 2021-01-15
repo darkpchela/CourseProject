@@ -190,6 +190,13 @@
                 });
                 elem.val(value);
                 return elem;
+            },
+            "null": (value) => {
+                let elem = $('<input />', {
+                    type: 'hidden'
+                });
+                elem.val(value);
+                return elem;
             }
         };
         const fieldsElem = $('#fields');

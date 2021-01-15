@@ -199,7 +199,8 @@ namespace DataAccessLayer.Services
             {
                 entity.Property(e => e.Name)
                     .IsRequired()
-                    .HasMaxLength(128);
+                    .HasMaxLength(128)
+                    .HasDefaultValueSql("('Unnamed')");
 
                 entity.HasOne(d => d.Collection)
                     .WithMany(p => p.OptionalFields)
@@ -209,7 +210,7 @@ namespace DataAccessLayer.Services
                 entity.HasOne(d => d.Type)
                     .WithMany(p => p.OptionalFields)
                     .HasForeignKey(d => d.TypeId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.SetNull)
                     .HasConstraintName("FK_OptionalFields_To_FieldTypes");
             });
 

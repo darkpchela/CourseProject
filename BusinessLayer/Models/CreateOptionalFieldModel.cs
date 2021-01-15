@@ -2,7 +2,7 @@
 
 namespace BusinessLayer.Models
 {
-    public class CreateDefaultOptionalFieldModel : IAuthenticatableModel
+    public class CreateOptionalFieldModel : IAuthenticatableModel
     {
         public int OwnerId { get; set; }
 

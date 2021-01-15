@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
 using BusinessLayer.Models;
 using BusinessLayer.Models.DALModels;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BusinessLayer.MappingProfiles
 {
@@ -11,7 +8,7 @@ namespace BusinessLayer.MappingProfiles
     {
         public OptionalFieldModelProfile()
         {
-
+            CreateMap<CreateOptionalFieldModel, OptionalFieldModel>();
         }
     }
 }

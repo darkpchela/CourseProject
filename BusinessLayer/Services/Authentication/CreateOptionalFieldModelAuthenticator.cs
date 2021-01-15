@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Services.Authentication
 {
-    public class CreateOptionalFieldModelAuthenticator : DefaultAuthenticator<CreateDefaultOptionalFieldModel>, ICreateOptionalFieldModelAuthenticator
+    public class CreateOptionalFieldModelAuthenticator : DefaultAuthenticator<CreateOptionalFieldModel>, ICreateOptionalFieldModelAuthenticator
     {
         private readonly ICollectionsCrudService collectionsCrudService;
 
@@ -15,7 +15,7 @@ namespace BusinessLayer.Services.Authentication
             this.collectionsCrudService = collectionsCrudService;
         }
 
-        protected async override Task<bool> TrySetOwner(CreateDefaultOptionalFieldModel model)
+        protected async override Task<bool> TrySetOwner(CreateOptionalFieldModel model)
         {
             var collection = await collectionsCrudService.GetAsync(model.CollectionId);
             if (collection is null)

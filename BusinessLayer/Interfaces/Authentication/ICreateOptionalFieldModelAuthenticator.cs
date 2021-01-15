@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BusinessLayer.Interfaces.Authentication
 {
-    public interface ICreateOptionalFieldModelAuthenticator : IModelAuthenticator<CreateDefaultOptionalFieldModel>
+    public interface ICreateOptionalFieldModelAuthenticator : IModelAuthenticator<CreateOptionalFieldModel>
     {
     }
 }

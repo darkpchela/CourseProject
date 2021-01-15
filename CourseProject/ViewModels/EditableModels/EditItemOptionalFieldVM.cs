@@ -9,7 +9,6 @@ namespace CourseProject.ViewModels
         [Required]
         public int? FieldId { get; set; }
 
-        [Required(ErrorMessage = "Field must not be empty")]
         public string Value { get; set; }
 
         [Required(ErrorMessage = "Field must have name")]

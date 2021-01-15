@@ -2,7 +2,7 @@
 
 namespace BusinessLayer.Interfaces.Validation
 {
-    public interface ICreateDefaultOptionalFieldModelValidator : IValidator<CreateDefaultOptionalFieldModel>
+    public interface ICreateDefaultOptionalFieldModelValidator : IValidator<CreateOptionalFieldModel>
     {
     }
 }

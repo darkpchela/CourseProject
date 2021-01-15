@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Services.Validation
 {
-    public class CreateDefaultOptionalFieldModelValidator : DefaultValidator<CreateDefaultOptionalFieldModel>, ICreateDefaultOptionalFieldModelValidator
+    public class CreateDefaultOptionalFieldModelValidator : DefaultValidator<CreateOptionalFieldModel>, ICreateDefaultOptionalFieldModelValidator
     {
         private readonly ICollectionsCrudService collectionsCrudService;
 
@@ -21,7 +21,7 @@ namespace BusinessLayer.Services.Validation
             this.userCrudService = userCrudService;
         }
 
-        protected async override Task BaseValidation(CreateDefaultOptionalFieldModel model)
+        protected async override Task BaseValidation(CreateOptionalFieldModel model)
         {
             var owner = await userCrudService.GetAsync(model.OwnerId);
             if (owner is null)
@@ -34,7 +34,7 @@ namespace BusinessLayer.Services.Validation
                 result.AddError("Available field types not found ");
         }
 
-        protected async override Task OptionalValidation(CreateDefaultOptionalFieldModel model)
+        protected async override Task OptionalValidation(CreateOptionalFieldModel model)
         {
             var collection = await collectionsCrudService.GetAsync(model.CollectionId);
             if (collection.OwnerId != model.OwnerId)
