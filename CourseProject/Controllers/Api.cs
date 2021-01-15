@@ -52,13 +52,13 @@ namespace CourseProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteCollection()
+        public async Task<IActionResult> DeleteCollection(DeleteCollectionVM model)
         {
             return Json(true);
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteItem()
+        public async Task<IActionResult> DeleteItem(DeleteItemVM model)
         {
             return Json(true);
         }

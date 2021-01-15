@@ -13,5 +13,9 @@
         ICreateDefaultOptionalFieldModelValidator CreateDefaultOptionalFieldModelValidator { get; }
 
         IDeleteOptionalFieldModelValidator DeleteOptionalFieldModelValidator { get; }
+
+        IDeleteCollectionModelValidator DeleteCollectionModelValidator { get; }
+
+        IDeleteItemModelValidator DeleteItemModelValidator { get; }
     }
 }

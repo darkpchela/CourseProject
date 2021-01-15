@@ -36,6 +36,11 @@ namespace BusinessLayer.Services
             return result;
         }
 
+        public Task<DeleteCollectionResult> DeleteAsync(DeleteCollectionModel model)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public async Task<UpdateCollectionResult> UpdateAsync(UpdateCollectionModel updateCollectionModel)
         {
             var validationRes = await validationUnitOfWork.UpdateCollectionModelValidator.ValidateAsync(updateCollectionModel);
