@@ -1,4 +1,5 @@
 ﻿using BusinessLayer.Interfaces;
+using BusinessLayer.Interfaces.Authentication;
 using BusinessLayer.Interfaces.BaseCrud;
 using BusinessLayer.Interfaces.Validation;
 using BusinessLayer.Models;
@@ -15,27 +16,28 @@ namespace BusinessLayer.Services
 
         private readonly IFieldTypesCrudService fieldTypesCrudService;
 
-        private readonly IModelValidatorsStore validationUnitOfWork;
+        private readonly IModelValidatorsStore validatorsStore;
 
-        public OptionalFieldsManager(IOptionalFieldsCrudService optionalFieldsCrudService, IFieldTypesCrudService fieldTypesCrudService, IModelValidatorsStore validationUnitOfWork)
+        private readonly IModelAuthenticatorsStore authenticatorsStore;
+
+        public OptionalFieldsManager(IOptionalFieldsCrudService optionalFieldsCrudService, IFieldTypesCrudService fieldTypesCrudService, IModelValidatorsStore validatorsStore, IModelAuthenticatorsStore authenticatorsStore)
         {
             this.optionalFieldsCrudService = optionalFieldsCrudService;
             this.fieldTypesCrudService = fieldTypesCrudService;
-            this.validationUnitOfWork = validationUnitOfWork;
+            this.validatorsStore = validatorsStore;
+            this.authenticatorsStore = authenticatorsStore;
         }
 
         public async Task<CreateOptionalFieldResult> CreateDefaultAsync(CreateDefaultOptionalFieldModel createDefaultFieldModel)
         {
-            var validationresult = await validationUnitOfWork.CreateDefaultOptionalFieldModelValidator.ValidateAsync(createDefaultFieldModel);
-            var result = new CreateOptionalFieldResult(validationresult);
-            if (!result.Succeed)
-                return result;
-            var model = new OptionalFieldModel
-            {
-                CollectionId = createDefaultFieldModel.CollectionId,
-                Name = "Unnamed",
-                TypeId = (await fieldTypesCrudService.GetAllAsync()).First().Id
-            };
+            var validResult = await validatorsStore.CreateDefaultOptionalFieldModelValidator.ValidateAsync(createDefaultFieldModel);
+            if (!validResult.Succeed)
+                return new CreateOptionalFieldResult(validResult);
+            var authResult = await authenticatorsStore.CreateOptionalFieldModelAuthenticator.AuthenticateAsync(createDefaultFieldModel);
+            if (!authResult.Succeed)
+                return new CreateOptionalFieldResult(authResult);
+            var result = new CreateOptionalFieldResult();
+            var model = await GetDefaultFieldModel(createDefaultFieldModel.CollectionId);
             await optionalFieldsCrudService.CreateAsync(model);
             result.OptionalFieldModel = model;
             return result;
@@ -43,12 +45,25 @@ namespace BusinessLayer.Services
 
         public async Task<DeleteOptionalFieldResult> DeleteAsync(DeleteOptionalFieldModel deleteFieldModel)
         {
-            var validationResult = await validationUnitOfWork.DeleteOptionalFieldModelValidator.ValidateAsync(deleteFieldModel);
-            var result = new DeleteOptionalFieldResult(validationResult);
-            if (!result.Succeed)
-                return result;
+            var validResult = await validatorsStore.DeleteOptionalFieldModelValidator.ValidateAsync(deleteFieldModel);
+            if (!validResult.Succeed)
+                return new DeleteOptionalFieldResult(validResult);
+            var authResult = await authenticatorsStore.DeleteOptionalFieldModelAuthenticator.AuthenticateAsync(deleteFieldModel);
+            if (!authResult.Succeed)
+                return new DeleteOptionalFieldResult(authResult);
+            var result = new DeleteOptionalFieldResult();
             await optionalFieldsCrudService.DeleteAsync(deleteFieldModel.OptionalFieldId);
             return result;
+        }
+
+        private async Task<OptionalFieldModel> GetDefaultFieldModel(int collectionId)
+        {
+            return new OptionalFieldModel
+            {
+                CollectionId = collectionId,
+                Name = "Unnamed",
+                TypeId = (await fieldTypesCrudService.GetAllAsync()).First().Id
+            };
         }
     }
 }

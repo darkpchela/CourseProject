@@ -6,6 +6,10 @@ namespace BusinessLayer.Models.ResultModels
     {
         public OptionalFieldModel OptionalFieldModel { get; set; }
 
+        public CreateOptionalFieldResult()
+        {
+        }
+
         public CreateOptionalFieldResult(ResultModel<string> result) : base(result)
         {
         }
