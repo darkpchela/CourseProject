@@ -31,12 +31,12 @@ namespace BusinessLayer.Services
 
         public async Task<CreateOptionalFieldResult> CreateAsync(CreateOptionalFieldModel createFieldModel)
         {
-            var validResult = await validatorsStore.CreateDefaultOptionalFieldModelValidator.ValidateAsync(createFieldModel);
-            if (!validResult.Succeed)
-                return new CreateOptionalFieldResult(validResult);
             var authResult = await authenticatorsStore.CreateOptionalFieldModelAuthenticator.AuthenticateAsync(createFieldModel);
             if (!authResult.Succeed)
                 return new CreateOptionalFieldResult(authResult);
+            var validResult = await validatorsStore.CreateDefaultOptionalFieldModelValidator.ValidateAsync(createFieldModel);
+            if (!validResult.Succeed)
+                return new CreateOptionalFieldResult(validResult);
             var result = new CreateOptionalFieldResult();
             var model = mapper.Map<OptionalFieldModel>(createFieldModel);
             await optionalFieldsCrudService.CreateAsync(model);
@@ -46,12 +46,12 @@ namespace BusinessLayer.Services
 
         public async Task<DeleteOptionalFieldResult> DeleteAsync(DeleteOptionalFieldModel deleteFieldModel)
         {
-            var validResult = await validatorsStore.DeleteOptionalFieldModelValidator.ValidateAsync(deleteFieldModel);
-            if (!validResult.Succeed)
-                return new DeleteOptionalFieldResult(validResult);
             var authResult = await authenticatorsStore.DeleteOptionalFieldModelAuthenticator.AuthenticateAsync(deleteFieldModel);
             if (!authResult.Succeed)
                 return new DeleteOptionalFieldResult(authResult);
+            var validResult = await validatorsStore.DeleteOptionalFieldModelValidator.ValidateAsync(deleteFieldModel);
+            if (!validResult.Succeed)
+                return new DeleteOptionalFieldResult(validResult);
             var result = new DeleteOptionalFieldResult();
             await optionalFieldsCrudService.DeleteAsync(deleteFieldModel.OptionalFieldId);
             return result;

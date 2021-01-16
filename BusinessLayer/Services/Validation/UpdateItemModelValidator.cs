@@ -29,16 +29,16 @@ namespace BusinessLayer.Services.Validation
         {
             var item = await itemsCrudService.GetAsync(model.ItemId);
             if (item is null)
-                result.AddError("Item not found");
+                ValidationResult.AddError("Item not found");
             var collection = await collectionsCrudService.GetAsync(model.CollectionId);
             if (collection is null)
-                result.AddError("Collection not found");
+                ValidationResult.AddError("Collection not found");
             var owner = await userCrudService.GetAsync(model.OwnerId);
             if (owner is null)
-                result.AddError("User not found");
+                ValidationResult.AddError("User not found");
             var resource = await resourceCrudService.GetAsync(model.ResourceId);
             if (resource is null)
-                result.AddError("Resource not found");
+                ValidationResult.AddError("Resource not found");
         }
 
         protected async override Task OptionalValidation(UpdateItemModel model)
@@ -46,7 +46,7 @@ namespace BusinessLayer.Services.Validation
             var collection = await collectionsCrudService.GetAsync(model.CollectionId);
             if (!collection.OptionalFields.Select(of => of.Id).OrderBy(i => i).SequenceEqual(
                 model.OptionalFields.Select(of => of.OptionalFieldId).OrderBy(i => i)))
-                result.AddError("Optional fields matching error");
+                ValidationResult.AddError("Optional fields matching error");
         }
     }
 }

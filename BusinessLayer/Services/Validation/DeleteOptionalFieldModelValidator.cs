@@ -25,13 +25,13 @@ namespace BusinessLayer.Services.Validation
         {
             var owner = await userCrudService.GetAsync(model.OwnerId);
             if (owner is null)
-                result.AddError("User not found");
+                ValidationResult.AddError("User not found");
             var collection = await collectionsCrudService.GetAsync(model.CollectionId);
             if (collection is null)
-                result.AddError("Collection not found");
+                ValidationResult.AddError("Collection not found");
             var field = await optionalFieldsCrudService.GetAsync(model.OptionalFieldId);
             if (field is null)
-                result.AddError("Optional field not found");
+                ValidationResult.AddError("Optional field not found");
         }
 
         protected async override Task OptionalValidation(DeleteOptionalFieldModel model)
@@ -39,9 +39,9 @@ namespace BusinessLayer.Services.Validation
             var collection = await collectionsCrudService.GetAsync(model.CollectionId);
             var field = await optionalFieldsCrudService.GetAsync(model.OptionalFieldId);
             if (!collection.OptionalFields.Any(f => f.Id == field.Id))
-                result.AddError("Optional field not found");
+                ValidationResult.AddError("Optional field not found");
             if (model.OwnerId != collection.OwnerId)
-                result.AddError("Owner matching error");
+                ValidationResult.AddError("Owner matching error");
         }
     }
 }

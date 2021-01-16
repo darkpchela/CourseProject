@@ -20,25 +20,29 @@ namespace BusinessLayer.Services
 
         private readonly IModelAuthenticatorsStore authenticatorsStore;
 
+        private readonly IResourcesManager resourcesManager;
+
         private readonly IMapper mapper;
 
-        public ItemsManager(IItemsCrudService itemsCrudService, ICollectionItemCrudService collectionItemCrudService, IModelValidatorsStore validatorsStore, IModelAuthenticatorsStore authenticatorsStore, IMapper mapper)
+        public ItemsManager(IItemsCrudService itemsCrudService, ICollectionItemCrudService collectionItemCrudService, IModelValidatorsStore validatorsStore, 
+            IModelAuthenticatorsStore authenticatorsStore, IResourcesManager resourcesManager, IMapper mapper)
         {
             this.itemsCrudService = itemsCrudService;
             this.mapper = mapper;
             this.collectionItemCrudService = collectionItemCrudService;
             this.validatorsStore = validatorsStore;
             this.authenticatorsStore = authenticatorsStore;
+            this.resourcesManager = resourcesManager;
         }
 
         public async Task<CreateItemResult> CreateAsync(CreateItemModel createItemModel)
         {
-            var validResult = await validatorsStore.CreateItemModelValidator.ValidateAsync(createItemModel);
-            if (!validResult.Succeed)
-                return new CreateItemResult(validResult);
             var authResult = await authenticatorsStore.CreateItemModelAuthenticator.AuthenticateAsync(createItemModel);
             if (!authResult.Succeed)
                 return new CreateItemResult(authResult);
+            var validResult = await validatorsStore.CreateItemModelValidator.ValidateAsync(createItemModel);
+            if (!validResult.Succeed)
+                return new CreateItemResult(validResult);
             var result = new CreateItemResult();
             var itemModel = mapper.Map<ItemModel>(createItemModel);
             await itemsCrudService.CreateAsync(itemModel);
@@ -49,25 +53,27 @@ namespace BusinessLayer.Services
 
         public async Task<DeleteItemResult> DeleteAsync(DeleteItemModel deleteItemModel)
         {
-            var validResult = await validatorsStore.DeleteItemModelValidator.ValidateAsync(deleteItemModel);
-            if (!validResult.Succeed)
-                return new DeleteItemResult(validResult);
             var authResult = await authenticatorsStore.DeleteItemModelAuthenticator.AuthenticateAsync(deleteItemModel);
             if (!authResult.Succeed)
                 return new DeleteItemResult(authResult);
+            var validResult = await validatorsStore.DeleteItemModelValidator.ValidateAsync(deleteItemModel);
+            if (!validResult.Succeed)
+                return new DeleteItemResult(validResult);
             var result = new DeleteItemResult();
+            var itemResource = (await itemsCrudService.GetAsync(deleteItemModel.ItemId)).Resource;
             await itemsCrudService.DeleteAsync(deleteItemModel.ItemId);
+            await resourcesManager.DeleteAsync(itemResource);
             return result;
         }
 
         public async Task<UpdateItemResult> UpdateAsync(UpdateItemModel updateItemModel)
         {
-            var validResult = await validatorsStore.UpdateItemModelValidator.ValidateAsync(updateItemModel);
-            if (!validResult.Succeed)
-                return new UpdateItemResult(validResult);
             var authResult = await authenticatorsStore.UpdateItemModelAuthenticator.AuthenticateAsync(updateItemModel);
             if (!authResult.Succeed)
                 return new UpdateItemResult(authResult);
+            var validResult = await validatorsStore.UpdateItemModelValidator.ValidateAsync(updateItemModel);
+            if (!validResult.Succeed)
+                return new UpdateItemResult(validResult);
             var result = new UpdateItemResult();
             var itemModel = mapper.Map<ItemModel>(updateItemModel);
             await itemsCrudService.UpdateAsync(itemModel);

@@ -25,6 +25,7 @@ namespace BusinessLayer.Services.Authentication
                 authenticationResult.AddError("Owner not found");
                 return authenticationResult;
             }
+            AuthenticateRequest(model);
             return authenticationResult;
         }
 

@@ -6,16 +6,16 @@ namespace BusinessLayer.Services.Validation
 {
     public abstract class DefaultValidator<TModel> : IValidator<TModel> where TModel : class
     {
-        protected ValidationResult result;
+        protected ValidationResult ValidationResult { get; } = new ValidationResult();
 
         public async Task<ValidationResult> ValidateAsync(TModel model)
         {
-            result = new ValidationResult();
+
             await BaseValidation(model);
-            if (!result.Succeed)
-                return result;
+            if (!ValidationResult.Succeed)
+                return ValidationResult;
             await OptionalValidation(model);
-            return result;
+            return ValidationResult;
         }
 
         protected abstract Task BaseValidation(TModel model);

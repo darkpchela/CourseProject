@@ -25,20 +25,20 @@ namespace BusinessLayer.Services.Validation
         {
             var owner = await userCrudService.GetAsync(model.OwnerId);
             if (owner is null)
-                result.AddError("User not found");
+                ValidationResult.AddError("User not found");
             var collection = await collectionsCrudService.GetAsync(model.CollectionId);
             if (collection is null)
-                result.AddError("Collection not found");
+                ValidationResult.AddError("Collection not found");
             var type = (await fieldTypesCrudService.GetAllAsync()).FirstOrDefault();
             if (type is null)
-                result.AddError("Available field types not found ");
+                ValidationResult.AddError("Available field types not found ");
         }
 
         protected async override Task OptionalValidation(CreateOptionalFieldModel model)
         {
             var collection = await collectionsCrudService.GetAsync(model.CollectionId);
             if (collection.OwnerId != model.OwnerId)
-                result.AddError("Owner matching error");
+                ValidationResult.AddError("Owner matching error");
         }
     }
 }
