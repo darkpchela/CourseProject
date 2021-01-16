@@ -100,5 +100,12 @@ namespace CourseProject.Controllers
             var result = await optionalFieldsManager.DeleteAsync(dtoModel);
             return Json(result);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> GetTags()
+        {
+            string[] testTags = { "tag1", "tag2" };
+            return Json(testTags);
+        }
     }
 }

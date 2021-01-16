@@ -1,4 +1,39 @@
-﻿.tags-look .tagify__dropdown__item {
+﻿.tagify__tag {
+    min-height: 15px;
+    height: 3vh;
+    color: inherit;
+    background-color: inherit;
+}
+
+.tagify__input {
+    background-color: inherit;
+    color: inherit;
+}
+
+.tagify__tag * {
+    background-color: var(--seondary-color);
+    color: var(--main-color);
+}
+
+.tags-look .tagify__dropdown__item {
+    display: inline-block;
+    border-radius: 3px;
+    padding: .3em .5em;
+    border: 1px solid #CCC;
+    background: whitesmoke;
+    margin: .2em;
+    font-size: .85em;
+    color: black;
+    transition: 0s;
+}
+
+
+    .tags-look .tagify__dropdown__item:hover {
+        background-color: var(--secondary-color);
+        border-color: var(--main-color);
+    }
+
+.tags-look .tagify__dropdown__item {
     display: inline-block;
     border-radius: 3px;
     padding: .3em .5em;
@@ -14,7 +49,9 @@
     color: black;
 }
 
-.tags-look .tagify__dropdown__item:hover {
-    background: lightyellow;
-    border-color: gold;
+.tagify__tag-text {
+    min-height: 10px;
+    display: inline-block;
+    height: 2vh;
+    vertical-align: middle;
 }

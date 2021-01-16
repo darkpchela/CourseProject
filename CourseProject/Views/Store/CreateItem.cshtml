@@ -43,7 +43,7 @@
             </div>
 
             <div class="text-center w-75 mt-2">
-                <input asp-for="Tags" type="text" class="form-control text-center" placeholder="tags">
+                <input asp-for="Tags" type="text" class="form-control" placeholder="tags">
             </div>
 
             <div class="w-75 d-flex flex-row justify-content-between mt-2">
@@ -113,12 +113,15 @@
                 });
                 $.ajax({
                     type: "post",
-                    url: "api/GetTags",
+                    url: "/api/GetTags",
                     success: data => {
                         tagify.settings.whitelist.splice(0, data.length, ...data);
                     }
                 });
             }
         };
+        $(() => {
+            updateTagify();
+        });
     </script>
 }
