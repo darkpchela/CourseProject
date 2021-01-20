@@ -7,6 +7,8 @@ namespace BusinessLayer.Interfaces.BaseCrud
     {
         Task CreateAsync(TModel model);
 
+        Task CreateRangeAsync(IEnumerable<TModel> models);
+
         Task<TModel> GetAsync(int id);
 
         Task<IEnumerable<TModel>> GetAllAsync();

@@ -31,6 +31,19 @@ namespace BusinessLayer.Services.BaseCrud
             mapper.Map(entity, model);
         }
 
+        public async Task CreateRangeAsync(IEnumerable<TModel> models)
+        {
+            if (models is null)
+                return;
+            var entities = mapper.Map<IEnumerable<TEntity>>(models);
+            foreach (var entity in entities)
+            {
+                await BaseRepository.Add(entity);
+            }
+            await cPUnitOfWork.SaveChangesAsync();
+            mapper.Map(entities, models);
+        }
+
         public async Task DeleteAsync(int id)
         {
             await BaseRepository.Delete(id);

@@ -23,7 +23,7 @@ namespace CourseProject.ViewModels
         [StringLength(1024, MinimumLength = 3, ErrorMessage = "Description minimum length is 3. Maximum is 1024")]
         public string Description { get; set; }
 
-        public string Tags { get; set; }
+        public string TagsJson { get; set; }
 
         public IList<CreateItemOptionalFieldVM> Fields { get; set; }
 

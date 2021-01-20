@@ -124,8 +124,8 @@ namespace CourseProject.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateItem(CreateItemVM createItemVM)
         {
-            if (!ModelState.IsValid)
-                return View(createItemVM);
+            //if (!ModelState.IsValid)
+            //    return View(createItemVM);
             var dtoModel = mapper.Map<CreateItemModel>(createItemVM);
             var result = await itemsManager.CreateAsync(dtoModel);
             if (!result.Succeed)
@@ -133,7 +133,7 @@ namespace CourseProject.Controllers
                 result.Errors.ToList().ForEach(e => ModelState.AddModelError("", e));
                 return View(createItemVM);
             }
-            return RedirectToAction(nameof(Item), nameof(Store), new { id = result.ItemId });
+            return RedirectToAction(nameof(Item), nameof(Store), new { id = result.CreatedItemId });
         }
 
         [HttpGet]

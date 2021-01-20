@@ -7,6 +7,10 @@ using BusinessLayer.Models;
 using BusinessLayer.Models.DALModels;
 using BusinessLayer.Models.ResultModels;
 using System.Threading.Tasks;
+using System.Text.Json;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BusinessLayer.Services
 {
@@ -22,10 +26,12 @@ namespace BusinessLayer.Services
 
         private readonly IResourcesManager resourcesManager;
 
+        private readonly ITagsManager tagsManager;
+
         private readonly IMapper mapper;
 
         public ItemsManager(IItemsCrudService itemsCrudService, ICollectionItemCrudService collectionItemCrudService, IModelValidatorsStore validatorsStore, 
-            IModelAuthenticatorsStore authenticatorsStore, IResourcesManager resourcesManager, IMapper mapper)
+            IModelAuthenticatorsStore authenticatorsStore, IResourcesManager resourcesManager, ITagsManager tagsManager, IMapper mapper)
         {
             this.itemsCrudService = itemsCrudService;
             this.mapper = mapper;
@@ -33,6 +39,7 @@ namespace BusinessLayer.Services
             this.validatorsStore = validatorsStore;
             this.authenticatorsStore = authenticatorsStore;
             this.resourcesManager = resourcesManager;
+            this.tagsManager = tagsManager;
         }
 
         public async Task<CreateItemResult> CreateAsync(CreateItemModel createItemModel)
@@ -47,7 +54,8 @@ namespace BusinessLayer.Services
             var itemModel = mapper.Map<ItemModel>(createItemModel);
             await itemsCrudService.CreateAsync(itemModel);
             await AttachItemToCollection(itemModel.Id, createItemModel.CollectionId);
-            result.ItemId = itemModel.Id;
+            await AttachTagsToItem(itemModel.Id, createItemModel.TagsJson);
+            result.CreatedItemId = itemModel.Id;
             return result;
         }
 
@@ -88,6 +96,26 @@ namespace BusinessLayer.Services
                 ItemId = itemId
             };
             await collectionItemCrudService.CreateAsync(collectionItem);
+        }
+
+        private async Task AttachTagsToItem(int itemId, string tagsJson)
+        {
+            try
+            {
+                var tags = JsonSerializer.Deserialize<TagJsonModel[]>(tagsJson);
+                var values = tags.Select(t => t.value).ToList();
+                var findRes = await tagsManager.FindTagsAsync(values);
+                await tagsManager.AttachTagsToItemAsync(findRes.Founded, itemId);
+                if (findRes.Founded.Count() == tags.Count())
+                    return;
+                var createRes = await tagsManager.CreateTagsAsync(values);
+                await tagsManager.AttachTagsToItemAsync(createRes.Created, itemId);
+
+            }
+            catch
+            {
+                return;
+            }
         }
     }
 }

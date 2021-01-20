@@ -2,7 +2,7 @@
 {
     public class CreateItemResult : ResultModel<string>
     {
-        public int ItemId { get; set; }
+        public int CreatedItemId { get; set; }
 
         public CreateItemResult()
         {

@@ -43,7 +43,7 @@
             </div>
 
             <div class="text-center w-75 mt-2">
-                <input asp-for="Tags" type="text" class="form-control" placeholder="tags">
+                <input asp-for="TagsJson" type="text" class="form-control" placeholder="tags">
             </div>
 
             <div class="w-75 d-flex flex-row justify-content-between mt-2">
@@ -92,13 +92,10 @@
 </div>
 
 @section Scripts{
-    <script src="~/lib/dropzone-5.7.0/dist/dropzone.js"></script>
-    <script src="~/js/appDropzone.js"></script>
-    <script src="~/js/createItem.js"></script>
     <script>
         let tagify;
         const updateTagify = () => {
-            let input = document.querySelector('#Tags');
+            let input = document.querySelector('#TagsJson');
             if (input) {
                 tagify = new Tagify(input, {
                     whitelist: [],
@@ -124,4 +121,7 @@
             updateTagify();
         });
     </script>
+    <script src="~/lib/dropzone-5.7.0/dist/dropzone.js"></script>
+    <script src="~/js/appDropzone.js"></script>
+    <script src="~/js/createItem.js"></script>
 }
