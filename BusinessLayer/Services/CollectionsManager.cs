@@ -20,15 +20,28 @@ namespace BusinessLayer.Services
 
         private readonly IResourcesManager resourcesManager;
 
+        private readonly ICollectionItemCrudService collectionItemCrudService;
+
         private readonly IMapper mapper;
 
-        public CollectionsManager(ICollectionsCrudService collectionsCrudService, IModelValidatorsStore validatorsStore, IModelAuthenticatorsStore authenticatorsStore, IResourcesManager resourcesManager, IMapper mapper)
+        public CollectionsManager(ICollectionsCrudService collectionsCrudService, IModelValidatorsStore validatorsStore, IModelAuthenticatorsStore authenticatorsStore, ICollectionItemCrudService collectionItemCrudService, IResourcesManager resourcesManager, IMapper mapper)
         {
             this.mapper = mapper;
             this.collectionsCrudService = collectionsCrudService;
             this.validatorsStore = validatorsStore;
             this.authenticatorsStore = authenticatorsStore;
             this.resourcesManager = resourcesManager;
+            this.collectionItemCrudService = collectionItemCrudService;
+        }
+
+        public async Task AttachItemToCollection(int itemId, int collectionId)
+        {
+            var collectionItem = new CollectionItemModel
+            {
+                CollectionId = collectionId,
+                ItemId = itemId
+            };
+            await collectionItemCrudService.CreateAsync(collectionItem);
         }
 
         public async Task<CreateCollectionResult> CreateAsync(CreateCollectionModel createCollectionModel)

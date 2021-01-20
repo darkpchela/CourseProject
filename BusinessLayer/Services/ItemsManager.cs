@@ -18,8 +18,6 @@ namespace BusinessLayer.Services
     {
         private readonly IItemsCrudService itemsCrudService;
 
-        private readonly ICollectionItemCrudService collectionItemCrudService;
-
         private readonly IModelValidatorsStore validatorsStore;
 
         private readonly IModelAuthenticatorsStore authenticatorsStore;
@@ -28,14 +26,16 @@ namespace BusinessLayer.Services
 
         private readonly ITagsManager tagsManager;
 
+        private readonly ICollectionsManager collectionsManager;
+
         private readonly IMapper mapper;
 
-        public ItemsManager(IItemsCrudService itemsCrudService, ICollectionItemCrudService collectionItemCrudService, IModelValidatorsStore validatorsStore, 
+        public ItemsManager(IItemsCrudService itemsCrudService, ICollectionsManager collectionsManager, IModelValidatorsStore validatorsStore, 
             IModelAuthenticatorsStore authenticatorsStore, IResourcesManager resourcesManager, ITagsManager tagsManager, IMapper mapper)
         {
             this.itemsCrudService = itemsCrudService;
             this.mapper = mapper;
-            this.collectionItemCrudService = collectionItemCrudService;
+            this.collectionsManager = collectionsManager;
             this.validatorsStore = validatorsStore;
             this.authenticatorsStore = authenticatorsStore;
             this.resourcesManager = resourcesManager;
@@ -53,7 +53,7 @@ namespace BusinessLayer.Services
             var result = new CreateItemResult();
             var itemModel = mapper.Map<ItemModel>(createItemModel);
             await itemsCrudService.CreateAsync(itemModel);
-            await AttachItemToCollection(itemModel.Id, createItemModel.CollectionId);
+            await collectionsManager.AttachItemToCollection(itemModel.Id, createItemModel.CollectionId);
             await AttachTagsToItem(itemModel.Id, createItemModel.TagsJson);
             result.CreatedItemId = itemModel.Id;
             return result;
@@ -86,16 +86,6 @@ namespace BusinessLayer.Services
             var itemModel = mapper.Map<ItemModel>(updateItemModel);
             await itemsCrudService.UpdateAsync(itemModel);
             return result;
-        }
-
-        private async Task AttachItemToCollection(int itemId, int collectionId)
-        {
-            var collectionItem = new CollectionItemModel
-            {
-                CollectionId = collectionId,
-                ItemId = itemId
-            };
-            await collectionItemCrudService.CreateAsync(collectionItem);
         }
 
         private async Task AttachTagsToItem(int itemId, string tagsJson)

@@ -11,5 +11,7 @@ namespace BusinessLayer.Interfaces
         Task<UpdateCollectionResult> UpdateAsync(UpdateCollectionModel model);
 
         Task<DeleteCollectionResult> DeleteAsync(DeleteCollectionModel model);
+
+        Task AttachItemToCollection(int itemId, int collectionId);
     }
 }
