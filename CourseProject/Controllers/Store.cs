@@ -124,8 +124,8 @@ namespace CourseProject.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateItem(CreateItemVM createItemVM)
         {
-            //if (!ModelState.IsValid)
-            //    return View(createItemVM);
+            if (!ModelState.IsValid)
+                return View(createItemVM);
             var dtoModel = mapper.Map<CreateItemModel>(createItemVM);
             var result = await itemsManager.CreateAsync(dtoModel);
             if (!result.Succeed)
