@@ -7,10 +7,12 @@ namespace BusinessLayer.Interfaces
 {
     public interface ITagsManager
     {
-        Task AttachTagsToItemAsync(IEnumerable<TagModel> tags, int itemId);
+        Task AttachTagsToItemAsync(IEnumerable<string> values, int itemId);
 
-        Task<CreateTagsResult> CreateTagsAsync(IEnumerable<string> values);
+        //Task AttachTagsToItemAsync(IEnumerable<TagModel> tags, int itemId);
 
-        Task<FindTagsResult> FindTagsAsync(IEnumerable<string> values);
+        //Task<CreateTagsResult> CreateTagsAsync(IEnumerable<string> values);
+
+        //Task<FindTagsResult> FindTagsAsync(IEnumerable<string> values);
     }
 }

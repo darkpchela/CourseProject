@@ -6,7 +6,6 @@ using BusinessLayer.Models.ResultModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace BusinessLayer.Services
@@ -17,19 +16,24 @@ namespace BusinessLayer.Services
 
         private readonly IItemTagCrudService itemTagCrudService;
 
+        private readonly IItemsCrudService itemsCrudService;
+
         private readonly IMapper mapper;
 
-        public TagsManager(ITagsCrudService tagsCrudService, IItemTagCrudService itemTagCrudService, IMapper mapper)
+        public TagsManager(ITagsCrudService tagsCrudService, IItemTagCrudService itemTagCrudService, IItemsCrudService itemsCrudService, IMapper mapper)
         {
             this.tagsCrudService = tagsCrudService;
             this.itemTagCrudService = itemTagCrudService;
+            this.itemsCrudService = itemsCrudService;
             this.mapper = mapper;
         }
 
-        public async Task AttachTagsToItemAsync(IEnumerable<TagModel> tags, int itemId)
+        public async Task AttachTagsToItemAsync(IEnumerable<string> values, int itemId)
         {
+            await ClearItemTags(itemId);
             var itemTags = new List<ItemTagModel>();
-            foreach (var tag in tags)
+            var newTags = await MaterializeTagsByValues(values);
+            foreach (var tag in newTags)
             {
                 var itemTag = new ItemTagModel
                 {
@@ -41,7 +45,20 @@ namespace BusinessLayer.Services
             await itemTagCrudService.CreateRangeAsync(itemTags);
         }
 
-        public async Task<FindTagsResult> FindTagsAsync(IEnumerable<string> values)
+        private async Task<IEnumerable<TagModel>> MaterializeTagsByValues(IEnumerable<string> values)
+        {
+            var tags = new List<TagModel>();
+            var foundRes = await FindTagsAsync(values);
+            tags.AddRange(foundRes.Founded);
+            if (foundRes.Founded.Count() < values.Count())
+            {
+                var createRes = await CreateTagsAsync(values);
+                tags.AddRange(createRes.Created);
+            }
+            return tags;
+        }
+
+        private async Task<FindTagsResult> FindTagsAsync(IEnumerable<string> values)
         {
             var result = new FindTagsResult();
             var allTags = await tagsCrudService.GetAllAsync();
@@ -50,7 +67,7 @@ namespace BusinessLayer.Services
             return result;
         }
 
-        public async Task<CreateTagsResult> CreateTagsAsync(IEnumerable<string> values)
+        private async Task<CreateTagsResult> CreateTagsAsync(IEnumerable<string> values)
         {
             var result = new CreateTagsResult();
             var allTags = await tagsCrudService.GetAllAsync();
@@ -59,6 +76,20 @@ namespace BusinessLayer.Services
             await tagsCrudService.CreateRangeAsync(newTags);
             result.Created = newTags;
             return result;
+        }
+
+        private async Task ClearItemTags(int itemId)
+        {
+            var item = await itemsCrudService.GetAsync(itemId);
+            var itemTags = item.ItemTags.ToList();
+            await itemTagCrudService.DeleteRangeAsync(itemTags.Select(it => it.Id));
+            var tagsToRemove = new List<TagModel>();
+            foreach (ItemTagModel it in itemTags)
+            {
+                if (it.Tag.ItemTags.Count() == 1)
+                    tagsToRemove.Add(it.Tag);
+            }
+            await tagsCrudService.DeleteRangeAsync(tagsToRemove.Select(t => t.Id));
         }
     }
 }

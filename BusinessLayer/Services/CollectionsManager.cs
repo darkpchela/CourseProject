@@ -6,6 +6,7 @@ using BusinessLayer.Interfaces.Validation;
 using BusinessLayer.Models;
 using BusinessLayer.Models.DALModels;
 using BusinessLayer.Models.ResultModels;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BusinessLayer.Services
@@ -36,6 +37,9 @@ namespace BusinessLayer.Services
 
         public async Task AttachItemToCollection(int itemId, int collectionId)
         {
+            var allCollectionItems = await collectionItemCrudService.GetAllAsync();
+            if (allCollectionItems.Any(ci => ci.CollectionId == collectionId && ci.ItemId == itemId))
+                return;
             var collectionItem = new CollectionItemModel
             {
                 CollectionId = collectionId,

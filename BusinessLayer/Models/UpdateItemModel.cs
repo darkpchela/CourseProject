@@ -18,7 +18,7 @@ namespace BusinessLayer.Models
 
         public string Description { get; set; }
 
-        public IEnumerable<TagModel> Tags { get; set; }
+        public IEnumerable<string> Tags { get; set; }
 
         public IEnumerable<ItemOptionalFieldModel> OptionalFields { get; set; }
     }

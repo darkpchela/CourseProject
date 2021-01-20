@@ -42,8 +42,9 @@
                 </div>
             </div>
 
+
             <div class="text-center w-75 mt-2">
-                <input asp-for="Tags" type="text" class="form-control text-center" placeholder="tags">
+                <input asp-for="TagsJson" type="text" class="form-control" placeholder="tags" >
             </div>
 
             <div class="w-75 d-flex flex-row justify-content-between mt-2">
@@ -96,7 +97,44 @@
 </div>
 
 @section Scripts{
+    <script>
+        let tagify;
+        const updateTagify = () => {
+            let input = document.querySelector('#TagsJson');
+            if (input) {
+                tagify = new Tagify(input, {
+                    whitelist: [],
+                    delimiters: ",| ",
+                    maxTags: 5,
+                    dropdown: {
+                        maxItems: 20,
+                        classname: "tags-look",
+                        enabled: 0,
+                        closeOnSelect: false
+                    }
+                });
+                $.ajax({
+                    type: "post",
+                    url: "/api/GetTags",
+                    success: data => {
+                        tagify.settings.whitelist.splice(0, data.length, ...data);
+                    }
+                });
+            }
+        };
 
+        const getItemTags = (itemId) => {
+            $.post('/api/GetItemTags', { id: itemId }, (data) => {
+                console.log(data)
+                tagify.addTags(data);
+            });
+        };
+
+        $(() => {
+            updateTagify();
+            getItemTags($('#ItemId').val());
+        });
+    </script>
     <script src="~/lib/dropzone-5.7.0/dist/dropzone.js"></script>
     <script src="~/js/appDropzone.js"></script>
     <script src="~/js/editItem.js"></script>

@@ -50,12 +50,14 @@ namespace BusinessLayer.Services
             var validResult = await validatorsStore.CreateItemModelValidator.ValidateAsync(createItemModel);
             if (!validResult.Succeed)
                 return new CreateItemResult(validResult);
-            var result = new CreateItemResult();
             var itemModel = mapper.Map<ItemModel>(createItemModel);
             await itemsCrudService.CreateAsync(itemModel);
             await collectionsManager.AttachItemToCollection(itemModel.Id, createItemModel.CollectionId);
-            await AttachTagsToItem(itemModel.Id, createItemModel.TagsJson);
-            result.CreatedItemId = itemModel.Id;
+            await tagsManager.AttachTagsToItemAsync(createItemModel.Tags, itemModel.Id);
+            var result = new CreateItemResult
+            {
+                CreatedItemId = itemModel.Id
+            };
             return result;
         }
 
@@ -84,28 +86,10 @@ namespace BusinessLayer.Services
                 return new UpdateItemResult(validResult);
             var result = new UpdateItemResult();
             var itemModel = mapper.Map<ItemModel>(updateItemModel);
+            await tagsManager.AttachTagsToItemAsync(updateItemModel.Tags, itemModel.Id);
+            await collectionsManager.AttachItemToCollection(itemModel.Id, updateItemModel.CollectionId);
             await itemsCrudService.UpdateAsync(itemModel);
             return result;
-        }
-
-        private async Task AttachTagsToItem(int itemId, string tagsJson)
-        {
-            try
-            {
-                var tags = JsonSerializer.Deserialize<TagJsonModel[]>(tagsJson);
-                var values = tags.Select(t => t.value).ToList();
-                var findRes = await tagsManager.FindTagsAsync(values);
-                await tagsManager.AttachTagsToItemAsync(findRes.Founded, itemId);
-                if (findRes.Founded.Count() == tags.Count())
-                    return;
-                var createRes = await tagsManager.CreateTagsAsync(values);
-                await tagsManager.AttachTagsToItemAsync(createRes.Created, itemId);
-
-            }
-            catch
-            {
-                return;
-            }
         }
     }
 }

@@ -27,12 +27,14 @@ namespace CourseProject.Controllers
 
         private readonly IOptionalFieldsManager optionalFieldsManager;
 
+        private readonly IItemsCrudService itemsCrudService;
+
         private readonly IItemsManager itemsManager;
 
         private readonly ICollectionsManager collectionsManager;
 
         public Api(IMapper mapper, ITagsCrudService tagsCrudService , IResourcesManager resourcesManager, ICollectionsCrudService collectionsCrudService, IOptionalFieldsManager optionalFieldsManager, IItemsManager itemsManager,
-            ICollectionsManager collectionsManager)
+            ICollectionsManager collectionsManager, IItemsCrudService itemsCrudService)
         {
             this.mapper = mapper;
             this.resourcesManager = resourcesManager;
@@ -41,6 +43,7 @@ namespace CourseProject.Controllers
             this.itemsManager = itemsManager;
             this.collectionsManager = collectionsManager;
             this.tagsCrudService = tagsCrudService;
+            this.itemsCrudService = itemsCrudService;
         }
 
         [HttpPost]
@@ -110,6 +113,14 @@ namespace CourseProject.Controllers
             var allTags = await tagsCrudService.GetAllAsync();
             string[] topTags = allTags.OrderByDescending(t => t.ItemTags.Count()).Take(20).Select(t => t.Value).ToArray();
             return Json(topTags);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetItemTags(int id)
+        {
+            var tags =(await itemsCrudService.GetAsync(id)).ItemTags.Select(it => it.Tag).ToList();
+            var tagVM = mapper.Map<IEnumerable<TagJsonVM>>(tags);
+            return Json(tagVM);
         }
     }
 }
