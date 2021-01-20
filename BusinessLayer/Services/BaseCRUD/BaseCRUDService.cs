@@ -50,6 +50,15 @@ namespace BusinessLayer.Services.BaseCrud
             await cPUnitOfWork.SaveChangesAsync();
         }
 
+        public async Task DeleteRangeAsync(IEnumerable<int> ids)
+        {
+            foreach (var id in ids)
+            {
+                await BaseRepository.Delete(id);
+            }
+            await cPUnitOfWork.SaveChangesAsync();
+        }
+
         public async Task<IEnumerable<TModel>> GetAllAsync()
         {
             var entities = await BaseRepository.GetAll().ToListAsync();
