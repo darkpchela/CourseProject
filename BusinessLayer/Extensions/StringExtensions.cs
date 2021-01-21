@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Linq;
+using System.Text.Json;
 
 namespace BusinessLayer.Extensions
 {
@@ -23,6 +24,16 @@ namespace BusinessLayer.Extensions
             {
                 return default(T);
             }
+        }
+
+        public static string Wrap(this string _string, char _char)
+        {
+            return new string(_string.Append(_char).Prepend(_char).ToArray());
+        }
+
+        public static string WrapRounded(this string _string)
+        {
+            return "(" + _string + ")";
         }
     }
 }

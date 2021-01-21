@@ -36,7 +36,7 @@
                             </svg>
                         </div>
                         <div class="d-inline-block align-middle">
-                            <input class="rounded text-center w-50vw">
+                            <input id="searcher" class="rounded text-center w-50vw">
                         </div>
                     </div>
                 </div>
@@ -103,6 +103,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="~/lib/tagify/tagify.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        $('#searcher').change(e => {
+            console.log($(e.target).val());
+                    $.ajax({
+                        method: 'post',
+                        url: '/api/SearchItems/',
+                        data: { text: $(e.target).val() },
+                        success: (data) => console.log(data),
+                        error: (error) => console.log(error)
+                    });
+                });
+    </script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

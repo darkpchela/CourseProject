@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BusinessLayer.Etc;
 using BusinessLayer.Interfaces;
 using BusinessLayer.Interfaces.Authentication;
 using BusinessLayer.Interfaces.BaseCrud;
@@ -6,17 +7,21 @@ using BusinessLayer.Interfaces.Validation;
 using BusinessLayer.Models;
 using BusinessLayer.Models.DALModels;
 using BusinessLayer.Models.ResultModels;
-using System.Threading.Tasks;
-using System.Text.Json;
-using System.Collections;
+using DataAccessLayer.Entities;
+using DataAccessLayer.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace BusinessLayer.Services
 {
     public class ItemsManager : IItemsManager
     {
         private readonly IItemsCrudService itemsCrudService;
+
+        private readonly ICPUnitOfWork cPUnitOfWork;
 
         private readonly IModelValidatorsStore validatorsStore;
 
@@ -30,11 +35,12 @@ namespace BusinessLayer.Services
 
         private readonly IMapper mapper;
 
-        public ItemsManager(IItemsCrudService itemsCrudService, ICollectionsManager collectionsManager, IModelValidatorsStore validatorsStore, 
-            IModelAuthenticatorsStore authenticatorsStore, IResourcesManager resourcesManager, ITagsManager tagsManager, IMapper mapper)
+        public ItemsManager(IItemsCrudService itemsCrudService, ICollectionsManager collectionsManager, IModelValidatorsStore validatorsStore,
+            IModelAuthenticatorsStore authenticatorsStore, IResourcesManager resourcesManager, ITagsManager tagsManager, ICPUnitOfWork cPUnitOfWork, IMapper mapper)
         {
-            this.itemsCrudService = itemsCrudService;
             this.mapper = mapper;
+            this.cPUnitOfWork = cPUnitOfWork;
+            this.itemsCrudService = itemsCrudService;
             this.collectionsManager = collectionsManager;
             this.validatorsStore = validatorsStore;
             this.authenticatorsStore = authenticatorsStore;
@@ -90,6 +96,25 @@ namespace BusinessLayer.Services
             await collectionsManager.AttachItemToCollection(itemModel.Id, updateItemModel.CollectionId);
             await itemsCrudService.UpdateAsync(itemModel);
             return result;
+        }
+
+        public async Task<IEnumerable<ItemModel>> SearchAsync(string text)
+        {
+            var itemsDbSet = cPUnitOfWork.ItemsRepository.GetAll();
+            List<Item> entities;
+            if (string.IsNullOrEmpty(text))
+            {
+                entities = await cPUnitOfWork.ItemsRepository.GetAll().OrderByDescending(i => i.CreationDate).Take(25).ToListAsync();
+            }
+            else
+            {
+                var conditionsBuilder = new ContainsSearchConditionsBuilder(text);
+                var conditions = conditionsBuilder.AllowPrefix(3).AllowNonStrict(2).GetQuery();
+                entities = await itemsDbSet.Where(i => EF.Functions.Contains(i.Name, conditions) || EF.Functions.Contains(i.Description, conditions) || i.ItemTags.Any(it => text.Contains(it.Tag.Value)))
+                    .ToListAsync();
+            }
+            var items = mapper.Map<IEnumerable<ItemModel>>(entities);
+            return items;
         }
     }
 }

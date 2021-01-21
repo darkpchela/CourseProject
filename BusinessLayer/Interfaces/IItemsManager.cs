@@ -1,5 +1,7 @@
 ﻿using BusinessLayer.Models;
+using BusinessLayer.Models.DALModels;
 using BusinessLayer.Models.ResultModels;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BusinessLayer.Interfaces
@@ -11,5 +13,7 @@ namespace BusinessLayer.Interfaces
         Task<UpdateItemResult> UpdateAsync(UpdateItemModel updateItemModel);
 
         Task<DeleteItemResult> DeleteAsync(DeleteItemModel deleteItemModel);
+
+        Task<IEnumerable<ItemModel>> SearchAsync(string text);
     }
 }

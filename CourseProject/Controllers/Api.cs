@@ -5,8 +5,10 @@ using BusinessLayer.Models;
 using BusinessLayer.Models.DALModels;
 using CourseProject.ViewModels;
 using CourseProject.ViewModels.ApiModels;
+using DataAccessLayer.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -121,6 +123,14 @@ namespace CourseProject.Controllers
             var tags =(await itemsCrudService.GetAsync(id)).ItemTags.Select(it => it.Tag).ToList();
             var tagVM = mapper.Map<IEnumerable<TagJsonVM>>(tags);
             return Json(tagVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SearchItems(string text)
+        {
+            var items = await itemsManager.SearchAsync(text);
+            var itemsVM = mapper.Map<IEnumerable<ItemVM>>(items).ToArray();
+            return Json(itemsVM);
         }
     }
 }
