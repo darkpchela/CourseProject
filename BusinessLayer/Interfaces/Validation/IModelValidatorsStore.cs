@@ -17,5 +17,7 @@
         IDeleteCollectionModelValidator DeleteCollectionModelValidator { get; }
 
         IDeleteItemModelValidator DeleteItemModelValidator { get; }
+
+        ILikeItemModelValidator LikeItemModelValidator { get; }
     }
 }

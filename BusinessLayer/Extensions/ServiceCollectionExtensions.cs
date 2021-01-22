@@ -93,6 +93,7 @@ namespace BusinessLayer.Extensions
             services.AddTransient<ICreateDefaultOptionalFieldModelValidator, CreateDefaultOptionalFieldModelValidator>();
             services.AddTransient<IDeleteOptionalFieldModelValidator, DeleteOptionalFieldModelValidator>();
             services.AddTransient<IDeleteCollectionModelValidator, DeleteCollectionModelValidator>();
+            services.AddTransient<ILikeItemModelValidator, LikeItemModelValidator>();
             services.AddTransient<IModelValidatorsStore, ModelValidatorsStore>();
             return services;
         }
