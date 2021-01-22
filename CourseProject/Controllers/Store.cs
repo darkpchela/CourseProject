@@ -27,12 +27,6 @@ namespace CourseProject.Controllers
 
         private readonly IMapper mapper;
 
-        private CreateCollectionVM createCollectionTestVM = new CreateCollectionVM()
-        {
-            Name = "Test",
-            Description = "It's a test collection"
-        };
-
         public Store(IResourcesManager resourcesManager, ICollectionsManager collectionsManager, IItemsManager itemsManager, IUserCrudService userCrudService,
             IItemsCrudService itemsCrudService, ICollectionsCrudService collectionsCrudService, IMapper mapper)
         {
@@ -63,7 +57,7 @@ namespace CourseProject.Controllers
             var ownerId = User.IsInRole("Admin") ? GetRememberedUserId() : GetCurrentUserId();
             if (ownerId == 0)
                 return RedirectToAction(nameof(Home.Index), nameof(Home));
-            var model = createCollectionTestVM;
+            var model = new CreateCollectionModel();
             model.OwnerId = ownerId;
             return View(model);
         }
@@ -180,9 +174,9 @@ namespace CourseProject.Controllers
                 return RedirectToAction(nameof(Home.Index), nameof(Home));
             RememberUserId(item.OwnerId);
             var itemVM = mapper.Map<ItemVM>(item);
+            itemVM.Liked = item.ItemLikes.Any(il => il.UserId == GetCurrentUserId());
             return View(itemVM);
         }
-
 
         private int GetCurrentUserId()
         {

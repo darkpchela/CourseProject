@@ -35,8 +35,10 @@ namespace CourseProject.Controllers
 
         private readonly ICollectionsManager collectionsManager;
 
+        private readonly ILikesManager likesManager;
+
         public Api(IMapper mapper, ITagsCrudService tagsCrudService , IResourcesManager resourcesManager, ICollectionsCrudService collectionsCrudService, IOptionalFieldsManager optionalFieldsManager, IItemsManager itemsManager,
-            ICollectionsManager collectionsManager, IItemsCrudService itemsCrudService)
+            ICollectionsManager collectionsManager, IItemsCrudService itemsCrudService, ILikesManager likesManager)
         {
             this.mapper = mapper;
             this.resourcesManager = resourcesManager;
@@ -46,6 +48,7 @@ namespace CourseProject.Controllers
             this.collectionsManager = collectionsManager;
             this.tagsCrudService = tagsCrudService;
             this.itemsCrudService = itemsCrudService;
+            this.likesManager = likesManager;
         }
 
         [HttpPost]
@@ -131,6 +134,20 @@ namespace CourseProject.Controllers
             var items = await itemsManager.SearchAsync(text);
             var itemsVM = mapper.Map<IEnumerable<ItemVM>>(items).ToArray();
             return Json(itemsVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> LikeItem(int id)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            int.TryParse(userId, out int requesterId);
+            var model = new LikeItemModel
+            {
+                ItemId = id,
+                UserId = requesterId
+            };
+            var result = await likesManager.LikeItemAsync(model);
+            return Json(result);
         }
     }
 }

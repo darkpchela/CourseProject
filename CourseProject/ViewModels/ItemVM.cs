@@ -21,5 +21,7 @@ namespace CourseProject.ViewModels
         public IList<CommentVM> ItemComments { get; set; }
 
         public UserVM Owner { get; set; }
+
+        public bool Liked { get; set; }
     }
 }
