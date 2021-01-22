@@ -22,10 +22,12 @@ namespace BusinessLayer.Services.Validation
 
         public ILikeItemModelValidator LikeItemModelValidator { get; }
 
+        public ICommentItemModelValidator CommentItemModelValidator { get; }
+
         public ModelValidatorsStore(ICreateCollectionModelValidator createCollectionModelValidator, IUpdateCollectionModelValidator updateCollectionModelValidator,
             ICreateItemModelValidator createItemModelValidator, IUpdateItemModelValidator updateItemModelValidator,
             ICreateDefaultOptionalFieldModelValidator createDefaultOptionalFieldModelValidator, IDeleteOptionalFieldModelValidator deleteOptionalFieldModelValidator, IDeleteItemModelValidator deleteItemModelValidator,
-            IDeleteCollectionModelValidator deleteCollectionModelValidator, ILikeItemModelValidator likeItemModelValidator)
+            IDeleteCollectionModelValidator deleteCollectionModelValidator, ILikeItemModelValidator likeItemModelValidator, ICommentItemModelValidator commentItemModelValidator)
         {
             this.CreateCollectionModelValidator = createCollectionModelValidator;
             this.UpdateCollectionModelValidator = updateCollectionModelValidator;
@@ -36,6 +38,7 @@ namespace BusinessLayer.Services.Validation
             this.DeleteItemModelValidator = deleteItemModelValidator;
             this.DeleteCollectionModelValidator = deleteCollectionModelValidator;
             this.LikeItemModelValidator = likeItemModelValidator;
+            this.CommentItemModelValidator = commentItemModelValidator;
         }
     }
 }

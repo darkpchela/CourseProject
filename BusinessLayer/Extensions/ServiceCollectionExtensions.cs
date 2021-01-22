@@ -31,13 +31,14 @@ namespace BusinessLayer.Extensions
         {
 
             services.AddBaseCrudServices();
+            services.AddCloudinaryService(configuration);
             services.AddTransient<ICollectionsManager, CollectionsManager>();
             services.AddTransient<IItemsManager, ItemsManager>();
             services.AddTransient<IResourcesManager, ResourcesManager>();
             services.AddTransient<IOptionalFieldsManager, OptionalFieldsManager>();
-            services.AddCloudinaryService(configuration);
             services.AddTransient<ITagsManager, TagsManager>();
             services.AddTransient<ILikesManager, LikesManager>();
+            services.AddTransient<ICommentsManager, CommentsManager>();
             services.AddAuthenticators();
             services.AddValidators();
             return services;
@@ -95,6 +96,7 @@ namespace BusinessLayer.Extensions
             services.AddTransient<IDeleteOptionalFieldModelValidator, DeleteOptionalFieldModelValidator>();
             services.AddTransient<IDeleteCollectionModelValidator, DeleteCollectionModelValidator>();
             services.AddTransient<ILikeItemModelValidator, LikeItemModelValidator>();
+            services.AddTransient<ICommentItemModelValidator, CommentItemModelValidator>();
             services.AddTransient<IModelValidatorsStore, ModelValidatorsStore>();
             return services;
         }

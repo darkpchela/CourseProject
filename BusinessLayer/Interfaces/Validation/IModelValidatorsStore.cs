@@ -19,5 +19,7 @@
         IDeleteItemModelValidator DeleteItemModelValidator { get; }
 
         ILikeItemModelValidator LikeItemModelValidator { get; }
+
+        ICommentItemModelValidator CommentItemModelValidator { get; }
     }
 }
