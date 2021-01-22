@@ -37,6 +37,7 @@ namespace BusinessLayer.Extensions
             services.AddTransient<IOptionalFieldsManager, OptionalFieldsManager>();
             services.AddCloudinaryService(configuration);
             services.AddTransient<ITagsManager, TagsManager>();
+            services.AddTransient<ILikesManager, LikesManager>();
             services.AddAuthenticators();
             services.AddValidators();
             return services;
