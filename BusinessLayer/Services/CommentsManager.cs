@@ -5,6 +5,7 @@ using BusinessLayer.Interfaces.Validation;
 using BusinessLayer.Models;
 using BusinessLayer.Models.DALModels;
 using BusinessLayer.Models.ResultModels;
+using System;
 using System.Threading.Tasks;
 
 namespace BusinessLayer.Services
@@ -30,6 +31,7 @@ namespace BusinessLayer.Services
             if (!validRes.Succeed)
                 return new CommentItemResult(validRes);
             var itemComment = mapper.Map<ItemCommentModel>(commentItemModel);
+            itemComment.Comment.CreationDate = DateTime.Now;
             await itemCommentCrudService.CreateAsync(itemComment);
             return new CommentItemResult();
         }

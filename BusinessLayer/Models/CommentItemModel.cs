@@ -9,7 +9,5 @@ namespace BusinessLayer.Models
         public int UserId { get; set; }
 
         public string Value { get; set; }
-
-        public DateTime CreatedAt { get; set; }
     }
 }
