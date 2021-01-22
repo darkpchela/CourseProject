@@ -18,6 +18,7 @@
                 </h6>
             </div>
         </div>
+
         <div class="d-flex flex-row flex-wrap justify-content-center w-100 border-bottom-custom">
             <div class="flex-grow-0">
                 <div class="p-2 text-center">
@@ -43,6 +44,7 @@
                 </div>
             </div>
         </div>
+
         <div class="text-center border-bottom-custom p-2">
             <a href="#" id="btnLike" class="btn">
                 <svg id="disliked" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16" class="medium-icon">
@@ -55,10 +57,11 @@
             </a>
             <span class="ml-2" id="likesCount">@Model.ItemLikes.Count</span>
         </div>
+
         <div>
             <h5 class="text-center">Comments</h5>
-            <div class="d-flex flex-column ">
-                @foreach (var comment in Model.ItemComments)
+            <div id="comments" class="d-flex flex-column ">
+                @foreach (var comment in Model.ItemComments.OrderByDescending(c => c.CreationDate))
                 {
                     <div name='comment' class="p-1 border-custom">
                         <h6 class="d-inline-block w-25 text-right">
@@ -71,16 +74,28 @@
                 }
             </div>
         </div>
+
         <input type="hidden" id="itemId" value="@Model.Id" />
         <input type="hidden" id="itemLiked" value="@Model.Liked" />
+
     </div>
+
+    <div class="d-none">
+            <div id="commentProto" name='comment' class="p-1 border-custom">
+                <h6 data-prop="user" class="d-inline-block w-25 text-right">
+                </h6>
+                <p data-prop="value" class="d-inline-block ">
+                </p>
+            </div>
+    </div>
+
     @if (User.Identity.IsAuthenticated)
     {
     <div class="position-fixed h-10 w-50vw m-auto" style="bottom: 0; left:25%;">
         <div class="d-flex flex-row  align-items-center justify-content-center">
-            <h6 class="flex-grow-0 align-self-start">@User.Identity.Name.UntilChar('@')</h6>
-            <textarea class="flex-grow-1 rounded p-2"></textarea>
-            <a class="btn flex-grow-0">
+            <h6 class="flex-grow-0 align-self-start">@User.Identity.Name</h6>
+            <textarea id="commentValue" class="flex-grow-1 rounded p-2"></textarea>
+            <a id="btnComment" href="#" class="btn flex-grow-0">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="medium-icon"
                      viewBox="0 0 16 16">
                     <path fill-rule="evenodd"
@@ -94,6 +109,29 @@
 
 @section Scripts{ 
     <script>
+        const getCommentElem = (props) => {
+            let elem = $('#commentProto').clone().removeAttr('id');
+            elem.find('[data-prop=user]').text(props.userName);
+            elem.find('[data-prop=value]').text(props.value);
+            return elem;
+        };
+
+        $('#btnComment').click(e => {
+            e.preventDefault();
+            let itemId = $('#itemId').val();
+            let value = $('#commentValue').val();
+            $.post('/api/CommentItem/', { itemId: itemId, value: value }, (result) => {
+                console.log(result);
+                if (result.succeed) {
+                    let comment = getCommentElem(result);
+                    $('#comments').prepend(comment);
+                }
+                else {
+                    console.log(result.errors)
+                }
+            });
+        });
+
         $('#btnLike').click(e => {
             e.preventDefault();
             let itemId = $('#itemId').val();
@@ -117,6 +155,7 @@
                 }
             });
         });
+
         $(() => {
             if ($('#itemLiked').val() != "") {
                 $('#disliked').hide();

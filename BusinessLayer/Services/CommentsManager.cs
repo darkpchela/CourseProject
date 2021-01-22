@@ -16,12 +16,15 @@ namespace BusinessLayer.Services
 
         private readonly IItemCommentCrudService itemCommentCrudService;
 
+        private readonly ICommentsCrudService commentsCrudService;
+
         private readonly IMapper mapper;
 
-        public CommentsManager(IModelValidatorsStore validatorsStore, IItemCommentCrudService itemCommentCrudService, IMapper mapper)
+        public CommentsManager(IModelValidatorsStore validatorsStore, IItemCommentCrudService itemCommentCrudService, ICommentsCrudService commentsCrudService ,IMapper mapper)
         {
             this.validatorsStore = validatorsStore;
             this.itemCommentCrudService = itemCommentCrudService;
+            this.commentsCrudService = commentsCrudService;
             this.mapper = mapper;
         }
 
@@ -30,10 +33,17 @@ namespace BusinessLayer.Services
             var validRes = await validatorsStore.CommentItemModelValidator.ValidateAsync(commentItemModel);
             if (!validRes.Succeed)
                 return new CommentItemResult(validRes);
-            var itemComment = mapper.Map<ItemCommentModel>(commentItemModel);
-            itemComment.Comment.CreationDate = DateTime.Now;
+            var comment = mapper.Map<CommentModel>(commentItemModel);
+            comment.CreationDate = DateTime.Now;
+            await commentsCrudService.CreateAsync(comment);
+            var itemComment = new ItemCommentModel
+            {
+                CommentId = comment.Id,
+                ItemId = commentItemModel.ItemId
+            };
             await itemCommentCrudService.CreateAsync(itemComment);
-            return new CommentItemResult();
+            var result = mapper.Map<CommentItemResult>(comment);
+            return result;
         }
     }
 }

@@ -2,6 +2,10 @@
 {
     public class CommentItemResult : ResultModel<string>
     {
+        public string UserName { get; set; }
+
+        public string Value { get; set; }
+
         public CommentItemResult()
         {
         }
