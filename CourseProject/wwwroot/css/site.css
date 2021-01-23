@@ -188,6 +188,11 @@ h6:hover {
     max-height: clamp(160px, 36vmax, 320px);
 }
 
+.mx-square-25 {
+    max-height: clamp(100px, 25vmax, 240px);
+    max-width: clamp(100px, 25vmax, 240px);
+}
+
 .medium-icon {
     height: clamp(20px, 4vmax, 40px);
 }

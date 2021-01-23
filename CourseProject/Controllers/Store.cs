@@ -167,6 +167,11 @@ namespace CourseProject.Controllers
             return View(collectionVM);
         }
 
+        public async Task<IActionResult> Collections()
+        {
+            return View();
+        }
+
         public async Task<IActionResult> Item(int id)
         {
             var item = await itemsCrudService.GetAsync(id);
@@ -176,6 +181,11 @@ namespace CourseProject.Controllers
             var itemVM = mapper.Map<ItemVM>(item);
             itemVM.Liked = item.ItemLikes.Any(il => il.UserId == GetCurrentUserId());
             return View(itemVM);
+        }
+
+        public async Task<IActionResult> Items()
+        {
+            return View();
         }
 
         private int GetCurrentUserId()
