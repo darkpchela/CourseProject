@@ -5,6 +5,7 @@ using BusinessLayer.Models;
 using CourseProject.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -186,6 +187,14 @@ namespace CourseProject.Controllers
         public async Task<IActionResult> Items()
         {
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SearchItems(string text)
+        {
+            var items = await itemsManager.SearchAsync(text);
+            var itemsVM = mapper.Map<IEnumerable<ItemVM>>(items);
+            return PartialView("_SearchItems", itemsVM);
         }
 
         private int GetCurrentUserId()

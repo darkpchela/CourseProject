@@ -132,14 +132,6 @@ namespace CourseProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SearchItems(string text)
-        {
-            var items = await itemsManager.SearchAsync(text);
-            var itemsVM = mapper.Map<IEnumerable<ItemVM>>(items).ToArray();
-            return Json(itemsVM);
-        }
-
-        [HttpPost]
         public async Task<IActionResult> LikeItem(int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

@@ -129,11 +129,13 @@
     <script>
         $('#searcher').change(e => {
             console.log($(e.target).val());
-                    $.ajax({
-                        method: 'post',
-                        url: '/api/SearchItems/',
-                        data: { text: $(e.target).val() },
-                        success: (data) => console.log(data),
+            $.ajax({
+                method: 'post',
+                url: '/Store/SearchItems/',
+                data: { text: $(e.target).val() },
+                success: (data) => {
+                    $('main').empty().append(data);
+                },
                         error: (error) => console.log(error)
                     });
                 });
