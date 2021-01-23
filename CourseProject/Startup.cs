@@ -1,6 +1,6 @@
 using BusinessLayer.Extensions;
 using DataAccessLayer.Extensions;
-using Identity.ServiceCollectionExtensions;
+using Identity.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Identity.ServiceCollectionExtensions
+namespace Identity.Extensions
 {
     public static class ServiceCollectionExtensions
     {
@@ -54,7 +54,6 @@ namespace Identity.ServiceCollectionExtensions
                     options.ClientSecret = configuration["vkSecret"];
                     options.Scope.Add("email");
                     options.SignInScheme = IdentityConstants.ExternalScheme;
-                    options.AuthorizationEndpoint = "https://pchelnikcp.azurewebsites.net/Account/ExternalSignIn";
                 })
                 .AddGoogle("google", options =>
                 {
