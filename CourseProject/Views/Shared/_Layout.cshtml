@@ -121,13 +121,13 @@
         </main>
     </div>
 
-    @if (User.IsInRole("Admin"))
+    @if (User.IsInRole("admin"))
     {
         @inject IUserCrudService usersService
         @inject ISessionHelper sessionHelper
         var user = await usersService.GetAsync(sessionHelper.GetRemeberedUserId());
-        <div class="position-fixed bg-dark border-custom p-1" style="bottom: 2%; right: 2%;">
-            You are working as: @user.Username | @user.FirstName @user.LastName
+        <div class="position-fixed bg-dark text-success border-custom p-1" style="bottom: 2%; right: 2%;">
+            You are working as: @user?.Username | @user?.FirstName @user?.LastName
         </div>
     }
 

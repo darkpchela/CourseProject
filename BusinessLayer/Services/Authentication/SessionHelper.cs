@@ -23,7 +23,7 @@ namespace BusinessLayer.Services.Authentication
         {
             var id = httpContextAccessor.HttpContext.Session.GetInt32("userId");
             if (!id.HasValue)
-                return 0;
+                return GetCurrentUserId();
             return id.Value;
         }
 

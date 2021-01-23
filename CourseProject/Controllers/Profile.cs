@@ -54,7 +54,7 @@ namespace CourseProject.Controllers
         [HttpGet]
         public async Task<IActionResult> CreateCollection()
         {
-            var ownerId = User.IsInRole("Admin") ? sessionHelper.GetRemeberedUserId() : sessionHelper.GetCurrentUserId();
+            var ownerId = User.IsInRole("admin") ? sessionHelper.GetRemeberedUserId() : sessionHelper.GetCurrentUserId();
             if (ownerId == 0)
                 return RedirectToAction(nameof(Home.Index), nameof(Home));
             var model = new CreateCollectionVM();
@@ -83,7 +83,7 @@ namespace CourseProject.Controllers
             var collection = await collectionsCrudService.GetAsync(id);
             if (collection is null)
                 return RedirectToAction(nameof(Profile), nameof(Store));
-            if (!User.IsInRole("Admin") && collection.OwnerId != sessionHelper.GetCurrentUserId())
+            if (!User.IsInRole("admin") && collection.OwnerId != sessionHelper.GetCurrentUserId())
                 return RedirectToAction(nameof(Home.Index), nameof(Home));
             var editVM = mapper.Map<EditCollectionVM>(collection);
             return View(editVM);
@@ -108,7 +108,7 @@ namespace CourseProject.Controllers
         public IActionResult CreateItem()
         {
             var model = new CreateItemVM();
-            var ownerId = User.IsInRole("Admin") ? sessionHelper.GetRemeberedUserId() : sessionHelper.GetCurrentUserId();
+            var ownerId = User.IsInRole("admin") ? sessionHelper.GetRemeberedUserId() : sessionHelper.GetCurrentUserId();
             if (ownerId == 0)
                 return RedirectToAction(nameof(Home.Index), nameof(Home));
             model.OwnerId = ownerId;
@@ -136,7 +136,7 @@ namespace CourseProject.Controllers
             var item = await itemsCrudService.GetAsync(id);
             if (item is null)
                 return RedirectToAction(nameof(Profile.Info), nameof(Profile));
-            if (!User.IsInRole("Admin") && item.OwnerId != sessionHelper.GetCurrentUserId())
+            if (!User.IsInRole("admin") && item.OwnerId != sessionHelper.GetCurrentUserId())
                 return RedirectToAction(nameof(Home.Index), nameof(Home));
             var editVM = mapper.Map<EditItemVM>(item);
             return View(editVM);
