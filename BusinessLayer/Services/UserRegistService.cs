@@ -7,6 +7,7 @@ using Identity.Entities;
 using Identity.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace BusinessLayer.Services
@@ -33,14 +34,22 @@ namespace BusinessLayer.Services
 
         public async Task<bool> ExternalRegistAsync(ExternalLoginInfo info)
         {
-            var appUser = mapper.Map<AppUser>(info);
-            var res = await identityUnitOfWork.UserManager.CreateAsync(appUser);
-            if (!res.Succeeded)
-                return false;
+            var appUser = await identityUnitOfWork.UserManager.FindByEmailAsync(info.Principal.FindFirstValue(ClaimTypes.Email));
+            if (appUser is null)
+            {
+                appUser = mapper.Map<AppUser>(info);
+                var res = await identityUnitOfWork.UserManager.CreateAsync(appUser);
+                if (!res.Succeeded)
+                    return false;
+            }
             await identityUnitOfWork.UserManager.AddLoginAsync(appUser, info);
-            var user = mapper.Map<UserModel>(info);
-            user.Id = appUser.Id;
-            await userCrudService.CreateAsync(user);
+            var user = await userCrudService.GetAsync(appUser.Id);
+            if (user is null)
+            {
+                user = mapper.Map<UserModel>(info);
+                user.Id = appUser.Id;
+                await userCrudService.CreateAsync(user);
+            }
             return true;
         }
 
