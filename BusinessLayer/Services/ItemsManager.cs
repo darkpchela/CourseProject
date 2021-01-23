@@ -108,7 +108,7 @@ namespace BusinessLayer.Services
             else
             {
                 var conditionsBuilder = new ContainsSearchConditionsBuilder(text);
-                var conditions = conditionsBuilder.AllowPrefix(3).AllowNonStrict(2).GetQuery();
+                var conditions = conditionsBuilder.AllowPrefix(3).AllowNonStrict(2).Build();
                 var items = cPUnitOfWork.ItemsRepository.GetAll().Where(i => EF.Functions.Contains(i.Name, conditions) || EF.Functions.Contains(i.Description, conditions) || i.ItemTags.Any(it => text.Contains(it.Tag.Value)));
                 var collectionItems = cPUnitOfWork.CollectionsRepository.GetAll().Where(c => EF.Functions.Contains(c.Description, conditions) || EF.Functions.Contains(c.Name, conditions)).SelectMany(c => c.CollectionItems.Select(ci => ci.Item));
                 var commentItems = cPUnitOfWork.CommentsRepository.GetAll().Where(c => EF.Functions.Contains(c.Value, conditions)).SelectMany(c => c.ItemComments.Select(ic => ic.Item));

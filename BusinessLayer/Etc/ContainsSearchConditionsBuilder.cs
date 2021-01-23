@@ -76,7 +76,7 @@ namespace BusinessLayer.Etc
             resultQuery = string.Join(" or ", strictArea, nonStrictArea);
         }
 
-        public string GetQuery()
+        public string Build()
         {
             if (isPrefixMode)
                 MakePrefix();
