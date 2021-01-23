@@ -20,7 +20,7 @@
             </div>
         </div>
 
-        <form asp-action="CreateItem" asp-controller="Store" method="post" class="d-flex flex-column align-items-center mt-2">
+        <form asp-action="CreateItem" asp-controller="Profile" method="post" class="d-flex flex-column align-items-center mt-2">
             <input type="text" class="form-control w-75 text-center" asp-for="@Model.Name" placeholder="Item name">
 
             @{
@@ -47,7 +47,7 @@
             </div>
 
             <div class="w-75 d-flex flex-row justify-content-between mt-2">
-                <a asp-action="Profile" asp-controller="Store" asp-route-id="@Model.OwnerId" class="btn p-0">
+                <a asp-action="Info" asp-controller="Profile" asp-route-id="@Model.OwnerId" class="btn p-0">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                          class="bigger-icon" viewBox="0 0 16 16">
                         <path fill-rule="evenodd"

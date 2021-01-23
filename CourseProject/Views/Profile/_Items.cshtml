@@ -4,7 +4,7 @@
     {
         <div class="square-25 m-1">
             <div class="w-100 h-100 d-flex flex-row justify-content-center ">
-                <a asp-action="CreateItem" asp-controller="Store" class="btn w-50 h-50 align-self-center">
+                <a asp-action="CreateItem" asp-controller="Profile" class="btn w-50 h-50 align-self-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                          fill="currentColor" class="h-100 w-100" viewBox="0 0 16 16">
                         <path fill-rule="evenodd"
@@ -42,7 +42,7 @@
                                   d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
                         </svg>
                     </a>
-                    <a asp-action="EditItem" asp-controller="Store" asp-route-id="@Model.Items[i].Id"
+                    <a asp-action="EditItem" asp-controller="Profile" asp-route-id="@Model.Items[i].Id"
                        class="btn p-0 position-absolute medium-icon" style="bottom: 5px; right: 5px;">
                         <svg xmlns="http://www.w3.org/2000/svg"
                              fill="currentColor" class="h-100" viewBox="0 0 16 16">

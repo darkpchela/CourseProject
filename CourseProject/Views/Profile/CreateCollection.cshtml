@@ -1,36 +1,36 @@
-﻿@model EditCollectionVM
+﻿@model CreateCollectionVM
 @inject IThemesCrudService themesService
 @inject IFieldTypesCrudService fieldTypesService
 
 <div class="d-flex justify-content-center mt-2">
     <div class="d-flex flex-column align-items-stretch w-75 mt-2" style="max-width: 768px;">
         <h3 class="text-center">
-            Edit Collection
+            New Collection
         </h3>
 
         <div class="align-self-center p-1">
-            <div name="imgContainer">
+            <div name="imgContainer" style="display: none;">
                 <div class="square-25 d-flex justify-content-center align-items-center">
                     <a id="changeImage" href="" class="btn p-0">
                         <img class="img-fluid img-thumbnail" src="@Model.ImageUrl" />
                     </a>
                 </div>
             </div>
-            <div id="dzContainer" style="display:none">
+            <div id="dzContainer">
                 <div id="dropzone" class="dropzone d-flex p-0 justify-content-center square-25">
                 </div>
             </div>
         </div>
 
-        <form asp-action="EditCollection" asp-controller="Store" method="post" class="d-flex flex-column align-items-center mt-2">
-            <input asp-for="Name" type="text" value="@Model.Name" class="form-control w-75 text-center"
+        <form asp-action="CreateCollection" asp-controller="Profile" method="post" class="d-flex flex-column align-items-center mt-2">
+            <input asp-for="Name" type="text" class="form-control w-75 text-center"
                    placeholder="Collection name">
             @Html.DropDownListFor(m => m.ThemeId, new SelectList(await themesService.GetAllAsync(), "Id", "Name"), "Select theme", new { @class = "mt-2 form-control w-75 text-center" })
             <div class="text-center mt-3 w-75">
                 <h6 class="text-muted">Description(Markdown)</h6>
                 <textarea asp-for="Description" class="form-control form-control w-100 text-center"
                           placeholder="Collection description"
-                          style="min-height: 20vh;">@Model.Description</textarea>
+                          style="min-height: 20vh;"></textarea>
             </div>
 
             <div class="text-center mt-3 w-75">
@@ -49,29 +49,29 @@
                         </a>
                     </div>
                 </div>
+            </div>
 
-                <div class="w-100 d-flex flex-row justify-content-between mt-2">
-                    <a asp-action="Profile" asp-controller="Store" asp-route-id="@Model.OwnerId" class="btn p-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                             class="bigger-icon" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd"
-                                  d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
-                        </svg>
-                    </a>
-                    <div asp-validation-summary="All" class="text-danger font-weight-bold">
-                    </div>
-                    <button type="submit" class="btn p-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                             class="bigger-icon" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd"
-                                  d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
-                        </svg>
-                    </button>
-                </div>
+            <div class="w-75 d-flex flex-row justify-content-between mt-2">
+                <a asp-action="Info" asp-controller="Profile" asp-route-id="@Model.OwnerId" class="btn p-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                         class="bigger-icon" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                              d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                    </svg>
+                </a>
+                <button type="submit" class="btn p-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                         class="bigger-icon" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                              d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
+                    </svg>
+                </button>
+            </div>
+
+            <div asp-validation-summary="All" class="text-danger font-weight-bold">
             </div>
             <input type="hidden" asp-for="@Model.ResourceId" value="@Model.ResourceId" />
             <input type="hidden" asp-for="@Model.OwnerId" value="@Model.OwnerId" />
-            <input type="hidden" asp-for="@Model.CollectionId" value="@Model.CollectionId" />
             <input type="hidden" asp-for="@Model.ImageUrl" value="@Model.ImageUrl" />
         </form>
     </div>
@@ -81,10 +81,14 @@
     @Html.Raw(Json.Serialize(Model.Fields))
 </div>
 
+<div id="tpl" class="d-none">
+    @{await Html.RenderPartialAsync("_DropzoneTemplate"); }
+</div>
+
 <div class="d-none">
     <div id="fieldProto" name='field' class="d-flex flex-row flex-nowrap align-items-center mt-1">
         <input type="hidden" data-prop="id" />
-        <input name="name" data-prop="name" type="text" class="form-control flex-grow-1 mr-1 " placeholder="Field name" />
+        <input data-prop="name" type="text" class="form-control flex-grow-1 mr-1 " placeholder="Field name" />
         @Html.DropDownList("type", new SelectList(await fieldTypesService.GetAllAsync(), "Id", "Type"), "Select field type", new { @class = "form-control", data_prop = "type" })
         <a name='btnDeleteField' href="" class="d-block btn p-0">
             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="tiny-icon" viewBox="0 0 16 16">
@@ -94,12 +98,9 @@
         </a>
     </div>
 </div>
-<div id="tpl" class="d-none">
-    @{await Html.RenderPartialAsync("_DropzoneTemplate"); }
-</div>
 
 @section Scripts{
     <script src="~/lib/dropzone-5.7.0/dist/dropzone.js"></script>
     <script src="~/js/appDropzone.js"></script>
-    <script src="~/js/editCollection.js"></script>
+    <script src="~/js/createCollection.js"></script>
 }
