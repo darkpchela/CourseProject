@@ -33,7 +33,7 @@ namespace BusinessLayer.Services.Authentication
 
         private void AuthenticateRequest(TModel model)
         {
-            var isAdminRequest = httpContextAccessor.HttpContext.User.IsInRole("Admin");
+            var isAdminRequest = httpContextAccessor.HttpContext.User.IsInRole("admin");
             var userId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             int.TryParse(userId, out int requesterId);
             if (!isAdminRequest && model.OwnerId != requesterId)

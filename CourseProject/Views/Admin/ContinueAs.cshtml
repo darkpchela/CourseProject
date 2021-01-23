@@ -1,0 +1,9 @@
+﻿<div class="col-4 offset-4 border-custom mt-5 rounded">
+    <form asp-action="ContinueAs" asp-controller="Admin" method="post">
+        <h4 class="text-center border-bottom-custom">Continue as:</h4>
+        <div class="d-flex flex-row justify-content-between">
+        <button class="btn border-custom rounded m-1 font-weight-bold" asp-route-asMe="false">As user</button>
+        <button class="btn border-custom rounded m-1 font-weight-bold" asp-route-asMe="true">As me</button>
+        </div>
+    </form>
+</div>

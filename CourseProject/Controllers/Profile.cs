@@ -4,10 +4,8 @@ using BusinessLayer.Interfaces.Authentication;
 using BusinessLayer.Interfaces.BaseCrud;
 using BusinessLayer.Models;
 using CourseProject.ViewModels;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace CourseProject.Controllers
@@ -42,12 +40,17 @@ namespace CourseProject.Controllers
         public async Task<IActionResult> Info(int? id)
         {
             if (id is null)
-                id = sessionHelper.GetCurrentUserId();
+            {
+                if (User.IsInRole("admin"))
+                    return RedirectToAction(nameof(Admin.ContinueAs), nameof(Admin));
+                else
+                    id = sessionHelper.GetCurrentUserId();
+            }
             var user = await userCrudService.GetAsync(id.Value);
             if (user is null)
                 return RedirectToAction(nameof(Home.Index), nameof(Home));
-            var model = mapper.Map<UserVM>(user);
             sessionHelper.RememberUserId(id.Value);
+            var model = mapper.Map<UserVM>(user);
             return View(model);
         }
 

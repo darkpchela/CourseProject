@@ -1,5 +1,7 @@
 ﻿@model EditItemVM
 @inject IUserCrudService userService
+@inject ISessionHelper sessionHelper
+
 <div class="d-flex justify-content-center mt-2">
     <div class="d-flex flex-column align-items-stretch w-75 mt-2" style="max-width: 768px;">
         <h3 class="text-center">
@@ -24,7 +26,8 @@
             <input type="text" class="form-control w-75 text-center" asp-for="@Model.Name" placeholder="Item name">
 
             @{
-                var user = await userService.GetAsync(int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "0"));
+                int userId = User.IsInRole("admin") ? sessionHelper.GetRemeberedUserId() : sessionHelper.GetCurrentUserId();
+                var user = await userService.GetAsync(userId);
                 if (user != null)
                 {
                     @Html.DropDownListFor(m => m.CollectionId, new SelectList(user.Collections, "Id", "Name"), "Select collection", new { @class = "mt-2 form-control w-75 text-center" });
