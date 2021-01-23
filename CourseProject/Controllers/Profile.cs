@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BusinessLayer.Interfaces;
+using BusinessLayer.Interfaces.Authentication;
 using BusinessLayer.Interfaces.BaseCrud;
 using BusinessLayer.Models;
 using CourseProject.ViewModels;
@@ -15,6 +16,8 @@ namespace CourseProject.Controllers
     {
         private readonly IMapper mapper;
 
+        private readonly ISessionHelper sessionHelper;
+
         private readonly IUserCrudService userCrudService;
 
         private readonly ICollectionsManager collectionsManager;
@@ -25,7 +28,7 @@ namespace CourseProject.Controllers
 
         private readonly IItemsCrudService itemsCrudService;
 
-        public Profile(IMapper mapper, IUserCrudService userCrudService, ICollectionsManager collectionsManager, ICollectionsCrudService collectionsCrudService, IItemsManager itemsManager, IItemsCrudService itemsCrudService)
+        public Profile(IMapper mapper, ISessionHelper sessionHelper, IUserCrudService userCrudService, ICollectionsManager collectionsManager, ICollectionsCrudService collectionsCrudService, IItemsManager itemsManager, IItemsCrudService itemsCrudService)
         {
             this.mapper = mapper;
             this.userCrudService = userCrudService;
@@ -33,24 +36,25 @@ namespace CourseProject.Controllers
             this.collectionsCrudService = collectionsCrudService;
             this.itemsManager = itemsManager;
             this.itemsCrudService = itemsCrudService;
+            this.sessionHelper = sessionHelper;
         }
 
         public async Task<IActionResult> Info(int? id)
         {
             if (id is null)
-                id = GetCurrentUserId();
+                id = sessionHelper.GetCurrentUserId();
             var user = await userCrudService.GetAsync(id.Value);
             if (user is null)
                 return RedirectToAction(nameof(Home.Index), nameof(Home));
             var model = mapper.Map<UserVM>(user);
-            RememberUserId(id.Value);
+            sessionHelper.RememberUserId(id.Value);
             return View(model);
         }
 
         [HttpGet]
         public async Task<IActionResult> CreateCollection()
         {
-            var ownerId = User.IsInRole("Admin") ? GetRememberedUserId() : GetCurrentUserId();
+            var ownerId = User.IsInRole("Admin") ? sessionHelper.GetRemeberedUserId() : sessionHelper.GetCurrentUserId();
             if (ownerId == 0)
                 return RedirectToAction(nameof(Home.Index), nameof(Home));
             var model = new CreateCollectionVM();
@@ -79,7 +83,7 @@ namespace CourseProject.Controllers
             var collection = await collectionsCrudService.GetAsync(id);
             if (collection is null)
                 return RedirectToAction(nameof(Profile), nameof(Store));
-            if (!User.IsInRole("Admin") && collection.OwnerId != GetCurrentUserId())
+            if (!User.IsInRole("Admin") && collection.OwnerId != sessionHelper.GetCurrentUserId())
                 return RedirectToAction(nameof(Home.Index), nameof(Home));
             var editVM = mapper.Map<EditCollectionVM>(collection);
             return View(editVM);
@@ -104,7 +108,7 @@ namespace CourseProject.Controllers
         public IActionResult CreateItem()
         {
             var model = new CreateItemVM();
-            var ownerId = User.IsInRole("Admin") ? GetRememberedUserId() : GetCurrentUserId();
+            var ownerId = User.IsInRole("Admin") ? sessionHelper.GetRemeberedUserId() : sessionHelper.GetCurrentUserId();
             if (ownerId == 0)
                 return RedirectToAction(nameof(Home.Index), nameof(Home));
             model.OwnerId = ownerId;
@@ -132,7 +136,7 @@ namespace CourseProject.Controllers
             var item = await itemsCrudService.GetAsync(id);
             if (item is null)
                 return RedirectToAction(nameof(Profile.Info), nameof(Profile));
-            if (!User.IsInRole("Admin") && item.OwnerId != GetCurrentUserId())
+            if (!User.IsInRole("Admin") && item.OwnerId != sessionHelper.GetCurrentUserId())
                 return RedirectToAction(nameof(Home.Index), nameof(Home));
             var editVM = mapper.Map<EditItemVM>(item);
             return View(editVM);
@@ -151,26 +155,6 @@ namespace CourseProject.Controllers
                 return View(editItemVM);
             }
             return RedirectToAction(nameof(Store.Item), nameof(Store), new { id = dtoModel.ItemId });
-        }
-
-        private int GetCurrentUserId()
-        {
-            int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId);
-            return userId;
-        }
-
-        private void RememberUserId(int userId)
-        {
-            if (User.IsInRole("Admin"))
-                HttpContext.Session.SetInt32("userId", userId);
-        }
-
-        private int GetRememberedUserId()
-        {
-            var id = HttpContext.Session.GetInt32("userId");
-            if (!id.HasValue)
-                return 0;
-            return id.Value;
         }
     }
 }
