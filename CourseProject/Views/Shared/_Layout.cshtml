@@ -121,6 +121,16 @@
         </main>
     </div>
 
+    @if (User.IsInRole("Admin"))
+    {
+        @inject IUserCrudService usersService
+        @inject ISessionHelper sessionHelper
+        var user = await usersService.GetAsync(sessionHelper.GetRemeberedUserId());
+        <div class="position-fixed bg-dark border-custom p-1" style="bottom: 2%; right: 2%;">
+            You are working as: @user.Username | @user.FirstName @user.LastName
+        </div>
+    }
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/jquery-cookie/jquery.cookie.min.js"></script>
@@ -137,8 +147,8 @@
                 success: (data) => {
                     $('main').empty().append(data);
                 },
-                        error: (error) => console.log(error)
-                    });
+                error: (error) => console.log(error)
+            });
         });
     </script>
     <script>
@@ -147,7 +157,7 @@
             $('html').attr('theme') == 'dark' ?
                 $('html').attr('theme', 'light') :
                 $('html').attr('theme', 'dark');
-            $.cookie('theme', $('html').attr('theme'), { expires: 186, path:'/' });
+            $.cookie('theme', $('html').attr('theme'), { expires: 186, path: '/' });
         });
         $(() => {
             let theme = $.cookie('theme') ?? 'dark';
