@@ -50,17 +50,16 @@ namespace Identity.ServiceCollectionExtensions
                 })
                 .AddVkontakte("vk", options =>
                 {
-                    var vkAuth = configuration.GetSection("Authentication:VK");
-                    options.ClientId = vkAuth["ClientId"];
-                    options.ClientSecret = vkAuth["ClientSecret"];
+                    options.ClientId = configuration["vkId"];
+                    options.ClientSecret = configuration["vkSecret"];
                     options.Scope.Add("email");
                     options.SignInScheme = IdentityConstants.ExternalScheme;
+                    options.AuthorizationEndpoint = "https://pchelnikcp.azurewebsites.net/Account/ExternalSignIn";
                 })
                 .AddGoogle("google", options =>
                 {
-                    var googleAuth = configuration.GetSection("Authentication:Google");
-                    options.ClientId = googleAuth["ClientId"];
-                    options.ClientSecret = googleAuth["ClientSecret"];
+                    options.ClientId = configuration["googleId"];
+                    options.ClientSecret = configuration["googleSecret"];
                     options.SignInScheme = IdentityConstants.ExternalScheme;
                 });
             return services;

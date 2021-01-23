@@ -66,7 +66,7 @@ namespace BusinessLayer.Extensions
 
         private static IServiceCollection AddCloudinaryService(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddCloudinary(new Account(configuration["Cloudinary:CloudName"], configuration["Cloudinary:ClientId"], configuration["Cloudinary:ClientSecret"]));
+            services.AddCloudinary(new Account(configuration["cloudinaryName"], configuration["cloudinaryId"], configuration["cloudinarySecret"]));
             services.AddTransient<ICloudinaryService, CloudinaryService>();
             return services;
         }

@@ -27,7 +27,7 @@ namespace CourseProject
             services.AddIdentityDependencies();
             services.AddApplicationDbContext(Configuration);
             services.AddApplicationDbDependencies();
-            //services.AddExternalProviders(Configuration);
+            services.AddExternalProviders(Configuration);
             services.AddAutomapperProfiles(Assembly.GetExecutingAssembly());
             services.AddBusinessLayerDependencies(Configuration);
             services.AddHttpContextAccessor();
