@@ -27,7 +27,7 @@ namespace CourseProject
             services.AddIdentityDependencies();
             services.AddApplicationDbContext(Configuration);
             services.AddApplicationDbDependencies();
-            services.AddExternalProviders(Configuration);
+            //services.AddExternalProviders(Configuration);
             services.AddAutomapperProfiles(Assembly.GetExecutingAssembly());
             services.AddBusinessLayerDependencies(Configuration);
             services.AddHttpContextAccessor();
@@ -36,15 +36,15 @@ namespace CourseProject
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
+            //if (env.IsDevelopment())
+            //{
                 app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-                app.UseHsts();
-            }
+            //}
+            //else
+            //{
+            //    app.UseExceptionHandler("/Home/Error");
+            //    app.UseHsts();
+            //}
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
