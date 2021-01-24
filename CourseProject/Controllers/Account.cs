@@ -13,9 +13,9 @@ namespace CourseProject.Controllers
     {
         private readonly IIdentityUnitOfWork identityUnitOfWork;
 
-        private readonly IUserRegistService userRegistService;
+        private readonly IAppUsersManager userRegistService;
 
-        public Account(IIdentityUnitOfWork identityUnitOfWork, IUserRegistService userRegistService)
+        public Account(IIdentityUnitOfWork identityUnitOfWork, IAppUsersManager userRegistService)
         {
             this.identityUnitOfWork = identityUnitOfWork;
             this.userRegistService = userRegistService;

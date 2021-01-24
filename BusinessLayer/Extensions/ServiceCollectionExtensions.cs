@@ -58,7 +58,7 @@ namespace BusinessLayer.Extensions
             services.AddTransient<ITagsCrudService, TagsCrudService>();
             services.AddTransient<IThemesCrudService, ThemesCrudService>();
             services.AddTransient<IUserCrudService, UsersCrudService>();
-            services.AddTransient<IUserRegistService, UserRegistService>();
+            services.AddTransient<IAppUsersManager, AppUsersManager>();
             services.AddTransient<IFieldTypesCrudService, FieldTypesCrudService>();
             services.AddTransient<IResourceCrudService, ResourceCrudService>();
             return services;
