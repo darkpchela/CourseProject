@@ -118,9 +118,15 @@ $('#CollectionId').change(e => {
 
 $(() => {
     let cashedFields = JSON.parse($('#cashedFields').text());
-    for (let i = 0; i < cashedFields.length; i++) {
-        let field = getFieldElem(cashedFields[i]);
-        fieldsElem.append(field);
+    if (cashedFields) {
+        for (let i = 0; i < cashedFields.length; i++) {
+            let field = getFieldElem(cashedFields[i]);
+            fieldsElem.append(field);
+        }
+        updateFieldNames();
     }
-    updateFieldNames();
+    else if ($('#CollectionId').val() != "") {
+        let collectionId = $('#CollectionId').val();
+        loadFields(collectionId);
+    }
 });

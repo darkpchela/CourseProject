@@ -108,13 +108,15 @@ namespace CourseProject.Controllers
         }
 
         [HttpGet]
-        public IActionResult CreateItem()
+        public IActionResult CreateItem(int? collectionId)
         {
             var model = new CreateItemVM();
             var ownerId = User.IsInRole("admin") ? sessionHelper.GetRemeberedUserId() : sessionHelper.GetCurrentUserId();
             if (ownerId == 0)
                 return RedirectToAction(nameof(Home.Index), nameof(Home));
             model.OwnerId = ownerId;
+            if (collectionId.HasValue)
+                model.CollectionId = collectionId;
             return View(model);
         }
 
