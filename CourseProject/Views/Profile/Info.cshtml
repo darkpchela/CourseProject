@@ -53,6 +53,7 @@
             $('#collections').hide();
             $('#items').show();
         });
+
         $(() => {
             $('#btnGetCollections').click();
             $('[name=btnDeleteCollection]').click(e => {
@@ -79,6 +80,10 @@
                         console.log(result.errors)
                 });
             });
+            $('[name=collection],[name=item]').hover(
+                e => $(e.delegateTarget).find('[name=editTools]').show(),
+                e => $(e.delegateTarget).find('[name=editTools]').hide()
+            );
         });
     </script>
 }

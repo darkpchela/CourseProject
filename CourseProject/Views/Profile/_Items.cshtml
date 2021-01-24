@@ -30,7 +30,7 @@
             </div>
             @if (Model.AllowEdit)
             {
-                <div class="position-relative">
+                <div name="editTools" class="position-relative" style="display: none;">
                     <a name='btnDeleteItem' href="#" data-id="@Model.Items[i].Id" class="btn btn-hidden p-0 position-absolute medium-icon" style="bottom: 0px; left: 0px;">
                         <svg xmlns="http://www.w3.org/2000/svg"
                              class="h-100" viewBox="0 0 16 16" fill="currentColor">
