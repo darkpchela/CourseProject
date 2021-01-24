@@ -5,7 +5,7 @@
     {
         <div class="square-25 m-1">
             <div class="w-100 h-100 d-flex flex-row justify-content-center ">
-                <a asp-action="CreateCollection" asp-controller="Profile" class="btn w-50 h-50 align-self-center">
+                <a asp-action="CreateCollection" asp-controller="Profile" class="btn p-0 w-50 h-50 align-self-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                          fill="currentColor" class="h-100 w-100" viewBox="0 0 16 16">
                         <path fill-rule="evenodd"
@@ -27,16 +27,14 @@
                          alt="picture">
                 </a>
             </div>
-            <div>
-                <h5>@Model.Collections[i].Name</h5>
-            </div>
-            <div>
-                <h6>Items: <span>@Model.Collections[i].Items.Count</span></h6>
+            <div class="w-75 p-2 m-auto">
+                <h5 class="text-wrap">@Model.Collections[i].Name</h5>
+                <h6 class="text-wrap">Items: <span>@Model.Collections[i].Items.Count</span></h6>
             </div>
             @if (Model.AllowEdit)
             {
                 <div class="position-relative">
-                    <a name='btnDeleteCollection' href="#" data-id="@Model.Collections[i].Id" class="btn p-0 position-absolute medium-icon" style="bottom: 5px; left: 5px;">
+                    <a name='btnDeleteCollection' href="#" data-id="@Model.Collections[i].Id" class="btn p-0 position-absolute medium-icon" style="bottom: 0px; left: 0px;">
                         <svg xmlns="http://www.w3.org/2000/svg"
                              class="h-100" viewBox="0 0 16 16" fill="currentColor">
                             <path fill-rule="evenodd"
@@ -45,7 +43,7 @@
                                   d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
                         </svg>
                     </a>
-                    <a asp-action="EditCollection" asp-controller="Profile" asp-route-id="@Model.Collections[i].Id" class="btn p-0 position-absolute medium-icon" style="bottom: 5px; right: 5px;">
+                    <a asp-action="EditCollection" asp-controller="Profile" asp-route-id="@Model.Collections[i].Id" class="btn p-0 position-absolute medium-icon" style="bottom: 0px; right: 0px;">
                         <svg xmlns="http://www.w3.org/2000/svg"
                              fill="currentColor" class="h-100" viewBox="0 0 16 16">
                             <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
