@@ -205,6 +205,15 @@ h6:hover {
     height: clamp(12px, 2vmax, 25px);
 }
 
+.btn-hidden {
+    opacity: 0.1;
+    transition: 0.35s;
+}
+
+.btn-hidden:hover {
+    opacity: 100;
+}
+
 /* modified bootstrap */
 
 .btn, .btn:focus, .btn:active {
