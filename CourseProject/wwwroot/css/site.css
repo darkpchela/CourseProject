@@ -178,14 +178,14 @@ h6:hover {
     width: clamp(100px, 25vmax, 240px);
 }
 
-.square-25 img {
-    max-height: clamp(80px, 18vmax, 190px);
-    max-width: clamp(80px, 18vmax, 190px);
-}
-
 .mx-square-40 {
     max-width: clamp(160px, 36vmax, 320px);
     max-height: clamp(160px, 36vmax, 320px);
+}
+
+.mx-square-20 {
+    max-height: clamp(80px, 20vmax, 195px);
+    max-width: clamp(80px, 20vmax, 195px);
 }
 
 .mx-square-25 {
