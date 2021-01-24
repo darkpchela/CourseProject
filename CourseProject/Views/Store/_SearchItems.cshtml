@@ -12,10 +12,10 @@
             <div class="d-flex flex-row flex-wrap align-items-baseline justify-content-center">
                 @foreach (var item in Model)
                 {
-                    <div class=" m-1 square-25 text-center">
+                    <div class=" m-1 text-center">
                         <div class="p-2">
                             <a asp-action="Item" asp-controller="Store" asp-route-id="@item.Id" data-placement="bottom" >
-                                <img class="img-fluid img-thumbnail"
+                                <img class="img-fluid img-thumbnail mx-square-20"
                                      src="@item.ImageUrl"
                                      alt="picture">
                             </a>

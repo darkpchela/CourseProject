@@ -6,10 +6,10 @@
         <div class="d-flex flex-row flex-wrap align-items-baseline justify-content-center">
             @foreach (var collection in (await collectionsService.GetAllAsync()).OrderByDescending(c => c.CreationDate))
             {
-                <div class="m-2 square-25 text-center">
+                <div class="m-2 text-center">
                     <div class="p-2">
                         <a asp-action="Collection" asp-controller="Store" asp-route-id="@collection.Id" class="btn p-0 ">
-                            <img class="img-fluid img-thumbnail"
+                            <img class="img-fluid img-thumbnail mx-square-20"
                                  src="@collection.Resource.Url"
                                  alt="picture">
                         </a>
