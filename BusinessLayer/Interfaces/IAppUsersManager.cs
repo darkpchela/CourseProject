@@ -1,4 +1,5 @@
 ﻿using BusinessLayer.Models;
+using BusinessLayer.Models.ResultModels;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -12,14 +13,14 @@ namespace BusinessLayer.Interfaces
 
         Task<bool> RegistAsync(SignUpModel userSignInModel);
 
-        Task DeleteUsersAsync(IEnumerable<int> userIds);
+        Task<DeleteUsersResult> DeleteUsersAsync(IEnumerable<int> userIds);
 
-        Task BlockUsersAsync(IEnumerable<int> userIds);
+        Task<BlockUsersResult> BlockUsersAsync(IEnumerable<int> userIds);
 
-        Task UnblockUsersAsync(IEnumerable<int> userIds);
+        Task<UnblockUsersResult> UnblockUsersAsync(IEnumerable<int> userIds);
 
-        Task EnableAdminRules(int userId);
+        Task<EnableAdminRulesResult> EnableAdminRules(int userId);
 
-        Task DisableAdminRules(int userId);
+        Task<DisableAdminRulesResult> DisableAdminRules(int userId);
     }
 }

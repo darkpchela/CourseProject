@@ -3,6 +3,7 @@ using BusinessLayer.Interfaces;
 using BusinessLayer.Interfaces.BaseCrud;
 using BusinessLayer.Models;
 using BusinessLayer.Models.DALModels;
+using BusinessLayer.Models.ResultModels;
 using Identity.Entities;
 using Identity.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -61,53 +62,111 @@ namespace BusinessLayer.Services
             return true;
         }
 
-        public async Task DeleteUsersAsync(IEnumerable<int> userIds)
+        public async Task<DeleteUsersResult> DeleteUsersAsync(IEnumerable<int> userIds)
         {
+            var result = new DeleteUsersResult();
             foreach (var id in userIds)
             {
                 var appUser = await identityUnitOfWork.UserManager.FindByIdAsync(id.ToString());
-                var result = await identityUnitOfWork.UserManager.DeleteAsync(appUser);
-                if (result.Succeeded)
+                var idenRes = await identityUnitOfWork.UserManager.DeleteAsync(appUser);
+                if (idenRes.Succeeded)
+                {
                     await userCrudService.DeleteAsync(id);
+                    result.DeletedUsers.Add(id);
+                }
+                else
+                {
+                    result.AddError($"User {id} not found");
+                    result.NotDeleted.Add(id);
+                }
             }
+            return result;
         }
 
-        public async Task BlockUsersAsync(IEnumerable<int> userIds)
+        public async Task<BlockUsersResult> BlockUsersAsync(IEnumerable<int> userIds)
         {
+            var result = new BlockUsersResult();
             foreach (var id in userIds)
             {
                 var appUser = await identityUnitOfWork.UserManager.FindByIdAsync(id.ToString());
                 if (appUser is null)
+                {
+                    result.AddError($"User {id} not found");
+                    result.NotBlocked.Add(id);
                     continue;
-                await identityUnitOfWork.UserManager.AddToRoleAsync(appUser, "blocked");
+                }
+                var idenRes = await identityUnitOfWork.UserManager.AddToRoleAsync(appUser, "blocked");
+                if (!idenRes.Succeeded)
+                {
+                    result.AddError("Identity error");
+                    result.NotBlocked.Add(id);
+                    continue;
+                }
+                result.Blocked.Add(id);
             }
+            return result;
         }
 
-        public async Task UnblockUsersAsync(IEnumerable<int> userIds)
+        public async Task<UnblockUsersResult> UnblockUsersAsync(IEnumerable<int> userIds)
         {
+            var result = new UnblockUsersResult();
             foreach (var id in userIds)
             {
                 var appUser = await identityUnitOfWork.UserManager.FindByIdAsync(id.ToString());
                 if (appUser is null)
+                {
+                    result.AddError($"User {id} not found");
+                    result.NotUnblocked.Add(id);
                     continue;
-                await identityUnitOfWork.UserManager.RemoveFromRoleAsync(appUser, "blocked");
+                }
+                var idenRes = await identityUnitOfWork.UserManager.AddToRoleAsync(appUser, "blocked");
+                if (!idenRes.Succeeded)
+                {
+                    result.AddError("Identity error");
+                    result.NotUnblocked.Add(id);
+                    continue;
+                }
+                result.Unblocked.Add(id);
             }
+            return result;
         }
 
-        public async Task EnableAdminRules(int userId)
+        public async Task<EnableAdminRulesResult> EnableAdminRules(int userId)
         {
+            var result = new EnableAdminRulesResult();
             var appUser = await identityUnitOfWork.UserManager.FindByIdAsync(userId.ToString());
             if (appUser is null)
-                return;
-            await identityUnitOfWork.UserManager.AddToRoleAsync(appUser, "admin");
+            {
+                result.AddError("User not found");
+                return result;
+            }
+            var idenRes = await identityUnitOfWork.UserManager.AddToRoleAsync(appUser, "admin");
+            if (!idenRes.Succeeded)
+            {
+                result.AddError("Identity error");
+                return result;
+            }
+            result.UserId = userId;
+            return result;
         }
 
-        public async Task DisableAdminRules(int userId)
+        public async Task<DisableAdminRulesResult> DisableAdminRules(int userId)
         {
+            var result = new DisableAdminRulesResult();
             var appUser = await identityUnitOfWork.UserManager.FindByIdAsync(userId.ToString());
             if (appUser is null)
-                return;
-            await identityUnitOfWork.UserManager.RemoveFromRoleAsync(appUser, "admin");
+            {
+                result.AddError("User not found");
+                return result;
+            }
+            var idenRes = await identityUnitOfWork.UserManager.RemoveFromRoleAsync(appUser, "admin");
+            if (!idenRes.Succeeded)
+            {
+                result.AddError("Identity error");
+                return result;
+            }
+            result.UserId = userId;
+            return result;
         }
 
         #region Disposable
