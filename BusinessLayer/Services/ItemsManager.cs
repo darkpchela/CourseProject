@@ -100,7 +100,6 @@ namespace BusinessLayer.Services
 
         public async Task<IEnumerable<ItemModel>> SearchAsync(string text)
         {
-            var itemsDbSet = cPUnitOfWork.ItemsRepository.GetAll();
             List<Item> entities;
             if (string.IsNullOrEmpty(text))
             {
@@ -109,12 +108,14 @@ namespace BusinessLayer.Services
             else
             {
                 var conditionsBuilder = new ContainsSearchConditionsBuilder(text);
-                var conditions = conditionsBuilder.AllowPrefix(3).AllowNonStrict(2).GetQuery();
-                entities = await itemsDbSet.Where(i => EF.Functions.Contains(i.Name, conditions) || EF.Functions.Contains(i.Description, conditions) || i.ItemTags.Any(it => text.Contains(it.Tag.Value)))
-                    .ToListAsync();
+                var conditions = conditionsBuilder.AllowPrefix(3).AllowNonStrict(2).Build();
+                var items = cPUnitOfWork.ItemsRepository.GetAll().Where(i => EF.Functions.Contains(i.Name, conditions) || EF.Functions.Contains(i.Description, conditions) || i.ItemTags.Any(it => text.Contains(it.Tag.Value)));
+                var collectionItems = cPUnitOfWork.CollectionsRepository.GetAll().Where(c => EF.Functions.Contains(c.Description, conditions) || EF.Functions.Contains(c.Name, conditions)).SelectMany(c => c.CollectionItems.Select(ci => ci.Item));
+                var commentItems = cPUnitOfWork.CommentsRepository.GetAll().Where(c => EF.Functions.Contains(c.Value, conditions)).SelectMany(c => c.ItemComments.Select(ic => ic.Item));
+                entities = await items.Concat(collectionItems).Concat(commentItems).Distinct().ToListAsync();
             }
-            var items = mapper.Map<IEnumerable<ItemModel>>(entities);
-            return items;
+            var resultItems = mapper.Map<IEnumerable<ItemModel>>(entities);
+            return resultItems;
         }
     }
 }

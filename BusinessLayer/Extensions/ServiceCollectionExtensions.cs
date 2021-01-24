@@ -73,6 +73,7 @@ namespace BusinessLayer.Extensions
 
         private static IServiceCollection AddAuthenticators(this IServiceCollection services)
         {
+            services.AddTransient<ISessionHelper, SessionHelper>();
             services.AddTransient<ICreateCollectionModelAuthenticator, CreateCollectionModelAuthenticator>();
             services.AddTransient<ICreateItemModelAuthenticator, CreateItemModelAuthenticator>();
             services.AddTransient<ICreateOptionalFieldModelAuthenticator, CreateOptionalFieldModelAuthenticator>();

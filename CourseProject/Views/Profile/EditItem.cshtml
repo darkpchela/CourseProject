@@ -1,30 +1,33 @@
-﻿@model CreateItemVM
+﻿@model EditItemVM
 @inject IUserCrudService userService
+@inject ISessionHelper sessionHelper
+
 <div class="d-flex justify-content-center mt-2">
     <div class="d-flex flex-column align-items-stretch w-75 mt-2" style="max-width: 768px;">
         <h3 class="text-center">
-            New Item
+            Edit Item
         </h3>
 
         <div class="align-self-center p-1">
-            <div name="imgContainer" style="display: none;">
+            <div name="imgContainer">
                 <div class="square-25 d-flex justify-content-center align-items-center">
                     <a id="changeImage" href="" class="btn p-0">
                         <img class="img-fluid img-thumbnail" src="@Model.ImageUrl" />
                     </a>
                 </div>
             </div>
-            <div id="dzContainer">
+            <div id="dzContainer" style="display: none;">
                 <div id="dropzone" class="dropzone d-flex p-0 justify-content-center square-25">
                 </div>
             </div>
         </div>
 
-        <form asp-action="CreateItem" asp-controller="Store" method="post" class="d-flex flex-column align-items-center mt-2">
+        <form asp-action="EditItem" asp-controller="Profile" method="post" class="d-flex flex-column align-items-center mt-2">
             <input type="text" class="form-control w-75 text-center" asp-for="@Model.Name" placeholder="Item name">
 
             @{
-                var user = await userService.GetAsync(int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "0"));
+                int userId = User.IsInRole("admin") ? sessionHelper.GetRemeberedUserId() : sessionHelper.GetCurrentUserId();
+                var user = await userService.GetAsync(userId);
                 if (user != null)
                 {
                     @Html.DropDownListFor(m => m.CollectionId, new SelectList(user.Collections, "Id", "Name"), "Select collection", new { @class = "mt-2 form-control w-75 text-center" });
@@ -42,12 +45,13 @@
                 </div>
             </div>
 
+
             <div class="text-center w-75 mt-2">
-                <input asp-for="TagsJson" type="text" class="form-control" placeholder="tags">
+                <input asp-for="TagsJson" type="text" class="form-control" placeholder="tags" >
             </div>
 
             <div class="w-75 d-flex flex-row justify-content-between mt-2">
-                <a asp-action="Profile" asp-controller="Store" asp-route-id="@Model.OwnerId" class="btn p-0">
+                <a asp-action="Info" asp-controller="Profile" asp-route-id="@Model.OwnerId" class="btn p-0">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                          class="bigger-icon" viewBox="0 0 16 16">
                         <path fill-rule="evenodd"
@@ -68,12 +72,15 @@
             <input type="hidden" asp-for="@Model.ResourceId" value="@Model.ResourceId" />
             <input type="hidden" asp-for="@Model.OwnerId" value="@Model.OwnerId" />
             <input type="hidden" asp-for="@Model.ImageUrl" value="@Model.ImageUrl" />
-            <div id="cashedFields" class="d-none">
-                @Html.Raw(Json.Serialize(Model.Fields))
-            </div>
+            <input type="hidden" asp-for="@Model.ItemId" value="@Model.ItemId" />
         </form>
     </div>
 </div>
+
+<div id="cashedFields" class="d-none">
+    @Html.Raw(Json.Serialize(Model.Fields))
+</div>
+
 <div id="tpl" class="d-none">
     @{await Html.RenderPartialAsync("_DropzoneTemplate"); }
 </div>
@@ -82,9 +89,10 @@
     <div id="fieldProto" name="field">
         <div class="border-custom rounded ">
             <div name="fieldBody" class="d-flex flex-row flex-nowrap justify-content-between p-1">
-                <input data-prop="id" type="hidden" />
+                <input data-prop="fieldId" type="hidden" />
                 <input data-prop="name" type="hidden" />
                 <input data-prop="type" type="hidden" />
+                <input data-prop="itemFieldId" type="hidden" />
                 <label name="fieldName" class="d-inline-block text-center p-1 w-50">FieldName</label>
             </div>
         </div>
@@ -117,11 +125,20 @@
                 });
             }
         };
+
+        const getItemTags = (itemId) => {
+            $.post('/api/GetItemTags', { id: itemId }, (data) => {
+                console.log(data)
+                tagify.addTags(data);
+            });
+        };
+
         $(() => {
             updateTagify();
+            getItemTags($('#ItemId').val());
         });
     </script>
     <script src="~/lib/dropzone-5.7.0/dist/dropzone.js"></script>
     <script src="~/js/appDropzone.js"></script>
-    <script src="~/js/createItem.js"></script>
+    <script src="~/js/editItem.js"></script>
 }

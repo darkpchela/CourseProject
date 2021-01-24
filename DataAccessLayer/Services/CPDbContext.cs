@@ -93,7 +93,9 @@ namespace DataAccessLayer.Services
             {
                 entity.Property(e => e.CreationDate).HasColumnType("datetime");
 
-                entity.Property(e => e.Value).IsRequired();
+                entity.Property(e => e.Value)
+                    .IsRequired()
+                    .HasMaxLength(512);
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Comments)

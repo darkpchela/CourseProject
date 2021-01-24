@@ -11,7 +11,7 @@
                 </h6>
             </div>
         </div>
-        <div class="d-flex flex-row justify-content-center mt-2">
+        <div class="d-flex flex-row justify-content-center border-bottom-custom">
             <div class="btn-group">
                 <a href="#" id="btnGetCollections" class="btn btn-outline-info font-weight-bold ">
                     Collections
@@ -24,17 +24,17 @@
         <div class="mt-2">
             <div id="collections">
                 <h5 class="text-center">Collections</h5>
-                @{await Html.RenderPartialAsync("Profile/_Collections", new ProfileCollectionsVM
+                @{await Html.RenderPartialAsync("_Collections", new ProfileCollectionsVM
                     {
-                        AllowEdit = User.IsInRole("Admin") || User.FindFirstValue(ClaimTypes.NameIdentifier) == Model.Id.ToString(),
+                        AllowEdit = User.IsInRole("admin") || User.FindFirstValue(ClaimTypes.NameIdentifier) == Model.Id.ToString(),
                         Collections = Model.Collections
                     });}
             </div>
             <div id="items">
                 <h5 class="text-center">Items</h5>
-                @{await Html.RenderPartialAsync("Profile/_Items", new ProfileItemsVM
+                @{await Html.RenderPartialAsync("_Items", new ProfileItemsVM
                     {
-                        AllowEdit = User.IsInRole("Admin") || User.FindFirstValue(ClaimTypes.NameIdentifier) == Model.Id.ToString(),
+                        AllowEdit = User.IsInRole("admin") || User.FindFirstValue(ClaimTypes.NameIdentifier) == Model.Id.ToString(),
                         Items = Model.Items
                     }); }
             </div>

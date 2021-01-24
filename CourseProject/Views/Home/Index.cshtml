@@ -26,29 +26,23 @@
                     Top collections
                 </h4>
             </div>
-            <div>
-                <div>
-                    <div class="d-flex flex-row flex-nowrap align-items-baseline justify-content-center overflow-auto">
-                        @foreach (var collection in (await colelctionsService.GetAllAsync()).OrderByDescending(c => c.CollectionItems.Count()).Take(10))
-                        {
-                            <div class="m-2 square-25 text-center">
-                                <div class="p-2">
-                                    <a asp-action="Collection" asp-controller="Store" asp-route-id="@collection.Id" class="btn p-0 ">
-                                        <img class="img-fluid img-thumbnail"
-                                             src="@collection.Resource.Url"
-                                             alt="picture">
-                                    </a>
-                                </div>
-                                <div>
-                                    <h5>@collection.Name</h5>
-                                </div>
-                                <div>
-                                    <h6>Items: <span>@collection.CollectionItems.Count()</span></h6>
-                                </div>
-                            </div>
-                        }
+            <div class="d-flex flex-row flex-nowrap h-auto align-items-baseline justify-content-center overflow-auto h-auto">
+                @foreach (var collection in (await colelctionsService.GetAllAsync()).OrderByDescending(c => c.CollectionItems.Count()).Take(10))
+                {
+                    <div class="text-center m-1">
+                        <div>
+                            <a asp-action="Collection" asp-controller="Store" asp-route-id="@collection.Id" class="btn p-0">
+                                <img class="img-fluid img-thumbnail mx-square-20"
+                                     src="@collection.Resource.Url"
+                                     alt="picture">
+                            </a>
+                        </div>
+                        <div>
+                            <h5 class="text-wrap">@collection.Name</h5>
+                            <h6 class="text-wrap">Items: <span>@collection.CollectionItems.Count()</span></h6>
+                        </div>
                     </div>
-                </div>
+                }
             </div>
         </div>
         <div class="w-100 mt-3">
@@ -62,16 +56,16 @@
                     <div class="d-flex flex-row flex-wrap align-items-baseline justify-content-center">
                         @foreach (var item in (await itemsService.GetAllAsync()).OrderByDescending(i => i.CreationDate))
                         {
-                            <div class=" m-1 square-25 text-center">
-                                <div class="p-2">
-                                    <a asp-action="Item" asp-controller="Store" asp-route-id="@item.Id" data-placement="bottom" data-toggle="tooltip" data-html="true" title="tooltip">
-                                        <img class="img-fluid img-thumbnail"
+                            <div class="text-center m-1">
+                                <div>
+                                    <a asp-action="Item" asp-controller="Store" asp-route-id="@item.Id" class="btn p-0">
+                                        <img class="img-fluid img-thumbnail mx-square-20"
                                              src="@item.Resource.Url"
                                              alt="picture">
                                     </a>
                                 </div>
                                 <div>
-                                    <h5>@item.Name</h5>
+                                    <h5 class="text-wrap">@item.Name</h5>
                                 </div>
                             </div>
                         }
