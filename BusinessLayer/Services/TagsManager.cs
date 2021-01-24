@@ -83,13 +83,6 @@ namespace BusinessLayer.Services
             var item = await itemsCrudService.GetAsync(itemId);
             var itemTags = item.ItemTags.ToList();
             await itemTagCrudService.DeleteRangeAsync(itemTags.Select(it => it.Id));
-            var tagsToRemove = new List<TagModel>();
-            foreach (ItemTagModel it in itemTags)
-            {
-                if (it.Tag.ItemTags.Count() == 1)
-                    tagsToRemove.Add(it.Tag);
-            }
-            await tagsCrudService.DeleteRangeAsync(tagsToRemove.Select(t => t.Id));
         }
     }
 }
