@@ -6,6 +6,7 @@ using CourseProject.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CourseProject.Controllers
@@ -44,38 +45,43 @@ namespace CourseProject.Controllers
         public async Task<IActionResult> Users()
         {
             var users = await usersManager.GetAllUsersAsync();
-            var usersVM = mapper.Map<IEnumerable<AppUserVM>>(users);
+            var usersVM = mapper.Map<IEnumerable<AppUserVM>>(users.Where(u => u.Id != sessionHelper.GetCurrentUserId()));
             return View(usersVM);
         }
 
         [HttpPost]
         public async Task<IActionResult> Block(int[] users)
         {
-            return Json(null);
+            var result = await usersManager.BlockUsersAsync(users);
+            return Json(result);
         }
 
         [HttpPost]
         public async Task<IActionResult> Unblock(int[] users)
         {
-            return Json(null);
+            var result = await usersManager.UnblockUsersAsync(users);
+            return Json(result);
         }
 
         [HttpPost]
         public async Task<IActionResult> Delete(int[] users)
         {
-            return Json(null);
+            var result = await usersManager.DeleteUsersAsync(users);
+            return Json(result);
         }
 
         [HttpPost]
         public async Task<IActionResult> AddAdminRules(int userId)
         {
-            return Json(null);
+            var result = await usersManager.EnableAdminRules(userId);
+            return Json(result);
         }
 
         [HttpPost]
         public async Task<IActionResult> DropAdminRules(int userId)
         {
-            return Json(null);
+            var result = await usersManager.DisableAdminRules(userId);
+            return Json(result);
         }
     }
 }

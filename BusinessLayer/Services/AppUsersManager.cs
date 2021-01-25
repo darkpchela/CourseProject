@@ -105,7 +105,7 @@ namespace BusinessLayer.Services
                     result.NotUnblocked.Add(id);
                     continue;
                 }
-                var idenRes = await identityUnitOfWork.UserManager.AddToRoleAsync(appUser, "blocked");
+                var idenRes = await identityUnitOfWork.UserManager.RemoveFromRoleAsync(appUser, "blocked");
                 if (!idenRes.Succeeded)
                 {
                     result.AddError("Identity error");

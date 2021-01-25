@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<AppUserVM>
-<div>
+<div class="mt-2">
     <div class="btn-toolbar col-6 offset-3 mt-0 justify-content-center">
         <div class="btn-group border-custom border-bottom-0">
             <button class="btn btn-light" id="btnUnblock" type="submit">
@@ -45,8 +45,8 @@
                         <td>
                             <div class="text-center">
                                 <input type="checkbox" data-userId="@user.Id" />
-                                <input type="hidden" name="isBlocked" value="@user.IsBlocked" />
-                                <input type="hidden" name="isAdmin" value="@user.IsAdmin" />
+                                <input type="hidden" name="isBlocked" value="@user.IsBlocked.ToString().ToLower()" />
+                                <input type="hidden" name="isAdmin" value="@user.IsAdmin.ToString().ToLower()" />
                             </div>
                         </td>
                         <td>@user.Id</td>
@@ -54,22 +54,8 @@
                         <td>@user.Email</td>
                         <td>@user.FirstName</td>
                         <td>@user.LastName</td>
-                        @if (user.IsBlocked)
-                        {
-                            <td>Blocked</td>
-                        }
-                        else
-                        {
-                            <td>Unblocked</td>
-                        }
-                        @if (user.IsAdmin)
-                        {
-                            <td>Admin</td>
-                        }
-                        else
-                        {
-                            <td>User</td>
-                        }
+                        <td name="status"></td>
+                        <td name="role"></td>
                         <td>
                             <button class="btn border-custom" name="btnDelRules" data-userId="@user.Id" style="display:none;">Remove admin rules</button>
                             <button class="btn border-custom" name="btnAddRules" data-userId="@user.Id" style="display:none;">Add admin rules</button>
@@ -84,57 +70,96 @@
 @section Scripts{
     <script>
         const getSelected = () => $('#table input:checked').map((i, e) => $(e).attr('data-userId')).get();
+        const updateTable = () => {
+            $('tr').each((i, e) => {
+                let isBlocked = $(e).find('input[name=isBlocked]').val();
+                let isAdmin = $(e).find('input[name=isAdmin]').val();
+                if (isBlocked == 'true') {
+                    $(e).find('td[name=status]').text("Blocked");
+                }
+                else {
+                    $(e).find('td[name=status]').text("Unblocked");
+                }
+                if (isAdmin == 'true') {
+                    $(e).find('td[name=role]').text("Admin");
+                    $(e).find('[name=btnAddRules]').hide()
+                    $(e).find('[name=btnDelRules]').show()
+                }
+                else {
+                    $(e).find('td[name=role]').text("User");
+                    $(e).find('[name=btnAddRules]').show()
+                    $(e).find('[name=btnDelRules]').hide()
+                }
+            });
+        };
+
         $('#checkBoxMain').click(function () {
             $('#table input:checkbox').prop('checked', $(this).is(':checked') ? true : false);
         });
         $('#table input:checkbox').click(function () {
             $('#checkBoxMain').prop('checked', false);
         });
-        $('#btnBlock').click(e => {
+        $('#btnBlock').click(async e => {
             e.preventDefault();
-            $.post('/admin/Block/', { users: getSelected() }, result => {
-                console.log(result);
+            await $.post('/admin/Block/', { users: getSelected() }, result => {
+                for (let i = 0; i < result.blocked.length; i++) {
+                    $(`tr[data-userId=${result.blocked[i]}]`).find('[name=isBlocked]').val('true');
+                }
             });
+            updateTable();
         });
-        $('#btnUnblock').click(e => {
+        $('#btnUnblock').click(async e => {
             e.preventDefault();
-            $.post('/admin/Unblock/', { users: getSelected() }, result => {
-                console.log(result);
-            });
+            await $.post('/admin/Unblock/',
+                {
+                    users: getSelected()
+                },
+                result => {
+                    for (let i = 0; i < result.unblocked.length; i++) {
+                        $(`tr[data-userId=${result.unblocked[i]}]`).find('[name=isBlocked]').val('false');
+                    }
+                });
+            updateTable();
         });
-        $('#btnDelete').click(e => {
+        $('#btnDelete').click(async e => {
             e.preventDefault();
-            $.post('/admin/Delete/', { users: getSelected() }, result => {
-                console.log(result);
-            });
+            await $.post('/admin/Delete/',
+                {
+                    users: getSelected()
+                },
+                result => {
+                    for (let i = 0; i < result.deleted.length; i++) {
+                        $(`tr[data-userId=${result.deleted[i]}]`).remove();
+                    }
+                });
         });
-        $('[name=btnAddRules]').click(e => {
+        $('[name=btnAddRules]').click(async e => {
             e.preventDefault();
             let id = $(e.delegateTarget).attr('data-userId');
-            $.post('/admin/AddAdminRules/',
+            await $.post('/admin/AddAdminRules/',
                 {
                     userId: id,
                 },
                 result => {
-                    console.log(result);
+                    $(`tr[data-userId=${result.userId}]`).find('[name=isAdmin]').val('true');
                 });
+            updateTable();
         });
-        $('[name=btnDelRules]').click(e => {
+        $('[name=btnDelRules]').click(async e => {
             e.preventDefault();
             let id = $(e.delegateTarget).attr('data-userId');
-            $.post('/admin/DropAdminRules/',
+            await $.post('/admin/DropAdminRules/',
                 {
                     userId: id
                 },
                 result => {
-                    console.log(result);
+                    $(`tr[data-userId=${result.userId}]`).find('[name=isAdmin]').val('false');
                 });
+            updateTable();
         });
 
         $(() => {
-            $('tr').each((i, e) => {
-                $(e).find('[name=isAdmin]').val() == false ? $(e).find('[name=btnAddRules]').show() : $(e).find('[name=btnDelRules]').show()
-            });
+            updateTable();
         });
     </script>
 } 
