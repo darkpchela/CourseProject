@@ -1,11 +1,12 @@
 ﻿@model CreateItemVM
 @inject IUserCrudService userService
 @inject ISessionHelper sessionHelper
+@inject IViewLocalizer localizer
 
 <div class="d-flex justify-content-center mt-2">
     <div class="d-flex flex-column align-items-stretch w-75 mt-2" style="max-width: 768px;">
         <h3 class="text-center">
-            New Item
+            @localizer["header"]
         </h3>
 
         <div class="align-self-center p-1">
@@ -23,30 +24,30 @@
         </div>
 
         <form asp-action="CreateItem" asp-controller="Profile" method="post" class="d-flex flex-column align-items-center mt-2">
-            <input type="text" class="form-control w-75 text-center" asp-for="@Model.Name" placeholder="Item name">
+            <input type="text" class="form-control w-75 text-center" asp-for="@Model.Name" placeholder="@localizer["Item_name"]">
 
             @{
                 int userId = User.IsInRole("admin") ? sessionHelper.GetRemeberedUserId() : sessionHelper.GetCurrentUserId();
                 var user = await userService.GetAsync(userId);
                 if (user != null)
                 {
-                    @Html.DropDownListFor(m => m.CollectionId, new SelectList(user.Collections, "Id", "Name"), "Select collection", new { @class = "mt-2 form-control w-75 text-center" });
+                    @Html.DropDownListFor(m => m.CollectionId, new SelectList(user.Collections, "Id", "Name"), localizer["Select_collection"].Value, new { @class = "mt-2 form-control w-75 text-center" });
                 }
             }
 
             <div class="text-center mt-3 w-75">
-                <h6 class="text-muted">Description(Markdown)</h6>
-                <textarea class="form-control form-control w-100 text-center" placeholder="Item description" asp-for="Description" style="min-height: 20vh;"></textarea>
+                <h6 class="text-muted">@localizer["Description"]</h6>
+                <textarea class="form-control form-control w-100 text-center" placeholder="@localizer["Item_description"]" asp-for="Description" style="min-height: 20vh;"></textarea>
             </div>
 
             <div class="text-center w-75 mt-3">
-                <h6 class="text-muted">Optional fields</h6>
+                <h6 class="text-muted">@localizer["Fields"]</h6>
                 <div id="fields">
                 </div>
             </div>
 
             <div class="text-center w-75 mt-2">
-                <input asp-for="TagsJson" type="text" class="form-control" placeholder="tags">
+                <input asp-for="TagsJson" type="text" class="form-control" placeholder="@localizer["tags"]">
             </div>
 
             <div class="w-75 d-flex flex-row justify-content-between mt-2">
