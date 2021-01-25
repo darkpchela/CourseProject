@@ -25,11 +25,12 @@ namespace CourseProject.Controllers
 
         private readonly IMapper mapper;
 
-        public Admin(ISessionHelper sessionHelper, IAppUsersManager usersManager, IThemesCrudService themesCrudService, IMapper mapper)
+        public Admin(ISessionHelper sessionHelper, IAppUsersManager usersManager, IThemesCrudService themesCrudService, IResourcesManager resourcesManager, IMapper mapper)
         {
             this.sessionHelper = sessionHelper;
             this.usersManager = usersManager;
             this.themesCrudService = themesCrudService;
+            this.resourcesManager = resourcesManager;
             this.mapper = mapper;
         }
 
@@ -74,7 +75,12 @@ namespace CourseProject.Controllers
             return View();
         }
 
-        [HttpGet]
+        public async Task<IActionResult> RemoveGarbage()
+        {
+            await resourcesManager.RemoveGarbageAsync();
+            return RedirectToAction(nameof(Admin.Resources), nameof(Admin));
+        }
+
         public IActionResult ContinueAs()
         {
             return View();
