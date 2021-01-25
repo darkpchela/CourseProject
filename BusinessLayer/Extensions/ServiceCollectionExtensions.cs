@@ -39,6 +39,8 @@ namespace BusinessLayer.Extensions
             services.AddTransient<ITagsManager, TagsManager>();
             services.AddTransient<ILikesManager, LikesManager>();
             services.AddTransient<ICommentsManager, CommentsManager>();
+            services.AddTransient<IAppUsersManager, AppUsersManager>();
+            services.AddTransient<IAppSignInManager, AppSignInManager>();
             services.AddAuthenticators();
             services.AddValidators();
             return services;
@@ -58,7 +60,6 @@ namespace BusinessLayer.Extensions
             services.AddTransient<ITagsCrudService, TagsCrudService>();
             services.AddTransient<IThemesCrudService, ThemesCrudService>();
             services.AddTransient<IUserCrudService, UsersCrudService>();
-            services.AddTransient<IAppUsersManager, AppUsersManager>();
             services.AddTransient<IFieldTypesCrudService, FieldTypesCrudService>();
             services.AddTransient<IResourceCrudService, ResourceCrudService>();
             return services;

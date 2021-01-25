@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BusinessLayer.Interfaces;
 using BusinessLayer.Interfaces.Authentication;
 using BusinessLayer.Interfaces.BaseCrud;
 using CourseProject.ViewModels;
@@ -14,14 +15,14 @@ namespace CourseProject.Controllers
     {
         private readonly ISessionHelper sessionHelper;
 
-        private readonly IUserCrudService userCrudService;
+        private readonly IAppUsersManager usersManager;
 
         private readonly IMapper mapper;
 
-        public Admin(ISessionHelper sessionHelper, IUserCrudService userCrudService, IMapper mapper)
+        public Admin(ISessionHelper sessionHelper, IAppUsersManager usersManager, IMapper mapper)
         {
             this.sessionHelper = sessionHelper;
-            this.userCrudService = userCrudService;
+            this.usersManager = usersManager;
             this.mapper = mapper;
         }
 
@@ -42,7 +43,7 @@ namespace CourseProject.Controllers
         [HttpGet]
         public async Task<IActionResult> Users()
         {
-            var users = await userCrudService.GetAllAsync();
+            var users = await usersManager.GetAllUsersAsync();
             var usersVM = mapper.Map<IEnumerable<AppUserVM>>(users);
             return View(usersVM);
         }
@@ -66,7 +67,13 @@ namespace CourseProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AdminRules(int userId, bool enable)
+        public async Task<IActionResult> AddAdminRules(int userId)
+        {
+            return Json(null);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DropAdminRules(int userId)
         {
             return Json(null);
         }

@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<AppUserVM>
 <div>
     <div class="btn-toolbar col-6 offset-3 mt-0 justify-content-center">
-        <div class="btn-group border border-bottom-0">
+        <div class="btn-group border-custom border-bottom-0">
             <button class="btn btn-light" id="btnUnblock" type="submit">
                 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-unlock-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                     <path d="M.5 9a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2V9z" />
@@ -34,45 +34,47 @@
                     <th scope="col">First name</th>
                     <th scope="col">Last name</th>
                     <th scope="col">Status</th>
-                    <th scope="col">Roles</th>
+                    <th scope="col">Role</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
             <tbody id="table">
                 @foreach (var user in Model)
                 {
-                <tr>
-                    <td>
-                        <div class="text-center">
-                            <input type="checkbox" data-userId="@user.Id" />
-                        </div>
-                    </td>
-                    <td>@user.Id</td>
-                    <td>@user.Username</td>
-                    <td>@user.Email</td>
-                    <td>@user.FirstName</td>
-                    <td>@user.LastName</td>
-                    @if (user.IsBlocked)
-                    {
-                        <td>Blocked</td>
-                    }
-                    else
-                    {
-                        <td>Unblocked</td>
-                    }
-                        <td>@user.Role</td>
+                    <tr data-userId="@user.Id">
                         <td>
-                            @if (user.IsAdmin)
-                            {
-                                <button class="btn border-custom" name="btnAdminRules" data-userId="@user.Id" data-enable="false">Remove admin rules</button>
-                            }
-                            else
-                            {
-                                <button class="btn border-custom" name="btnAdminRules" data-userId="@user.Id" data-enable="true">Add admin rules</button>
-
-                            }
+                            <div class="text-center">
+                                <input type="checkbox" data-userId="@user.Id" />
+                                <input type="hidden" name="isBlocked" value="@user.IsBlocked" />
+                                <input type="hidden" name="isAdmin" value="@user.IsAdmin" />
+                            </div>
                         </td>
-                </tr>
+                        <td>@user.Id</td>
+                        <td>@user.Username</td>
+                        <td>@user.Email</td>
+                        <td>@user.FirstName</td>
+                        <td>@user.LastName</td>
+                        @if (user.IsBlocked)
+                        {
+                            <td>Blocked</td>
+                        }
+                        else
+                        {
+                            <td>Unblocked</td>
+                        }
+                        @if (user.IsAdmin)
+                        {
+                            <td>Admin</td>
+                        }
+                        else
+                        {
+                            <td>User</td>
+                        }
+                        <td>
+                            <button class="btn border-custom" name="btnDelRules" data-userId="@user.Id" style="display:none;">Remove admin rules</button>
+                            <button class="btn border-custom" name="btnAddRules" data-userId="@user.Id" style="display:none;">Add admin rules</button>
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>
@@ -106,17 +108,32 @@
                 console.log(result);
             });
         });
-        $('[name=btnAdminRules]').click(e => {
+        $('[name=btnAddRules]').click(e => {
             e.preventDefault();
             let id = $(e.delegateTarget).attr('data-userId');
-            let enable = $(e.delegateTarget).attr('data-enable');
-            $.post('/admin/AdminRules/',
+            $.post('/admin/AddAdminRules/',
                 {
                     userId: id,
-                    enable: enable
                 },
                 result => {
-                console.log(result);
+                    console.log(result);
+                });
+        });
+        $('[name=btnDelRules]').click(e => {
+            e.preventDefault();
+            let id = $(e.delegateTarget).attr('data-userId');
+            $.post('/admin/DropAdminRules/',
+                {
+                    userId: id
+                },
+                result => {
+                    console.log(result);
+                });
+        });
+
+        $(() => {
+            $('tr').each((i, e) => {
+                $(e).find('[name=isAdmin]').val() == false ? $(e).find('[name=btnAddRules]').show() : $(e).find('[name=btnDelRules]').show()
             });
         });
     </script>

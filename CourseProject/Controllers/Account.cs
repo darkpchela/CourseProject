@@ -13,12 +13,12 @@ namespace CourseProject.Controllers
     {
         private readonly IIdentityUnitOfWork identityUnitOfWork;
 
-        private readonly IAppUsersManager userRegistService;
+        private readonly IAppSignInManager signInManager;
 
-        public Account(IIdentityUnitOfWork identityUnitOfWork, IAppUsersManager userRegistService)
+        public Account(IIdentityUnitOfWork identityUnitOfWork, IAppSignInManager signInManager)
         {
             this.identityUnitOfWork = identityUnitOfWork;
-            this.userRegistService = userRegistService;
+            this.signInManager = signInManager;
         }
 
         [HttpGet]
@@ -32,7 +32,7 @@ namespace CourseProject.Controllers
         {
             if (!ModelState.IsValid)
                 return View(model);
-            var res = await userRegistService.RegistAsync(model);
+            var res = await signInManager.RegistAsync(model);
             if (!res)
             {
                 ModelState.AddModelError("", "Username or email already taken");
@@ -83,7 +83,7 @@ namespace CourseProject.Controllers
                 ModelState.AddModelError("", "Failed to fetch external data");
                 return View(model);
             }
-            var res = await userRegistService.ExternalRegistAsync(info);
+            var res = await signInManager.ExternalRegistAsync(info);
             if (!res)
             {
                 ModelState.AddModelError("", "Failed to sign up");

@@ -2,14 +2,10 @@
 using BusinessLayer.Interfaces;
 using BusinessLayer.Interfaces.BaseCrud;
 using BusinessLayer.Models;
-using BusinessLayer.Models.DALModels;
 using BusinessLayer.Models.ResultModels;
-using Identity.Entities;
 using Identity.Interfaces;
-using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace BusinessLayer.Services
@@ -18,9 +14,9 @@ namespace BusinessLayer.Services
     {
         private readonly IIdentityUnitOfWork identityUnitOfWork;
 
-        private readonly IMapper mapper;
-
         private readonly IUserCrudService userCrudService;
+
+        private readonly IMapper mapper;
 
         public AppUsersManager(IIdentityUnitOfWork identityUnitOfWork, IMapper mapper, IUserCrudService userCrudService)
         {
@@ -29,37 +25,27 @@ namespace BusinessLayer.Services
             this.userCrudService = userCrudService;
         }
 
-        public async Task<bool> RegistAsync(SignUpModel signUpModel)
+        public async Task<AppUserModel> GetUserAsync(int id)
         {
-            var appUser = mapper.Map<AppUser>(signUpModel);
-            var res = await identityUnitOfWork.UserManager.CreateAsync(appUser, signUpModel.Password);
-            if (!res.Succeeded)
-                return false;
-            var user = mapper.Map<UserModel>(signUpModel);
-            user.Id = appUser.Id;
-            await userCrudService.CreateAsync(user);
-            return true;
+            var user = await userCrudService.GetAsync(id);
+            var idenUser = await identityUnitOfWork.UserManager.FindByIdAsync(id.ToString());
+            var appUser = mapper.Map<AppUserModel>(user);
+            appUser.Roles = await identityUnitOfWork.UserManager.GetRolesAsync(idenUser);
+            return appUser;
         }
 
-        public async Task<bool> ExternalRegistAsync(ExternalLoginInfo info)
+        public async Task<IEnumerable<AppUserModel>> GetAllUsersAsync()
         {
-            var appUser = await identityUnitOfWork.UserManager.FindByEmailAsync(info.Principal.FindFirstValue(ClaimTypes.Email));
-            if (appUser is null)
+            var appUsers = new List<AppUserModel>();
+            var users = await userCrudService.GetAllAsync();
+            foreach (var user in users)
             {
-                appUser = mapper.Map<AppUser>(info);
-                var res = await identityUnitOfWork.UserManager.CreateAsync(appUser);
-                if (!res.Succeeded)
-                    return false;
+                var idenUser = await identityUnitOfWork.UserManager.FindByIdAsync(user.Id.ToString());
+                var appUser = mapper.Map<AppUserModel>(user);
+                appUser.Roles = await identityUnitOfWork.UserManager.GetRolesAsync(idenUser);
+                appUsers.Add(appUser);
             }
-            await identityUnitOfWork.UserManager.AddLoginAsync(appUser, info);
-            var user = await userCrudService.GetAsync(appUser.Id);
-            if (user is null)
-            {
-                user = mapper.Map<UserModel>(info);
-                user.Id = appUser.Id;
-                await userCrudService.CreateAsync(user);
-            }
-            return true;
+            return appUsers;
         }
 
         public async Task<DeleteUsersResult> DeleteUsersAsync(IEnumerable<int> userIds)

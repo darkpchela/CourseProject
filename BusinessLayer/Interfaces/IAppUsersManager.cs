@@ -9,9 +9,9 @@ namespace BusinessLayer.Interfaces
 {
     public interface IAppUsersManager : IDisposable
     {
-        Task<bool> ExternalRegistAsync(ExternalLoginInfo info);
+        Task<AppUserModel> GetUserAsync(int id);
 
-        Task<bool> RegistAsync(SignUpModel userSignInModel);
+        Task<IEnumerable<AppUserModel>> GetAllUsersAsync();
 
         Task<DeleteUsersResult> DeleteUsersAsync(IEnumerable<int> userIds);
 

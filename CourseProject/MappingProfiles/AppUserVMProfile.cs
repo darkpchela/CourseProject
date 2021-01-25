@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using BusinessLayer.Models.DALModels;
+using BusinessLayer.Models;
 using CourseProject.ViewModels;
-using Identity.Entities;
+using System.Linq;
 
 namespace CourseProject.MappingProfiles
 {
@@ -9,9 +9,9 @@ namespace CourseProject.MappingProfiles
     {
         public AppUserVMProfile()
         {
-            CreateMap<AppUser, AppUserVM>()
-                .ForMember(d => d.Username, o => o.MapFrom(s => s.UserName));
-            CreateMap<UserModel, AppUserVM>();
+            CreateMap<AppUserModel, AppUserVM>()
+                .ForMember(d => d.IsAdmin, o => o.MapFrom(s => s.Roles.Contains("admin")))
+                .ForMember(d => d.IsBlocked, o => o.MapFrom(s => s.Roles.Contains("blocked")));
         }
     }
 }
