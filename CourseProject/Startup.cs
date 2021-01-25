@@ -4,9 +4,11 @@ using DataAccessLayer.Extensions;
 using Identity.ServiceCollectionExtensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Globalization;
 using System.Reflection;
 
 namespace CourseProject
@@ -32,7 +34,9 @@ namespace CourseProject
             services.AddAutomapperProfiles(Assembly.GetExecutingAssembly());
             services.AddBusinessLayerDependencies(Configuration);
             services.AddHttpContextAccessor();
-            services.AddControllersWithViews();
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+            services.AddControllersWithViews()
+                .AddViewLocalization();
             services.AddSignalR();
         }
 
@@ -47,6 +51,17 @@ namespace CourseProject
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+            var supportedCultures = new[]
+            {
+                new CultureInfo("en"),
+                new CultureInfo("ru"),
+            };
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("en"),
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures
+            });
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

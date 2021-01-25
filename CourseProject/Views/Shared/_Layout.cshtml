@@ -70,18 +70,26 @@
                         </svg>
                     </a>
                 </div>
+                <div class="mr-2">
+                    <a asp-action="ChangeLang" asp-controller="Home" id="btnLang" class="btn text-dark p-1 square-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-100 h-100"
+                             viewBox="0 0 16 16">
+                            <path d="M12.258 3H3.747l-.082 2.46h.478c.26-1.544.76-1.783 2.694-1.845l.424-.013v7.827c0 .663-.144.82-1.3.923v.52h4.082v-.52c-1.162-.103-1.306-.26-1.306-.923V3.602l.43.013c1.935.062 2.434.301 2.694 1.846h.479L12.258 3z" />
+                        </svg>
+                    </a>
+                </div>
 
                 @if (User.Identity.IsAuthenticated)
                 {
                     if (User.IsInRole("admin"))
                     {
-                    <div class="mr-2">
-                        <a class="btn text-dark p-1 square-4" asp-action="Users" asp-controller="Admin">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-100 h-100" viewBox="0 0 16 16">
-                                <path d="M9.972 2.508a.5.5 0 0 0-.16-.556l-.178-.129a5.009 5.009 0 0 0-2.076-.783C6.215.862 4.504 1.229 2.84 3.133H1.786a.5.5 0 0 0-.354.147L.146 4.567a.5.5 0 0 0 0 .706l2.571 2.579a.5.5 0 0 0 .708 0l1.286-1.29a.5.5 0 0 0 .146-.353V5.57l8.387 8.873A.5.5 0 0 0 14 14.5l1.5-1.5a.5.5 0 0 0 .017-.689l-9.129-8.63c.747-.456 1.772-.839 3.112-.839a.5.5 0 0 0 .472-.334z" />
-                            </svg>
-                        </a>
-                    </div>
+                        <div class="mr-2">
+                            <a class="btn text-dark p-1 square-4" asp-action="Users" asp-controller="Admin">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-100 h-100" viewBox="0 0 16 16">
+                                    <path d="M9.972 2.508a.5.5 0 0 0-.16-.556l-.178-.129a5.009 5.009 0 0 0-2.076-.783C6.215.862 4.504 1.229 2.84 3.133H1.786a.5.5 0 0 0-.354.147L.146 4.567a.5.5 0 0 0 0 .706l2.571 2.579a.5.5 0 0 0 .708 0l1.286-1.29a.5.5 0 0 0 .146-.353V5.57l8.387 8.873A.5.5 0 0 0 14 14.5l1.5-1.5a.5.5 0 0 0 .017-.689l-9.129-8.63c.747-.456 1.772-.839 3.112-.839a.5.5 0 0 0 .472-.334z" />
+                                </svg>
+                            </a>
+                        </div>
                     }
 
                     <div>
