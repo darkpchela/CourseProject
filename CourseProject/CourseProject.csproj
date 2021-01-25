@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Resources\Views\NewFolder\" />
+    <Folder Include="Resources\Views\Store\" />
   </ItemGroup>
 
 </Project>
