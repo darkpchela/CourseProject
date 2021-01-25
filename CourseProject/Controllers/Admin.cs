@@ -21,6 +21,8 @@ namespace CourseProject.Controllers
 
         private readonly IThemesCrudService themesCrudService;
 
+        private readonly IResourcesManager resourcesManager;
+
         private readonly IMapper mapper;
 
         public Admin(ISessionHelper sessionHelper, IAppUsersManager usersManager, IThemesCrudService themesCrudService, IMapper mapper)
@@ -65,6 +67,11 @@ namespace CourseProject.Controllers
         {
             await themesCrudService.DeleteAsync(id);
             return Json("OK");
+        }
+
+        public IActionResult Resources()
+        {
+            return View();
         }
 
         [HttpGet]
