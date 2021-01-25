@@ -1,3 +1,1 @@
-﻿$(() => {
-    $('[data-toggle="tooltip"]').tooltip();
-});
+﻿
