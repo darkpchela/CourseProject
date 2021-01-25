@@ -18,8 +18,4 @@
     <ProjectReference Include="..\Identity\Identity.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Resources\Views\Store\" />
-  </ItemGroup>
-
 </Project>
