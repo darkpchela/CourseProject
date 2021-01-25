@@ -1,4 +1,6 @@
 ﻿@model IEnumerable<AppUserVM>
+@inject IViewLocalizer localizer
+
 <div class="mt-2">
     <div class="btn-toolbar col-6 offset-3 mt-0 justify-content-center">
         <div class="btn-group border-custom border-bottom-0">
@@ -31,10 +33,10 @@
                     <th scope="col">Id</th>
                     <th scope="col">Username</th>
                     <th scope="col">Email</th>
-                    <th scope="col">First name</th>
-                    <th scope="col">Last name</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Role</th>
+                    <th scope="col">@localizer["First_name"]</th>
+                    <th scope="col">@localizer["Last_name"]</th>
+                    <th scope="col">@localizer["Status"]</th>
+                    <th scope="col">@localizer["Role"]</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -57,8 +59,8 @@
                         <td name="status"></td>
                         <td name="role"></td>
                         <td>
-                            <button class="btn border-custom" name="btnDelRules" data-userId="@user.Id" style="display:none;">Remove admin rules</button>
-                            <button class="btn border-custom" name="btnAddRules" data-userId="@user.Id" style="display:none;">Add admin rules</button>
+                            <button class="btn border-custom" name="btnDelRules" data-userId="@user.Id" style="display:none;">@localizer["Drop_admin"]</button>
+                            <button class="btn border-custom" name="btnAddRules" data-userId="@user.Id" style="display:none;">@localizer["Make_admin"]</button>
                         </td>
                     </tr>
                 }

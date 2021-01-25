@@ -2,13 +2,11 @@
 using BusinessLayer.Interfaces;
 using BusinessLayer.Interfaces.BaseCrud;
 using BusinessLayer.Models;
-using BusinessLayer.Models.DALModels;
 using CourseProject.ViewModels;
 using CourseProject.ViewModels.ApiModels;
-using DataAccessLayer.Services;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,7 +37,7 @@ namespace CourseProject.Controllers
 
         private readonly ICommentsManager commentsManager;
 
-        public Api(IMapper mapper, ITagsCrudService tagsCrudService , IResourcesManager resourcesManager, ICollectionsCrudService collectionsCrudService, IOptionalFieldsManager optionalFieldsManager, IItemsManager itemsManager,
+        public Api(IMapper mapper, ITagsCrudService tagsCrudService, IResourcesManager resourcesManager, ICollectionsCrudService collectionsCrudService, IOptionalFieldsManager optionalFieldsManager, IItemsManager itemsManager,
             ICollectionsManager collectionsManager, IItemsCrudService itemsCrudService, ILikesManager likesManager, ICommentsManager commentsManager)
         {
             this.mapper = mapper;
@@ -106,7 +104,7 @@ namespace CourseProject.Controllers
             var resultVM = mapper.Map<CreateOptionalFieldResultVM>(result);
             return Json(resultVM);
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> DeleteField(DeleteOptionalFieldVM model)
         {
@@ -126,7 +124,7 @@ namespace CourseProject.Controllers
         [HttpPost]
         public async Task<IActionResult> GetItemTags(int id)
         {
-            var tags =(await itemsCrudService.GetAsync(id)).ItemTags.Select(it => it.Tag).ToList();
+            var tags = (await itemsCrudService.GetAsync(id)).ItemTags.Select(it => it.Tag).ToList();
             var tagVM = mapper.Map<IEnumerable<TagJsonVM>>(tags);
             return Json(tagVM);
         }

@@ -83,6 +83,13 @@ $('#type').focus(e => {
     $(e.target).children('[value=""]').remove();
 });
 
+$('#changeImage').click(e => {
+    e.preventDefault();
+    $(e.target).parents('[name=imgContainer]').hide();
+    $('#dzContainer').show();
+    $.post('/api/abortUpload');
+});
+
 $(() => {
     let cashedFields = JSON.parse($('#cashedFields').text());
     for (let i = 0; i < cashedFields.length; i++) {

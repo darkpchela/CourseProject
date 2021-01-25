@@ -1,18 +1,19 @@
 ﻿@model CreateCollectionVM
 @inject IThemesCrudService themesService
 @inject IFieldTypesCrudService fieldTypesService
+@inject IViewLocalizer localizer
 
 <div class="d-flex justify-content-center mt-2">
     <div class="d-flex flex-column align-items-stretch w-75 mt-2" style="max-width: 768px;">
         <h3 class="text-center">
-            New Collection
+            @localizer["header"]
         </h3>
 
         <div class="align-self-center p-1">
             <div name="imgContainer" style="display: none;">
-                <div class="square-25 d-flex justify-content-center align-items-center">
+                <div class="d-flex justify-content-center align-items-center">
                     <a id="changeImage" href="" class="btn p-0">
-                        <img class="img-fluid img-thumbnail" src="@Model.ImageUrl" />
+                        <img class="img-fluid img-thumbnail mx-square-20" src="@Model.ImageUrl" />
                     </a>
                 </div>
             </div>
@@ -24,17 +25,17 @@
 
         <form asp-action="CreateCollection" asp-controller="Profile" method="post" class="d-flex flex-column align-items-center mt-2">
             <input asp-for="Name" type="text" class="form-control w-75 text-center"
-                   placeholder="Collection name">
-            @Html.DropDownListFor(m => m.ThemeId, new SelectList(await themesService.GetAllAsync(), "Id", "Name"), "Select theme", new { @class = "mt-2 form-control w-75 text-center" })
+                   placeholder="@localizer["Collection_name"]">
+            @Html.DropDownListFor(m => m.ThemeId, new SelectList(await themesService.GetAllAsync(), "Id", "Name"), localizer["Select_theme"].Value, new { @class = "mt-2 form-control w-75 text-center" })
             <div class="text-center mt-3 w-75">
-                <h6 class="text-muted">Description(Markdown)</h6>
+                <h6 class="text-muted">@localizer["Description"]</h6>
                 <textarea asp-for="Description" class="form-control form-control w-100 text-center"
-                          placeholder="Collection description"
+                          placeholder="@localizer["Collection_description"]"
                           style="min-height: 20vh;"></textarea>
             </div>
 
             <div class="text-center mt-3 w-75">
-                <h6 class="text-muted">Optional fields</h6>
+                <h6 class="text-muted">@localizer["Fields"]</h6>
                 <div id='fields' name="Fields"
                      class="d-flex flex-column justify-content-center border-custom p-2">
                     <div class="w-100">
@@ -88,8 +89,8 @@
 <div class="d-none">
     <div id="fieldProto" name='field' class="d-flex flex-row flex-nowrap align-items-center mt-1">
         <input type="hidden" data-prop="id" />
-        <input data-prop="name" type="text" class="form-control flex-grow-1 mr-1 " placeholder="Field name" />
-        @Html.DropDownList("type", new SelectList(await fieldTypesService.GetAllAsync(), "Id", "Type"), "Select field type", new { @class = "form-control", data_prop = "type" })
+        <input data-prop="name" type="text" class="form-control flex-grow-1 mr-1 " placeholder="@localizer["Field_name"]" />
+        @Html.DropDownList("type", new SelectList(await fieldTypesService.GetAllAsync(), "Id", "Type"), localizer["Select_type"].Value, new { @class = "form-control", data_prop = "type" })
         <a name='btnDeleteField' href="" class="d-block btn p-0">
             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="tiny-icon" viewBox="0 0 16 16">
                 <path fill-rule="evenodd"

@@ -1,0 +1,64 @@
+﻿@model IEnumerable<ThemeVM>
+<div class="mt-2 col-6 offset-3">
+    <div class="text-center">
+        <input id="inputName" class="text-center form-control" />
+        <button href="#" id="btnCreate" class="btn btn-outline-info mt-2">Create theme</button>
+    </div>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Name</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="table">
+            @foreach (var theme in Model)
+            {
+                <tr data-id="@theme.Id">
+                    <td>@theme.Id</td>
+                    <td>@theme.Name</td>
+                    <td><a href="#" name="btnDelete" data-id="@theme.Id">Delete</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<table class="d-none">
+    <tr id="themeProto">
+        <td data-prop="id"></td>
+        <td data-prop="name"></td>
+        <td><a href="#" name="btnDelete">Delete</a></td>
+    </tr>
+</table>
+
+@section Scripts{
+    <script>
+        $('[name=btnDelete]').click(e => {
+            e.preventDefault();
+            let id = $(e.delegateTarget).attr('data-id');
+            $.post('/admin/deleteTheme/', {
+                id: id
+            },
+                (result) => {
+                    $(`tr[data-id=${id}]`).remove();
+                });
+        });
+        $('#btnCreate').click(e => {
+            e.preventDefault();
+            $.post('/admin/createTheme', {
+                name: $('#inputName').val()
+            }, vm => {
+                if (vm) {
+                    let elem = $('#themeProto').clone(true).removeAttr('id');
+                    elem.attr('data-id', vm.id);
+                    elem.find('[data-prop=id]').text(vm.id);
+                    elem.find('[data-prop=name]').text(vm.name);
+                    elem.find('[name=btnDelete]').attr('data-id', vm.id);
+                    $('#table').append(elem);
+                }
+            })
+        });
+    </script>
+}

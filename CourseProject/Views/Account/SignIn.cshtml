@@ -1,14 +1,16 @@
 ﻿@model SignInModel
+@inject IViewLocalizer localizer
+
 <div class="col-md-4 offset-md-4 col-6 offset-3 mt-5">
     <div class="border-custom rounded p-2">
         <form asp-action="SignIn" asp-controller="Account" class="text-center" method="post">
             <div class="form-group">
-                <label>Email address</label>
-                <input type="email" class="form-control" asp-for="Email" placeholder="Enter email">
+                <label>@localizer["Email"]</label>
+                <input type="email" class="form-control" asp-for="Email" placeholder="@localizer["Email"]">
             </div>
             <div class="form-group">
-                <label>Password</label>
-                <input type="password" class="form-control" asp-for="Password" placeholder="Password">
+                <label>@localizer["Password"]</label>
+                <input type="password" class="form-control" asp-for="Password" placeholder="@localizer["Password"]">
             </div>
             <button type="submit" class="btn font-weight-bolder">Sign in</button>
             <div class="border-top-custom mt-1 pt-2 d-flex flex-row justify-content-center">
@@ -47,9 +49,9 @@
         </form>
     </div>
     <div class="text-center mt-5">
-        <span class="text-muted align-middle">Have no account?</span>
+        <span class="text-muted align-middle">@localizer["NoAcc"]</span>
         <a class="btn font-weight-bold" asp-action="SignUp" asp-controller="Account">
-            Sign Up
+            @localizer["SignUp"]
         </a>
     </div>
     <div asp-validation-summary="All">
