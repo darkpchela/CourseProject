@@ -18,4 +18,8 @@
     <ProjectReference Include="..\Identity\Identity.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Resources\Views\NewFolder\" />
+  </ItemGroup>
+
 </Project>

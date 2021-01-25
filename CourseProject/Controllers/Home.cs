@@ -38,7 +38,7 @@ namespace CourseProject.Controllers
                    Expires = DateTimeOffset.UtcNow.AddYears(1)
                }
            );
-            return RedirectToAction(nameof(Home.Index), nameof(Home));
+            return Redirect(HttpContext.Request.Headers["Referer"]);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
