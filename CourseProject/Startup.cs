@@ -1,4 +1,5 @@
 using BusinessLayer.Extensions;
+using CourseProject.Hubs;
 using DataAccessLayer.Extensions;
 using Identity.Extensions;
 using Microsoft.AspNetCore.Builder;
@@ -32,6 +33,7 @@ namespace CourseProject
             services.AddBusinessLayerDependencies(Configuration);
             services.AddHttpContextAccessor();
             services.AddControllersWithViews();
+            services.AddSignalR();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -59,6 +61,7 @@ namespace CourseProject
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapHub<ItemHub>("/itemHub");
             });
         }
     }

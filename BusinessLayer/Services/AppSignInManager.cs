@@ -12,24 +12,31 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Services
 {
-    public class UserRegistService : IUserRegistService
+    public class AppSignInManager : IAppSignInManager
     {
         private readonly IIdentityUnitOfWork identityUnitOfWork;
 
-        private readonly IMapper mapper;
-
         private readonly IUserCrudService userCrudService;
 
-        public UserRegistService(IIdentityUnitOfWork identityUnitOfWork, IMapper mapper, IUserCrudService userCrudService)
+        private readonly IMapper mapper;
+
+        public AppSignInManager(IIdentityUnitOfWork identityUnitOfWork, IUserCrudService userCrudService, IMapper mapper)
         {
             this.identityUnitOfWork = identityUnitOfWork;
-            this.mapper = mapper;
             this.userCrudService = userCrudService;
+            this.mapper = mapper;
         }
 
-        public Task DeleteAsync(int userId)
+        public async Task<bool> RegistAsync(SignUpModel signUpModel)
         {
-            throw new NotImplementedException();
+            var appUser = mapper.Map<AppUser>(signUpModel);
+            var res = await identityUnitOfWork.UserManager.CreateAsync(appUser, signUpModel.Password);
+            if (!res.Succeeded)
+                return false;
+            var user = mapper.Map<UserModel>(signUpModel);
+            user.Id = appUser.Id;
+            await userCrudService.CreateAsync(user);
+            return true;
         }
 
         public async Task<bool> ExternalRegistAsync(ExternalLoginInfo info)
@@ -53,20 +60,7 @@ namespace BusinessLayer.Services
             return true;
         }
 
-        public async Task<bool> RegistAsync(SignUpModel signUpModel)
-        {
-            var appUser = mapper.Map<AppUser>(signUpModel);
-            var res = await identityUnitOfWork.UserManager.CreateAsync(appUser, signUpModel.Password);
-            if (!res.Succeeded)
-                return false;
-            var user = mapper.Map<UserModel>(signUpModel);
-            user.Id = appUser.Id;
-            await userCrudService.CreateAsync(user);
-            return true;
-        }
-
         #region Disposable
-
         private bool disposed;
 
         protected virtual void Dispose(bool disposing)
@@ -81,7 +75,7 @@ namespace BusinessLayer.Services
             }
         }
 
-        ~UserRegistService()
+        ~AppSignInManager()
         {
             Dispose(disposing: false);
         }
@@ -91,7 +85,6 @@ namespace BusinessLayer.Services
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
-
         #endregion Disposable
     }
 }

@@ -18,6 +18,10 @@ namespace Identity.SeedData
             {
                 await roleManager.CreateAsync(new Role("user"));
             }
+            if (await roleManager.FindByNameAsync("blocked") == null)
+            {
+                await roleManager.CreateAsync(new Role("blocked"));
+            }
             if (await userManager.FindByNameAsync(adminEmail) == null)
             {
                 AppUser admin = new AppUser { Email = adminEmail, UserName = adminEmail };
