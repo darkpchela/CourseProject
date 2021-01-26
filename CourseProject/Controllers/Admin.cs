@@ -81,19 +81,6 @@ namespace CourseProject.Controllers
             return RedirectToAction(nameof(Admin.Resources), nameof(Admin));
         }
 
-        public IActionResult ContinueAs()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult ContinueAs(bool asMe)
-        {
-            int userId = asMe ? sessionHelper.GetCurrentUserId() : sessionHelper.GetRemeberedUserId();
-            sessionHelper.RememberUserId(userId);
-            return RedirectToAction(nameof(Profile.Info), nameof(Profile), new { id = userId });
-        }
-
         [HttpGet]
         public async Task<IActionResult> Users()
         {
