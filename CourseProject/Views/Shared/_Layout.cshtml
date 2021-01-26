@@ -156,6 +156,14 @@
     <script src="~/lib/tagify/tagify.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script>
+        const makeSearhTags = () => {
+            $('[name=tag]').click(e => {
+                e.preventDefault();
+                let value = $(e.delegateTarget).attr('data-value');
+                $('#searcher').val($('#searcher').val() + " " + value)
+                $('#searcher').change();
+            });
+        };
         $('#searcher').change(e => {
             console.log($(e.target).val());
             $.ajax({
@@ -164,9 +172,13 @@
                 data: { text: $(e.target).val() },
                 success: (data) => {
                     $('main').empty().append(data);
+                    makeSearhTags();
                 },
                 error: (error) => console.log(error)
             });
+        });
+        $(() => {
+            makeSearhTags();
         });
     </script>
     <script>
