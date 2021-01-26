@@ -12,5 +12,7 @@ namespace BusinessLayer.Interfaces
         Task<bool> ExternalRegistAsync(ExternalLoginInfo info);
 
         Task<bool> RegistAsync(SignUpModel userSignInModel);
+
+        Task SignOutAsync();
     }
 }

@@ -27,6 +27,35 @@ namespace BusinessLayer.Services
             this.mapper = mapper;
         }
 
+        #region Disposable
+
+        private bool disposed;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    identityUnitOfWork.Dispose();
+                }
+                disposed = true;
+            }
+        }
+
+        ~AppSignInManager()
+        {
+            Dispose(disposing: false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
+
+        #endregion Disposable
+
         public async Task<bool> RegistAsync(SignUpModel signUpModel)
         {
             var appUser = mapper.Map<AppUser>(signUpModel);
@@ -60,31 +89,9 @@ namespace BusinessLayer.Services
             return true;
         }
 
-        #region Disposable
-        private bool disposed;
-
-        protected virtual void Dispose(bool disposing)
+        public async Task SignOutAsync()
         {
-            if (!disposed)
-            {
-                if (disposing)
-                {
-                    identityUnitOfWork.Dispose();
-                }
-                disposed = true;
-            }
+            await identityUnitOfWork.SignInManager.SignOutAsync();
         }
-
-        ~AppSignInManager()
-        {
-            Dispose(disposing: false);
-        }
-
-        public void Dispose()
-        {
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
-        }
-        #endregion Disposable
     }
 }
