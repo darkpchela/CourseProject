@@ -14,7 +14,7 @@ namespace CourseProject.MappingProfiles
                 .ForMember(d => d.ImageUrl, o => o.MapFrom(s => s.Resource.Url))
                 .ForMember(d => d.Collections, o => o.MapFrom(s => s.CollectionItems.Select(ci => ci.Collection)))
                 .ForMember(d => d.ItemComments, o => o.MapFrom(s => s.ItemComments.Select(ic => ic.Comment)))
-                .ForMember(d => d.ItemTags, o => o.MapFrom(s => s.ItemTags.SelectMany(it => it.Tag.Value)));
+                .ForMember(d => d.ItemTags, o => o.MapFrom(s => s.ItemTags.Select(it => it.Tag.Value)));
         }
     }
 }

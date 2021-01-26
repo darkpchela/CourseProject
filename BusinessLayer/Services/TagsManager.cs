@@ -62,7 +62,7 @@ namespace BusinessLayer.Services
         {
             var result = new FindTagsResult();
             var allTags = await tagsCrudService.GetAllAsync();
-            var tags = allTags.Where(t => values.Contains(t.Value));
+            var tags = allTags.Where(t => values.Contains(t.Value.ToLower()));
             result.Founded = tags;
             return result;
         }
@@ -71,7 +71,7 @@ namespace BusinessLayer.Services
         {
             var result = new CreateTagsResult();
             var allTags = await tagsCrudService.GetAllAsync();
-            var newValues = values.Except(allTags.Select(t => t.Value)).ToList();
+            var newValues = values.Except(allTags.Select(t => t.Value.ToLower())).ToList();
             var newTags = mapper.Map<IEnumerable<TagModel>>(newValues);
             await tagsCrudService.CreateRangeAsync(newTags);
             result.Created = newTags;
