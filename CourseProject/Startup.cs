@@ -1,4 +1,5 @@
 using BusinessLayer.Extensions;
+using CourseProject.Extensions;
 using CourseProject.Hubs;
 using DataAccessLayer.Extensions;
 using Identity.Extensions;
@@ -69,6 +70,7 @@ namespace CourseProject
 
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseStatusValidation();
             app.UseSession();
 
             app.UseEndpoints(endpoints =>

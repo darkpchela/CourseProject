@@ -1,9 +1,8 @@
 ﻿using BusinessLayer.Interfaces;
 using BusinessLayer.Models;
 using CourseProject.ViewModels;
-using Identity.Entities;
-using Identity.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -11,13 +10,10 @@ namespace CourseProject.Controllers
 {
     public class Account : Controller
     {
-        private readonly IIdentityUnitOfWork identityUnitOfWork;
-
         private readonly IAppSignInManager signInManager;
 
-        public Account(IIdentityUnitOfWork identityUnitOfWork, IAppSignInManager signInManager)
+        public Account(IAppSignInManager signInManager)
         {
-            this.identityUnitOfWork = identityUnitOfWork;
             this.signInManager = signInManager;
         }
 
@@ -33,9 +29,12 @@ namespace CourseProject.Controllers
             if (!ModelState.IsValid)
                 return View(model);
             var res = await signInManager.RegistAsync(model);
-            if (!res)
+            if (!res.Succeed)
             {
-                ModelState.AddModelError("", "Username or email already taken");
+                foreach (var error in res.Errors)
+                {
+                    ModelState.AddModelError("", error);
+                }
                 return View(model);
             }
             return RedirectToAction(nameof(Home.Index), nameof(Home));
@@ -52,19 +51,27 @@ namespace CourseProject.Controllers
         {
             if (!ModelState.IsValid)
                 return View(model);
-            var res = await identityUnitOfWork.SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
-            if(!res.Succeeded)
+            var res = await signInManager.SignInAsync(model);
+            if (!res.Succeed)
             {
-                ModelState.AddModelError("","Incorrect login/password");
+                ModelState.AddModelError("", "Ivalid login/password");
                 return View(model);
             }
             return RedirectToAction(nameof(Home.Index), nameof(Home));
         }
 
+        [HttpPost]
+        public IActionResult ExternalSignUp(string provider)
+        {
+            var redirectUrl = Url.Action(nameof(ExternalSignUp), nameof(Account));
+            var props = signInManager.GetExternalAuthenticationProperties(provider, redirectUrl);
+            return Challenge(props, provider);
+        }
+
         [HttpGet]
         public async Task<IActionResult> ExternalSignUp()
         {
-            var info = await identityUnitOfWork.SignInManager.GetExternalLoginInfoAsync();
+            var info = await signInManager.GetExternalLoginInfoAsync();
             var model = new ExternalSignUpVM
             {
                 Email = info.Principal.FindFirstValue(ClaimTypes.Email),
@@ -74,38 +81,35 @@ namespace CourseProject.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> ExternalSignUp(ExternalSignUpVM model)
+        public async Task<IActionResult> ExternalSignUpConfirm()
         {
-            var info = await identityUnitOfWork.SignInManager.GetExternalLoginInfoAsync();
-            if (info is null)
+            var res = await signInManager.ExternalRegistAsync();
+            if (!res.Succeed)
             {
-                ModelState.AddModelError("", "Failed to fetch external data");
-                return View(model);
+                res.Errors.ToList().ForEach(e => ModelState.AddModelError("", e));
+                return View(nameof(Account.ExternalSignUp));
             }
-            var res = await signInManager.ExternalRegistAsync(info);
-            if (!res)
-            {
-                ModelState.AddModelError("", "Failed to sign up");
-                return View(model);
-            }
-            return RedirectToAction(nameof(Home.Index), nameof(Home));
+            return RedirectToAction(nameof(Account.ExternalSignInConfirm), nameof(Account));
         }
 
+
         [HttpPost]
-        public IActionResult ExternalSignUpRequest(string provider)
+        public IActionResult ExternalSignIn(string provider)
         {
-            var redirectUrl = Url.Action(nameof(ExternalSignUp), nameof(Account));
-            var props = identityUnitOfWork.SignInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+            var redirectUrl = Url.Action(nameof(ExternalSignIn), nameof(Account));
+            var props = signInManager.GetExternalAuthenticationProperties(provider, redirectUrl);
             return Challenge(props, provider);
         }
 
         [HttpGet]
         public async Task<IActionResult> ExternalSignIn()
         {
-            var info = await identityUnitOfWork.SignInManager.GetExternalLoginInfoAsync();
+            var info = await signInManager.GetExternalLoginInfoAsync();
             if (info is null)
-                return RedirectToAction(nameof(SignIn));
+            {
+                ModelState.AddModelError("", "External login failed");
+                return RedirectToAction(nameof(Account.SignIn), nameof(Account));
+            }
             var model = new ExternalSignInVM
             {
                 Username = info.Principal.FindFirstValue(ClaimTypes.Email)
@@ -113,32 +117,21 @@ namespace CourseProject.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> ExternalSignIn(ExternalSignInVM model)
+        public async Task<IActionResult> ExternalSignInConfirm()
         {
-            var info = await identityUnitOfWork.SignInManager.GetExternalLoginInfoAsync();
-            if (info is null)
+            var res = await signInManager.ExternalSignInAsync();
+            if (!res.Succeed)
             {
-                ModelState.AddModelError("", "Failed to fetch external data");
-                return View(model);
+                res.Errors.ToList().ForEach(e => ModelState.AddModelError("", e));
+                return RedirectToAction(nameof(Account.ExternalSignUp), nameof(Account));
             }
-            var res = await identityUnitOfWork.SignInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
-            if (!res.Succeeded)
-                return RedirectToAction(nameof(ExternalSignUp), nameof(Account));
-            return RedirectToAction(nameof(Home.Index), nameof(Home));
+            return RedirectToAction(nameof(Profile.Info), nameof(Profile));
         }
 
-        [HttpPost]
-        public IActionResult ExternalSignInRequest(string provider)
-        {
-            var redirectUrl = Url.Action(nameof(ExternalSignIn), nameof(Account));
-            var props = identityUnitOfWork.SignInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
-            return Challenge(props, provider);
-        }
 
         public async Task<IActionResult> SignOut()
         {
-            await identityUnitOfWork.SignInManager.SignOutAsync();
+            await signInManager.SignOutAsync();
             return RedirectToAction(nameof(Home.Index), nameof(Home));
         }
     }

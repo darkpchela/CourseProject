@@ -12,5 +12,7 @@ namespace BusinessLayer.Interfaces
         Task DeleteAsync(ResourceModel resourceModel);
 
         Task DeleteAsync(int id);
+
+        Task RemoveGarbageAsync();
     }
 }

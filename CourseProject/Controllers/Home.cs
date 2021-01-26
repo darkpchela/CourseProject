@@ -41,6 +41,11 @@ namespace CourseProject.Controllers
             return Redirect(HttpContext.Request.Headers["Referer"]);
         }
 
+        public IActionResult Blocked()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

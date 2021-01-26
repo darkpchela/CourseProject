@@ -117,13 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="As_me" xml:space="preserve">
-    <value>Как я</value>
-  </data>
-  <data name="As_user" xml:space="preserve">
-    <value>Как пользователь</value>
-  </data>
-  <data name="Continue_as" xml:space="preserve">
-    <value>Продолжить как</value>
+  <data name="message" xml:space="preserve">
+    <value>Your account has been blocked. Connect admin for more information.</value>
   </data>
 </root>
