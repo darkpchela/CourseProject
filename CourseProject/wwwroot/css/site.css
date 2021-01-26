@@ -23,7 +23,7 @@ a {
     border-color: #1861ac;
 }
 
-.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
     color: #fff;
     background-color: #1b6ec2;
     border-color: #1861ac;
@@ -75,17 +75,19 @@ body {
         --main-color: antiquewhite;
         --border-color: rgba(0, 0, 0, 0.4);
         --secondary-color: rgb(40, 27, 4);
+        --text-color: rgb(30, 57, 57);
     }
 
-:root[theme='dark'] {
-    --main-color: darkslategray;
-    --border-color: rgba(250, 210, 132, 0.5);
-    --secondary-color: rgb(250, 210, 132);
-}
+    :root[theme='dark'] {
+        --main-color: darkslategray;
+        --border-color: rgba(250, 210, 132, 0.5);
+        --secondary-color: rgb(250, 210, 132);
+        --text-color: rgb(250, 210, 132);
+    }
 
 * {
     border-color: var(--border-color);
-    color: var(--secondary-color) ;
+    color: var(--text-color);
     background-color: var(--main-color);
 }
 
@@ -99,7 +101,6 @@ body {
 
 .border-bottom-custom {
     border-bottom: 1px solid var(--border-color);
-    ;
 }
 
 svg {
@@ -151,7 +152,7 @@ h1 {
     height: 10%;
 }
 
-.w-50vw{
+.w-50vw {
     width: 50vw;
 }
 
@@ -170,7 +171,7 @@ h6:hover {
 
 .square-4 {
     height: clamp(20px, 4vmax, 40px);
-    width:  clamp(20px, 4vmax, 40px);
+    width: clamp(20px, 4vmax, 40px);
 }
 
 .square-25 {
@@ -210,9 +211,9 @@ h6:hover {
     transition: 0.35s;
 }
 
-.btn-hidden:hover {
-    opacity: 100;
-}
+    .btn-hidden:hover {
+        opacity: 100;
+    }
 
 /* modified bootstrap */
 
@@ -220,8 +221,8 @@ h6:hover {
     border: none;
 }
 
-.img-fluid{
-    background-color:inherit;
+.img-fluid {
+    background-color: inherit;
 }
 
 .btn {
@@ -229,22 +230,22 @@ h6:hover {
     background-color: var(--main-color);
 }
 
-.btn:hover, .btn:hover *{
-    color: var(--main-color) ;
-    background-color: var(--secondary-color) ;
-}
+    .btn:hover, .btn:hover * {
+        color: var(--main-color);
+        background-color: var(--secondary-color);
+    }
 
 .btn-outline-info:focus, .btn-outline-info.focus {
-    box-shadow: 0 0 0 0.2rem var(--border-color) ;
+    box-shadow: 0 0 0 0.2rem var(--border-color);
 }
 
-.text-muted{
-    color: var(--secondary-color) ;
+.text-muted {
+    color: var(--secondary-color);
     opacity: 0.8;
 }
 
-.form-control:focus{
-    box-shadow: 0 0 0 0.2rem var(--border-color) ;
+.form-control:focus {
+    box-shadow: 0 0 0 0.2rem var(--border-color);
 }
 
 /* modified dropzone.css */
@@ -253,15 +254,15 @@ h6:hover {
     color: var(--secondary-color);
 }
 
-.dz-preview, .dz-preview *{
+.dz-preview, .dz-preview * {
     background-color: transparent !important;
 }
 
-.dz-preview .dz-details, .dz-preview .dz-details * {
-    background-color: rgba(105, 105, 105, 0.5);
-}
+    .dz-preview .dz-details, .dz-preview .dz-details * {
+        background-color: rgba(105, 105, 105, 0.5);
+    }
 
-.dz-remove{
+.dz-remove {
     display: block;
     text-decoration: none;
     font-weight: bold;
@@ -269,8 +270,65 @@ h6:hover {
     border-radius: 10px;
 }
 
-.dz-remove:hover{
-    outline: none;
-    background-color: var(--border-color);
-    color: var(--secondary-color)
+    .dz-remove:hover {
+        outline: none;
+        background-color: var(--border-color);
+        color: var(--secondary-color)
+    }
+
+/*    modified tagify*/
+.customLook {
+    border-radius: 5px;
+    border-color: var(--secondary-color) !important;
+    height: clamp(25px, 4vmax, 45px);
+}
+
+    .customLook .tagify__tag {
+        margin: auto 0 auto 4px;
+        height: 80%;
+        border: solid 1px var(--border-color);
+        border-radius: 2px;
+        padding: 0px;
+    }
+
+
+        .customLook .tagify__tag > div {
+            border-radius: 3px;
+            height: 100%;
+            width: 100%;
+        }
+
+            .customLook .tagify__tag > div:before {
+                content: none;
+            }
+
+    .customLook .tagify__tag__removeBtn {
+        margin-left: 2%;
+        color: var(--secondary-color);
+    }
+
+    .customLook .tagify__tag-text {
+        display:block;
+        height:100%;
+    }
+
+.tags-look .tagify__dropdown__item {
+    display: inline-block;
+    border-radius: 3px;
+    padding: .3em .5em;
+    border: 1px solid #CCC;
+    background: #F3F3F3;
+    margin: .2em;
+    font-size: .85em;
+    color: black;
+    transition: 0s;
+}
+
+.tags-look .tagify__dropdown__item--active {
+    color: black;
+}
+
+.tags-look .tagify__dropdown__item:hover {
+    background: lightyellow;
+    border-color: gold;
 }
