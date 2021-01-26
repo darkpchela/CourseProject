@@ -40,12 +40,7 @@ namespace CourseProject.Controllers
         public async Task<IActionResult> Info(int? id)
         {
             if (id is null)
-            {
-                if (User.IsInRole("admin"))
-                    return RedirectToAction(nameof(Admin.ContinueAs), nameof(Admin));
-                else
-                    id = sessionHelper.GetCurrentUserId();
-            }
+                id = sessionHelper.GetCurrentUserId();
             var user = await userCrudService.GetAsync(id.Value);
             if (user is null)
                 return RedirectToAction(nameof(Home.Index), nameof(Home));

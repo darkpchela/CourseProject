@@ -4,6 +4,7 @@ using BusinessLayer.Interfaces.BaseCrud;
 using BusinessLayer.Models;
 using BusinessLayer.Models.DALModels;
 using BusinessLayer.Models.ResultModels;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BusinessLayer.Services
@@ -53,6 +54,16 @@ namespace BusinessLayer.Services
                 return;
             await cloudinaryService.DeleteAsync(resource.PublicId);
             await resourceCrudService.DeleteAsync(id);
+        }
+
+        public async Task RemoveGarbageAsync()
+        {
+            var allResources = await resourceCrudService.GetAllAsync();
+            var garbage = allResources.Where(r => r.Collections.Count() == 0 && r.Items.Count() == 0);
+            foreach (var resource in garbage)
+            {
+                await DeleteAsync(resource);
+            }
         }
     }
 }

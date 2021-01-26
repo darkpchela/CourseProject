@@ -25,11 +25,12 @@ namespace CourseProject.Controllers
 
         private readonly IMapper mapper;
 
-        public Admin(ISessionHelper sessionHelper, IAppUsersManager usersManager, IThemesCrudService themesCrudService, IMapper mapper)
+        public Admin(ISessionHelper sessionHelper, IAppUsersManager usersManager, IThemesCrudService themesCrudService, IResourcesManager resourcesManager, IMapper mapper)
         {
             this.sessionHelper = sessionHelper;
             this.usersManager = usersManager;
             this.themesCrudService = themesCrudService;
+            this.resourcesManager = resourcesManager;
             this.mapper = mapper;
         }
 
@@ -74,18 +75,10 @@ namespace CourseProject.Controllers
             return View();
         }
 
-        [HttpGet]
-        public IActionResult ContinueAs()
+        public async Task<IActionResult> RemoveGarbage()
         {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult ContinueAs(bool asMe)
-        {
-            int userId = asMe ? sessionHelper.GetCurrentUserId() : sessionHelper.GetRemeberedUserId();
-            sessionHelper.RememberUserId(userId);
-            return RedirectToAction(nameof(Profile.Info), nameof(Profile), new { id = userId });
+            await resourcesManager.RemoveGarbageAsync();
+            return RedirectToAction(nameof(Admin.Resources), nameof(Admin));
         }
 
         [HttpGet]
@@ -111,7 +104,7 @@ namespace CourseProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(int[] users)
+        public async Task<IActionResult> DeleteUsers(int[] users)
         {
             var result = await usersManager.DeleteUsersAsync(users);
             return Json(result);
