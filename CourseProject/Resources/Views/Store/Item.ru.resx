@@ -129,4 +129,7 @@
   <data name="Owner" xml:space="preserve">
     <value>Владелец</value>
   </data>
+  <data name="tags" xml:space="preserve">
+    <value>тэги</value>
+  </data>
 </root>
