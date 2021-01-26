@@ -104,7 +104,7 @@ namespace CourseProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(int[] users)
+        public async Task<IActionResult> DeleteUsers(int[] users)
         {
             var result = await usersManager.DeleteUsersAsync(users);
             return Json(result);

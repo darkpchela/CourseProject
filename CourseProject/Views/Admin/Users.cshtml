@@ -125,7 +125,7 @@
         });
         $('#btnDelete').click(async e => {
             e.preventDefault();
-            await $.post('/admin/Delete/',
+            await $.post('/admin/DeleteUsers/',
                 {
                     users: getSelected()
                 },
