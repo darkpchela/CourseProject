@@ -43,24 +43,27 @@ const createNewField = async (createFieldVM) => {
         if (result.succeed === true) {
             let field = getFieldElem(result);
             field.find('select [value=""]').remove();
-            $('#fields #btnAddField').before(field);
+            $('#fields #addFieldArea').before(field);
             updateFieldNames();
         }
         else {
             console.log(result.errors);
         }
     });
-
 };
 
 $('#btnAddField').click(async e => {
     e.preventDefault();
     let collectionId = $('#CollectionId').val();
     let ownerId = $('#OwnerId').val();
+    $('#fields *').prop('disabled', true);
+    $('#fieldSpinner').show();
     await createNewField({
         CollectionId: collectionId,
         OwnerId: ownerId
     });
+    $('#fieldSpinner').hide();
+    $('#fields *').prop('disabled', false);
 });
 
 $('[name=btnDeleteField]').click(async (e) => {
@@ -94,7 +97,7 @@ $(() => {
     let cashedFields = JSON.parse($('#cashedFields').text());
     for (let i = 0; i < cashedFields.length; i++) {
         let field = getFieldElem(cashedFields[i]);
-        $('#fields #btnAddField').before(field);
+        $('#fields #addFieldArea').before(field);
     }
     updateFieldNames();
 });
