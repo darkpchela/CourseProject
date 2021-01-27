@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Extensions;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace BusinessLayer.Etc
 {
@@ -19,7 +20,7 @@ namespace BusinessLayer.Etc
 
         public ContainsSearchConditionsBuilder(string text)
         {
-            string[] temp = text.Trim().Replace("  ", " ").Split(' ');
+            string[] temp = Regex.Replace(text, @"[^\w\s]", "").Trim().Replace("  ", " ").Split(' ');
             varyables = new string[temp.Length];
             for (int i = 0; i < varyables.Length; i++)
             {
