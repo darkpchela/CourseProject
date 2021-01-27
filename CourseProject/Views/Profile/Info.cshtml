@@ -23,7 +23,7 @@
                 </a>
             </div>
         </div>
-        <div class="mt-2">
+        <div class="mt-2" id="view">
             <div id="collections">
                 <h5 class="text-center">@localizer["Collections"]</h5>
                 @{await Html.RenderPartialAsync("_Collections", new ProfileCollectionsVM
@@ -43,8 +43,59 @@
         </div>
     </div>
 </div>
+
+<div id="delItemModal" class="modal fade">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content text-center border-custom rounded">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" data-target="#delItemModal" aria-label="Close">&times;</button>
+            </div>
+            <h4 class="modal-title">@localizer["ConfirmDel"]</h4>
+            <div class="modal-body">
+                @localizer["DelItemMessage"] "<span id="itemName"></span>"?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" data-target="#delItemModal" id="confirmDelItem">@localizer["Yes"]</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" data-target="#delItemModal">@localizer["No"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="delCollectionModal" class="modal fade">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content text-center border-custom rounded">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" data-target="#delItemModal" aria-label="Close">&times;</button>
+            </div>
+            <h4 class="modal-title">@localizer["ConfirmDel"]</h4>
+            <div class="modal-body">
+                @localizer["DelCollectionMessage"] "<span id="collectionName"></span>"?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" data-target="#delItemModal" id="confirmDelCollection">@localizer["Yes"]</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" data-target="#delItemModal">@localizer["No"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="spinner" class="position-fixed bg-transparent" style="display:none; top:50%; left:50%;">
+    <div class="text-center bg-transparent m-auto">
+        <div class="spinner-border bg-transparent ">
+            <span class="sr-only">Deleting</span>
+        </div>
+        <div class="text-center bg-transparent">
+            @localizer["Deleting"]...
+        </div>
+    </div>
+</div>
+
 @section Scripts{
     <script>
+        let itemId;
+        let collectionId;
+
         $('#btnGetCollections').click(e => {
             e.preventDefault();
             $('#items').hide();
@@ -58,30 +109,53 @@
 
         $(() => {
             $('#btnGetCollections').click();
+
             $('[name=btnDeleteCollection]').click(e => {
                 e.preventDefault();
-                let link = $(e.target).parents('a');
-                let id = link.attr('data-id');
-                console.log(id)
-                $.post('/api/DeleteCollection', { 'CollectionId': id }, (result) => {
-                    if (result.succeed === true)
-                        link.parents('[name=collection]').remove()
-                    else
-                        console.log(result.errors)
-                });
+                collectionId = $(e.delegateTarget).attr('data-id');
+                let name = $(`[name=collection][data-id=${collectionId}]`).attr('data-name');
+                $('#delCollectionModal').find('#collectionName').text(name);
             });
             $('[name=btnDeleteItem]').click(e => {
                 e.preventDefault();
-                let link = $(e.target).parents('a');
-                let id = link.attr('data-id');
-                console.log(id)
-                $.post('/api/DeleteItem', { 'ItemId': id }, (result) => {
+                itemId = $(e.delegateTarget).attr('data-id');
+                let name = $(`[name=item][data-id=${itemId}]`).attr('data-name');
+                $('#delItemModal').find('#itemName').text(name);
+
+            });
+
+            $('#confirmDelItem').click(async e => {
+                e.preventDefault();
+                $('#spinner').show();
+                $('#view').fadeTo(300, 0.5);
+                $('#view a').css('pointer-events', 'none');
+                await $.post('/api/DeleteItem', { 'ItemId': itemId }, (result) => {
                     if (result.succeed === true)
-                        link.parents('[name=item]').remove()
+                        $(`[name=item][data-id=${itemId}]`).remove()
                     else
                         console.log(result.errors)
                 });
+                $('#spinner').hide();
+                $('#view a').css('pointer-events', 'auto');
+                $('#view').fadeTo(300, 1.0);
             });
+
+            $('#confirmDelCollection').click(async e => {
+                e.preventDefault();
+                $('#spinner').show();
+                $('#view').fadeTo(300, 0.5);
+                $('#view a').css('pointer-events', 'none');
+                await $.post('/api/DeleteCollection/', { 'CollectionId': collectionId }, (result) => {
+                    if (result.succeed === true)
+                        $(`[name=collection][data-id=${collectionId}]`).remove()
+                    else
+                        console.log(result.errors)
+                });
+                $('#spinner').hide();
+                $('#view a').css('pointer-events', 'auto');
+                $('#view').fadeTo(300, 1.0);
+            });
+
             $('[name=collection],[name=item]').hover(
                 e => $(e.delegateTarget).find('[name=editTools]').show(),
                 e => $(e.delegateTarget).find('[name=editTools]').hide()

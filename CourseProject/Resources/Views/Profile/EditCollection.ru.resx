@@ -123,6 +123,9 @@
   <data name="Collection_Name" xml:space="preserve">
     <value>Имя коллекции</value>
   </data>
+  <data name="Creating_field" xml:space="preserve">
+    <value>Создаем поле</value>
+  </data>
   <data name="Description" xml:space="preserve">
     <value>Описание</value>
   </data>
