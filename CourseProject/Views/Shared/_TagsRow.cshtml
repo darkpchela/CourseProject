@@ -5,6 +5,6 @@
 <div class="d-flex flex-row flex-wrap border-bottom-custom justify-content-center">
     @foreach (var tag in tags)
     {
-        <a href="https://localhost:44306/#" name="tag" data-value="@tag.Value" class="m-1 btn p-0">#@tag.Value</a>
+        <button name="tag" data-value="@tag.Value" class="m-1 btn p-0">#@tag.Value</button>
     }
 </div>

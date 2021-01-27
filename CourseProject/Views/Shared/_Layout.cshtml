@@ -69,6 +69,9 @@
                         </div>
                         <div class="d-inline-block align-middle">
                             <input id="searcher" class="rounded text-center w-50vw">
+                            <div id="searchSpinner" class="spinner-border spinner-border-sm position-relative" style="left:5px; bottom:2px; visibility: hidden;" role="status">
+                                <span class="sr-only">Searching...</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -170,7 +173,6 @@
                 You are working as: @user?.Username | @user?.FirstName @user?.LastName
             </div>
         }
-
     }
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -188,9 +190,12 @@
                 $('#searcher').change();
             });
         };
-        $('#searcher').change(e => {
+        $('#searcher').change(async e => {
             console.log($(e.target).val());
-            $.ajax({
+            $('#searchSpinner').showV();
+            $('main').fadeTo(300, 0.5);
+            $('input, button').prop('disabled', true);
+            await $.ajax({
                 method: 'post',
                 url: '/Store/SearchItems/',
                 data: { text: $(e.target).val() },
@@ -200,6 +205,9 @@
                 },
                 error: (error) => console.log(error)
             });
+            $('#searchSpinner').hideV();
+            $('input, button').prop('disabled', false);
+            $('main').fadeTo(300, 1.0);
         });
         $(() => {
             makeSearhTags();

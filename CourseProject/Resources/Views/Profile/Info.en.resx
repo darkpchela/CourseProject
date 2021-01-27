@@ -120,7 +120,25 @@
   <data name="Collections" xml:space="preserve">
     <value>Collections</value>
   </data>
+  <data name="ConfirmDel" xml:space="preserve">
+    <value>Confirm delete</value>
+  </data>
+  <data name="DelCollectionMessage" xml:space="preserve">
+    <value>Do you realy want to delete collection</value>
+  </data>
+  <data name="Deleting" xml:space="preserve">
+    <value>Deleting</value>
+  </data>
+  <data name="DelItemMessage" xml:space="preserve">
+    <value>Do you realy want to delete item</value>
+  </data>
   <data name="Items" xml:space="preserve">
     <value>Items</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
   </data>
 </root>
