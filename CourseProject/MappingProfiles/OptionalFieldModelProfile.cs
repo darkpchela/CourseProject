@@ -8,9 +8,11 @@ namespace CourseProject.MappingProfiles
     {
         public OptionalFieldModelProfile()
         {
-            CreateMap<CreateCollectionOptionalFieldVM, OptionalFieldModel>();
+            CreateMap<CreateCollectionOptionalFieldVM, OptionalFieldModel>()
+                .ForMember(d => d.Name, o => o.MapFrom(s => s.Name.Trim()));
             CreateMap<EditOptionalFieldVM, OptionalFieldModel>()
-                .ForMember(d => d.Id, o => o.MapFrom(s => s.FieldId));
+                .ForMember(d => d.Id, o => o.MapFrom(s => s.FieldId))
+                .ForMember(d => d.Name, o => o.MapFrom(s => s.Name.Trim()));
         }
     }
 }
