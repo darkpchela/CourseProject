@@ -120,7 +120,25 @@
   <data name="Collections" xml:space="preserve">
     <value>Коллекции</value>
   </data>
+  <data name="ConfirmDel" xml:space="preserve">
+    <value>Подтвердите удаление</value>
+  </data>
+  <data name="DelCollectionMessage" xml:space="preserve">
+    <value>Вы действительно хотите удалить коллекцию</value>
+  </data>
+  <data name="Deleting" xml:space="preserve">
+    <value>Удаляем</value>
+  </data>
+  <data name="DelItemMessage" xml:space="preserve">
+    <value>Вы действительно хотите удалить предмет</value>
+  </data>
   <data name="Items" xml:space="preserve">
     <value>Предметы</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Нет</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Да</value>
   </data>
 </root>
