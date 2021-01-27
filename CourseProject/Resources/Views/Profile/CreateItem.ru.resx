@@ -124,7 +124,7 @@
     <value>Дополнительные поля</value>
   </data>
   <data name="header" xml:space="preserve">
-    <value>Создать Предмет</value>
+    <value>Новый Предмет</value>
   </data>
   <data name="Item_description" xml:space="preserve">
     <value>Описание предмета</value>

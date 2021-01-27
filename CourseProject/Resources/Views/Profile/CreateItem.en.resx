@@ -124,7 +124,7 @@
     <value>Optional fields</value>
   </data>
   <data name="header" xml:space="preserve">
-    <value>Create Item</value>
+    <value>New Item</value>
   </data>
   <data name="Item_description" xml:space="preserve">
     <value>Item description</value>
