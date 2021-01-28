@@ -144,6 +144,10 @@ h1 {
     font-size: clamp(20px, 2vmax, 26px);
 }
 
+.sidebar * {
+    font-size: clamp(12px, 1.6vw, 18px);
+}
+
 .h-60 {
     height: 60%;
 }
