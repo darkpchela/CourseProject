@@ -5,11 +5,26 @@
 
 <div class="w-100 mt-3">
     <h3 class="text-center">@localizer["header"]</h3>
+    <div class="position-fixed d-flex flex-column align-content-center justify-content-start bg-transparent p-2 h-75 border-left-custom"
+         style="top: 20%; right: 5%; max-width: 15%;">
+        <h6 class="font-italic bg-transparent">Sort by: </h6>
+        <select id="sortProp" data-prop="date">
+            <option selected="selected" value="date">Date</option>
+            <option value="like">Popularity</option>
+            <option value="count">Items count</option>
+            <option value="name">Name</option>
+        </select>
+        <select id="sortPropParam">
+            <option value="Asc">Ascending</option>
+            <option selected="selected" value="Desc">Descending</option>
+        </select>
+    </div>
     <div>
-        <div class="d-flex flex-row flex-wrap align-items-baseline justify-content-center">
+        <div id="collections" class="d-flex flex-row flex-wrap align-items-baseline justify-content-center">
             @foreach (var collection in (await collectionsService.GetAllAsync()).OrderByDescending(c => c.CreationDate))
             {
-                <div class="m-2 text-center">
+                <div name="collection" class="m-2 text-center" data-name="@collection.Name" data-date="@collection.CreationDate" 
+                     data-likes="@collection.CollectionItems.Select(ci => ci.Item.ItemLikes.Count()).Sum()" data-count="@collection.CollectionItems.Count()">
                     <div class="p-2">
                         <a asp-action="Collection" asp-controller="Store" asp-route-id="@collection.Id" class="btn p-0 ">
                             <img class="img-fluid img-thumbnail mx-square-20"
@@ -26,3 +41,7 @@
         </div>
     </div>
 </div>
+
+@section Scripts{ 
+<script src="~/js/collections.js"></script>
+}

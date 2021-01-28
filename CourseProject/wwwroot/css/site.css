@@ -103,6 +103,14 @@ body {
     border-bottom: 1px solid var(--border-color);
 }
 
+.border-right-custom {
+    border-right: 1px solid var(--border-color);
+}
+
+.border-left-custom {
+    border-left: 1px solid var(--border-color);
+}
+
 svg {
     color: var(--secondary-color);
     background-color: var(--main-color);
