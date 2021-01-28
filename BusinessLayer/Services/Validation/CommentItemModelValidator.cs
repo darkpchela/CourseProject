@@ -19,7 +19,7 @@ namespace BusinessLayer.Services.Validation
             var user = await userCrudService.GetAsync(model.UserId);
             if (user is null)
                 ValidationResult.AddError("User not found");
-            if (model.Value.Length > 512)
+            if (model.Value.Length > 512 || string.IsNullOrWhiteSpace(model.Value))
                 ValidationResult.AddError("Value out of range");
         }
 

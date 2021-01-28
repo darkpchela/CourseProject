@@ -3,6 +3,7 @@ using BusinessLayer.Interfaces.Authentication;
 using BusinessLayer.Models;
 using Microsoft.AspNetCore.SignalR;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CourseProject.Hubs
@@ -47,6 +48,7 @@ namespace CourseProject.Hubs
 
         public async Task SendComment(string itemId, string value)
         {
+            Thread.Sleep(3000);
             if (!int.TryParse(itemId, out int parsedId))
                 return;
             var model = new CommentItemModel
@@ -56,7 +58,7 @@ namespace CourseProject.Hubs
                 Value = value
             };
             var result = await commentsManager.CommentItemAsync(model);
-            await Clients.Group(itemId.ToString()).SendAsync("OnCommentMade", result);
+            await Clients.Group(itemId.ToString()).SendAsync("OnCommentMade", result, Context.ConnectionId);
         }
     }
 }
