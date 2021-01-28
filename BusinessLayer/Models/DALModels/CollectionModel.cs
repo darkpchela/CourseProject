@@ -19,7 +19,7 @@ namespace BusinessLayer.Models.DALModels
 
         public int ThemeId { get; set; }
 
-        public DateTime CreationDate { get; set; } = DateTime.Now;
+        public DateTime CreationDate { get; set; }
 
         public UserModel Owner { get; set; }
 
