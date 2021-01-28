@@ -1,11 +1,13 @@
-﻿<div class="d-flex m-auto mt-4">
-    <a asp-action="Users" asp-controller="Admin" class="btn border-custom flex-grow-1">
-        Users
+﻿@inject IViewLocalizer localizer
+
+<div class="d-flex flex-column m-auto mt-4">
+    <a asp-action="Users" asp-controller="Admin" class="btn btn-outline-info border-custom flex-grow-1 font-weight-bold">
+        @localizer["Manage_Users"]
     </a>
-    <a asp-action="Themes" asp-controller="Admin" class="btn border-custom flex-grow-1">
-        Themes
+    <a asp-action="Themes" asp-controller="Admin" class="btn btn-outline-info border-custom flex-grow-1 font-weight-bold">
+        @localizer["Manage_Themes"]
     </a>
-    <a asp-action="Resources" asp-controller="Admin" class="btn border-custom flex-grow-1">
-        Resources
+    <a asp-action="Resources" asp-controller="Admin" class="btn btn-outline-info border-custom flex-grow-1 font-weight-bold">
+        @localizer["Manage_Resources"]
     </a>
 </div>

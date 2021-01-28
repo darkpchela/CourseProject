@@ -2,8 +2,10 @@
 using BusinessLayer.Interfaces;
 using BusinessLayer.Interfaces.Authentication;
 using BusinessLayer.Interfaces.BaseCrud;
+using BusinessLayer.Models;
 using BusinessLayer.Models.DALModels;
 using CourseProject.ViewModels;
+using CourseProject.ViewModels.EditableModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -21,15 +23,18 @@ namespace CourseProject.Controllers
 
         private readonly IThemesCrudService themesCrudService;
 
+        private readonly IThemesManager themesManager;
+
         private readonly IResourcesManager resourcesManager;
 
         private readonly IMapper mapper;
 
-        public Admin(ISessionHelper sessionHelper, IAppUsersManager usersManager, IThemesCrudService themesCrudService, IResourcesManager resourcesManager, IMapper mapper)
+        public Admin(ISessionHelper sessionHelper, IAppUsersManager usersManager, IThemesCrudService themesCrudService, IResourcesManager resourcesManager, IThemesManager themesManager, IMapper mapper)
         {
             this.sessionHelper = sessionHelper;
             this.usersManager = usersManager;
             this.themesCrudService = themesCrudService;
+            this.themesManager = themesManager;
             this.resourcesManager = resourcesManager;
             this.mapper = mapper;
         }
@@ -49,25 +54,27 @@ namespace CourseProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateTheme(string name)
+        public async Task<IActionResult> CreateTheme(CreateThemeVM model)
         {
-            var theme = (await themesCrudService.GetAllAsync()).Where(t => t.Name == name);
-            if (theme is null)
-                return Json(null);
-            var model = new ThemeModel
-            {
-                Name = name
-            };
-            await themesCrudService.CreateAsync(model);
-            var vm = mapper.Map<ThemeVM>(model);
-            return Json(vm);
+            var dtoModel = mapper.Map<CreateThemeModel>(model);
+            var result = await themesManager.CreateAsync(dtoModel);
+            return Json(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteTheme(int id)
+        public async Task<IActionResult> DeleteTheme(DeleteThemeVM model)
         {
-            await themesCrudService.DeleteAsync(id);
-            return Json("OK");
+            var dtoModel = mapper.Map<DeleteThemeModel>(model);
+            var result = await themesManager.DeleteAsync(dtoModel);
+            return Json(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateTheme(UpdateThemeVM model)
+        {
+            var dtoModel = mapper.Map<UpdateThemeModel>(model);
+            var result = await themesManager.UpdateAsync(dtoModel);
+            return Json(result);
         }
 
         public IActionResult Resources()

@@ -13,12 +13,27 @@
             </tr>
         </thead>
         <tbody id="table">
+            <tr>
+                <td></td>
+                <td>
+                    <input id="nameInput" class="form-control" data-prop="name" />
+                </td>
+                <td><button class="btn p-0" name="btnDelete">Add</button></td>
+            </tr>
             @foreach (var theme in Model)
             {
                 <tr data-id="@theme.Id">
                     <td>@theme.Id</td>
-                    <td>@theme.Name</td>
-                    <td><a href="#" name="btnDelete" data-id="@theme.Id">Delete</a></td>
+                    <td>
+                        <div name="nameArea" class="d-flex flex-row align-items-center justify-content-around">
+                            <input data-id="@theme.Id" data-prop="name" readonly value="@theme.Name" />
+                            <div name="spinner" class="spinner-border spinner-border-sm m-1" style="visibility: hidden;" role="status">
+                                <span class="sr-only">Updating...</span>
+                            </div>
+                            <button class="btn" name="btnRename" disabled>Rename</button>
+                        </div>
+                    </td>
+                    <td><button class="btn" name="btnDelete" data-id="@theme.Id">Delete</button></td>
                 </tr>
             }
         </tbody>
@@ -59,6 +74,37 @@
                     $('#table').append(elem);
                 }
             })
+        });
+
+        let cashedName;
+        $('[name=nameArea]').dblclick(e => {
+            cashedName = $(e.delegateTarget).find('input').val();
+            $(e.delegateTarget).find('input').removeAttr('readonly').focus().parents('div').find('[name=btnRename]').removeAttr('disabled');
+        });
+
+        $('input[data-prop=name]').blur(e => {
+            $(e.delegateTarget).attr('readonly', true);
+            if ($(e.delegateTarget).val() == cashedName)
+                $(e.delegateTarget).parents('div').find('[name=btnRename]').attr('disabled', true);
+        });
+
+        $('[name=btnRename]').click(async e => {
+            e.preventDefault();
+            let themeId = $(e.delegateTarget).parent().find('input').attr('data-id');
+            let name = $(e.delegateTarget).parent().find('input').val();
+            $(e.delegateTarget).parent().find('[name=spinner]').showV();
+            await $.post('/admin/updateTheme/',
+                {
+                    themeId: themeId,
+                    name: name
+                },
+                result => {
+                    if (result.succeed !== true) {
+                        $(`input[data-id=${themeId}]`).val(cashedName);
+                        console.log(result.errors);
+                    }
+                });
+            $(e.delegateTarget).parent().find('[name=spinner]').hideV();
         });
     </script>
 }
