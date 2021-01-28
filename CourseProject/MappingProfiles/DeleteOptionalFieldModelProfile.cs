@@ -8,7 +8,8 @@ namespace CourseProject.MappingProfiles
     {
         public DeleteOptionalFieldModelProfile()
         {
-            CreateMap<DeleteOptionalFieldVM, DeleteOptionalFieldModel>();
+            CreateMap<DeleteOptionalFieldVM, DeleteOptionalFieldModel>()
+                .ForMember(d => d.OptionalFieldId, o => o.MapFrom(s => s.FieldId));
         }
     }
 }
