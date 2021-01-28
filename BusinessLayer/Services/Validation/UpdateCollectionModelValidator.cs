@@ -30,7 +30,7 @@ namespace BusinessLayer.Services.Validation
             var collections = await collectionsCrudService.GetAllAsync();
             if (!collections.Any(c => c.Id == model.CollectionId))
                 ValidationResult.AddError("Collection not found");
-            if (collections.Any(c => c.Name == model.Name))
+            if (collections.Any(c => c.Name == model.Name && c.Id != model.CollectionId))
                 ValidationResult.AddError("Collection with such name already exists");
             var owner = await userCrudService.GetAsync(model.OwnerId);
             if (owner is null)

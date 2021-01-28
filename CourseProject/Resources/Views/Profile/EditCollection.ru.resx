@@ -123,8 +123,17 @@
   <data name="Collection_Name" xml:space="preserve">
     <value>Имя коллекции</value>
   </data>
+  <data name="ConfirmDel" xml:space="preserve">
+    <value>Подтвердите удаление</value>
+  </data>
   <data name="Creating_field" xml:space="preserve">
     <value>Создаем поле</value>
+  </data>
+  <data name="Deleting_field" xml:space="preserve">
+    <value>Удаляем поле</value>
+  </data>
+  <data name="DelFieldMessage" xml:space="preserve">
+    <value>Удаление поля приведет к удаление его значений из все предметов в коллекции. Вы действительно хотите удалить поле</value>
   </data>
   <data name="Description" xml:space="preserve">
     <value>Описание</value>
@@ -135,7 +144,13 @@
   <data name="header" xml:space="preserve">
     <value>Изменить Коллекцию</value>
   </data>
+  <data name="No" xml:space="preserve">
+    <value>Нет</value>
+  </data>
   <data name="Select_theme" xml:space="preserve">
     <value>Выберите тему</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Да</value>
   </data>
 </root>

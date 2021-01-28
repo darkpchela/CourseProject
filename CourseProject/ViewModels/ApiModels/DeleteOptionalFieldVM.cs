@@ -6,6 +6,6 @@
 
         public int CollectionId { get; set; }
 
-        public int OptionalFieldId { get; set; }
+        public int FieldId { get; set; }
     }
 }

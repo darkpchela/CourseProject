@@ -123,8 +123,17 @@
   <data name="Collection_Name" xml:space="preserve">
     <value>Collection name</value>
   </data>
+  <data name="ConfirmDel" xml:space="preserve">
+    <value>Confirm delete</value>
+  </data>
   <data name="Creating_field" xml:space="preserve">
     <value>Creating field</value>
+  </data>
+  <data name="Deleting_field" xml:space="preserve">
+    <value>Deleting field</value>
+  </data>
+  <data name="DelFieldMessage" xml:space="preserve">
+    <value>Removing a field will cause a delete its values out of all of the items in the collection. Do you realy want to delete field</value>
   </data>
   <data name="Description" xml:space="preserve">
     <value>Description</value>

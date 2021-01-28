@@ -1,5 +1,5 @@
 ﻿const getFieldElem = (props) => {
-    let field = $('#fieldProto').clone(true).removeAttr('id');
+    let field = $('#fieldProto').clone(true).removeAttr('id').attr('data-id', props.fieldId).attr('data-name', props.name);
     let nameInput = field.children('[data-prop=name]');
     let typeInput = field.children('[data-prop=type]');
     let idInput = field.children('[data-prop=id]');
@@ -28,16 +28,6 @@ const updateFieldNames = () => {
     }
 };
 
-const deleteField = async (delFieldVM) => {
-    let succeed = false;
-    await $.post("/api/DeleteField", delFieldVM, result => {
-        if (result.succeed === false)
-            console.log(result.errors)
-        succeed = result.succeed;
-    });
-    return succeed;
-};
-
 const createNewField = async (createFieldVM) => {
     await $.post("/api/CreateField", createFieldVM, result => {
         if (result.succeed === true) {
@@ -57,29 +47,42 @@ $('#btnAddField').click(async e => {
     let collectionId = $('#CollectionId').val();
     let ownerId = $('#OwnerId').val();
     $('#fields *').prop('disabled', true);
-    $('#fieldSpinner').show();
+    $('#addSpinner').show();
     await createNewField({
         CollectionId: collectionId,
         OwnerId: ownerId
     });
-    $('#fieldSpinner').hide();
+    $('#addSpinner').hide();
     $('#fields *').prop('disabled', false);
 });
 
+let fieldData;
 $('[name=btnDeleteField]').click(async (e) => {
     e.preventDefault();
-    let collectionId = $('#CollectionId').val();
-    let ownerId = $('#OwnerId').val();
-    let fieldId = $(e.target).parents('[name=field]').find('[data-prop=id]').val();
-    let result = await deleteField({
-        CollectionId: collectionId,
-        OwnerId: ownerId,
-        OptionalFieldId: fieldId
+    let field = $(e.target).parents('[name=field]');
+    fieldData = {
+        collectionId: $('#CollectionId').val(),
+        ownerId: $('#OwnerId').val(),
+        fieldId: field.attr('data-id')
+    };
+    $('#fieldNameModal').text(field.attr('data-name'));
+});
+
+$('#confirmDelField').click(async (e) => {
+    e.preventDefault();
+    $('#fields *').prop('disabled', true);
+    $('#delSpinner').show();
+    await $.post("/api/DeleteField", fieldData, result => {
+        if (result.succeed === true) {
+            $(`[name=field][data-id=${fieldData.fieldId}]`).remove();
+            updateFieldNames();
+        }
+        else {
+            console.log(result.errors)
+        }
     });
-    if (result === true) {
-        $(e.target).parents('[name=field]').remove();
-        updateFieldNames();
-    }
+    $('#delSpinner').hide();
+    $('#fields *').prop('disabled', false);
 });
 
 $('#type').focus(e => {
