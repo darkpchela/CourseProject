@@ -1,6 +1,7 @@
 ﻿using BusinessLayer.Interfaces.BaseCrud;
 using BusinessLayer.Interfaces.Validation;
 using BusinessLayer.Models;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BusinessLayer.Services.Validation
@@ -13,11 +14,14 @@ namespace BusinessLayer.Services.Validation
 
         private readonly IResourceCrudService resourceCrudService;
 
-        public CreateCollectionModelValidator(IThemesCrudService themesCrudService, IUserCrudService userCrudService, IResourceCrudService resourceCrudService)
+        private readonly ICollectionsCrudService collectionsCrudService;
+
+        public CreateCollectionModelValidator(IThemesCrudService themesCrudService, IUserCrudService userCrudService, ICollectionsCrudService collectionsCrudService , IResourceCrudService resourceCrudService)
         {
             this.themesCrudService = themesCrudService;
             this.userCrudService = userCrudService;
             this.resourceCrudService = resourceCrudService;
+            this.collectionsCrudService = collectionsCrudService;
         }
 
         protected async override Task BaseValidation(CreateCollectionModel model)
@@ -35,6 +39,9 @@ namespace BusinessLayer.Services.Validation
 
         protected async override Task OptionalValidation(CreateCollectionModel model)
         {
+            var collection = (await collectionsCrudService.GetAllAsync()).FirstOrDefault(c => c.Name == model.Name);
+            if (collection != null)
+                ValidationResult.AddError("Name already taken");
         }
     }
 }

@@ -117,25 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Description" xml:space="preserve">
-    <value>Description</value>
+  <data name="Manage_Resources" xml:space="preserve">
+    <value>Управление Ресурсами</value>
   </data>
-  <data name="Fields" xml:space="preserve">
-    <value>Optional fields</value>
+  <data name="Manage_Themes" xml:space="preserve">
+    <value>Управление Темами</value>
   </data>
-  <data name="header" xml:space="preserve">
-    <value>New Item</value>
-  </data>
-  <data name="Item_description" xml:space="preserve">
-    <value>Item description</value>
-  </data>
-  <data name="Item_name" xml:space="preserve">
-    <value>Item name</value>
-  </data>
-  <data name="Select_collection" xml:space="preserve">
-    <value>Select collection</value>
-  </data>
-  <data name="tags" xml:space="preserve">
-    <value>tags</value>
+  <data name="Manage_Users" xml:space="preserve">
+    <value>Управление Пользователями</value>
   </data>
 </root>

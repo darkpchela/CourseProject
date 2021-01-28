@@ -9,7 +9,8 @@ namespace CourseProject.MappingProfiles
         public CollectionModelProfile()
         {
             CreateMap<CreateCollectionVM, CollectionModel>()
-                .ForMember(d => d.OptionalFields, o => o.MapFrom(s => s.Fields));
+                .ForMember(d => d.OptionalFields, o => o.MapFrom(s => s.Fields))
+                .ForMember(d => d.Name, o => o.MapFrom(s => s.Name.Trim()));
         }
     }
 }

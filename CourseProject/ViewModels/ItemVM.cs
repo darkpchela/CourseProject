@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CourseProject.ViewModels
 {
@@ -25,5 +26,7 @@ namespace CourseProject.ViewModels
         public UserVM Owner { get; set; }
 
         public bool Liked { get; set; }
+
+        public DateTime CreatedAt { get; set; }
     }
 }

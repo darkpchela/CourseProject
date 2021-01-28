@@ -10,6 +10,7 @@ namespace CourseProject.ViewModels
 
         [Required(ErrorMessage = "Collection name is required.")]
         [StringLength(64, MinimumLength = 3, ErrorMessage = "Min name legth is 3. Maximum is 64.")]
+        [RegularExpression(@"^[a-zA-Z0-9 \-]*$")]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Theme must me chosen.")]

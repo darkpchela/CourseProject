@@ -75,7 +75,7 @@ namespace BusinessLayer.Services
             foreach (var id in userIds)
             {
                 var appUser = await identityUnitOfWork.UserManager.FindByIdAsync(id.ToString());
-                if (appUser is null)
+                if (appUser is null || appUser.Email == "admin@gmail.com")
                 {
                     result.AddError($"User {id} not found");
                     result.NotBlocked.Add(id);
