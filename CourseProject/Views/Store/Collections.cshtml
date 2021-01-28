@@ -7,16 +7,16 @@
     <h3 class="text-center">@localizer["header"]</h3>
     <div class="position-fixed d-flex flex-column align-content-center justify-content-start bg-transparent p-2 h-75 border-left-custom sidebar btn-hidden"
          style="top: 15%; right: 4%; max-width: 13%;">
-        <h6 class="font-italic bg-transparent">Sort by: </h6>
+        <h6 class="font-italic bg-transparent">@localizer["Sort_by"]: </h6>
         <select id="sortProp" data-prop="date">
-            <option selected="selected" value="date">Date</option>
-            <option value="like">Popularity</option>
-            <option value="count">Items count</option>
-            <option value="name">Name</option>
+            <option selected="selected" value="date">@localizer["Date"]</option>
+            <option value="like">@localizer["Popularity"]</option>
+            <option value="count">@localizer["Items_count"]</option>
+            <option value="name">@localizer["Name"]</option>
         </select>
         <select id="sortPropParam">
-            <option value="Asc">Ascending</option>
-            <option selected="selected" value="Desc">Descending</option>
+            <option value="Asc">@localizer["Ascending"]</option>
+            <option selected="selected" value="Desc">@localizer["Descending"]</option>
         </select>
     </div>
     <div>
