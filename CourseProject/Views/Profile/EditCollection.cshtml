@@ -38,7 +38,7 @@
                 <h6 class="text-muted">@localizer["Fields"]</h6>
                 <div id='fields' name="Fields" class="d-flex flex-column justify-content-center border-custom p-2">
                     <div id="addFieldArea">
-                        <div id="fieldSpinner" class="flex-row justify-content-center" style="display:none;">
+                        <div id="addSpinner" class="flex-row justify-content-center" style="display:none;">
                             <div class="spinner-border">
                                 <span class="sr-only">Creating field...</span>
                             </div>
@@ -46,7 +46,15 @@
                                 @localizer["Creating_field"]...
                             </div>
                         </div>
-                        <button id="btnAddField" class="btn p-0">
+                        <div id="delSpinner" class="flex-row justify-content-center" style="display:none;">
+                            <div class="spinner-border">
+                                <span class="sr-only">Deleting field...</span>
+                            </div>
+                            <div>
+                                @localizer["Deleting_field"]...
+                            </div>
+                        </div>
+                        <button id="btnAddField" data-toggle="modal" data-target="#delFieldModal" class="btn p-0">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                  class="tiny-icon" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd"
@@ -90,11 +98,11 @@
 </div>
 
 <div class="d-none">
-    <div id="fieldProto" name='field' class="d-flex flex-row flex-nowrap align-items-center mt-1">
+    <div id="fieldProto" name='field' data-id="" data-name="" class="d-flex flex-row flex-nowrap align-items-center mt-1">
         <input type="hidden" data-prop="id" />
         <input name="name" data-prop="name" type="text" class="form-control flex-grow-1 mr-1 " placeholder="Field name" />
         @Html.DropDownList("type", new SelectList(await fieldTypesService.GetAllAsync(), "Id", "Type"), "Select field type", new { @class = "form-control", data_prop = "type" })
-        <button name='btnDeleteField' href="" class="d-block btn p-0">
+        <button name='btnDeleteField' data-toggle="modal" data-target="#delFieldModal" class="d-block btn p-0">
             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="tiny-icon" viewBox="0 0 16 16">
                 <path fill-rule="evenodd"
                       d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
@@ -102,6 +110,25 @@
         </button>
     </div>
 </div>
+
+<div id="delFieldModal" class="modal fade">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content text-center border-custom rounded">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" data-target="#delFieldModal" aria-label="Close">&times;</button>
+            </div>
+            <h4 class="modal-title">@localizer["ConfirmDel"]</h4>
+            <div class="modal-body">
+                @localizer["DelFieldMessage"] "<span id="fieldNameModal"></span>"?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="confirmDelField">@localizer["Yes"]</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">@localizer["No"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="tpl" class="d-none">
     @{await Html.RenderPartialAsync("_DropzoneTemplate"); }
 </div>

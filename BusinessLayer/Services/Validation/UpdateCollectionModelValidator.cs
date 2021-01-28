@@ -27,9 +27,11 @@ namespace BusinessLayer.Services.Validation
 
         protected override async Task BaseValidation(UpdateCollectionModel model)
         {
-            var collection = await collectionsCrudService.GetAsync(model.CollectionId);
-            if (collection is null)
+            var collections = await collectionsCrudService.GetAllAsync();
+            if (!collections.Any(c => c.Id == model.CollectionId))
                 ValidationResult.AddError("Collection not found");
+            if (collections.Any(c => c.Name == model.Name && c.Id != model.CollectionId))
+                ValidationResult.AddError("Collection with such name already exists");
             var owner = await userCrudService.GetAsync(model.OwnerId);
             if (owner is null)
                 ValidationResult.AddError("User not found");

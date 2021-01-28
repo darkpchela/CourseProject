@@ -12,7 +12,8 @@ namespace CourseProject.MappingProfiles
         {
             CreateMap<CreateItemVM, CreateItemModel>()
                 .ForMember(d => d.OptionalFields, o => o.MapFrom(s => s.Fields))
-                .ForMember(d => d.Tags, o => o.MapFrom(s => s.TagsJson.JsonDeserialize<TagJsonVM[]>().Select(t => t.value)));
+                .ForMember(d => d.Tags, o => o.MapFrom(s => s.TagsJson.JsonDeserialize<TagJsonVM[]>().Select(t => t.value)))
+                .ForMember(d => d.Name, o => o.MapFrom(s => s.Name.Trim()));
         }
     }
 }

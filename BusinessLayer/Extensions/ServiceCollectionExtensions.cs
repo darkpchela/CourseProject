@@ -29,7 +29,6 @@ namespace BusinessLayer.Extensions
 
         public static IServiceCollection AddBusinessLayerDependencies(this IServiceCollection services, IConfiguration configuration)
         {
-
             services.AddBaseCrudServices();
             services.AddCloudinaryService(configuration);
             services.AddTransient<ICollectionsManager, CollectionsManager>();
@@ -41,6 +40,7 @@ namespace BusinessLayer.Extensions
             services.AddTransient<ICommentsManager, CommentsManager>();
             services.AddTransient<IAppUsersManager, AppUsersManager>();
             services.AddTransient<IAppSignInManager, AppSignInManager>();
+            services.AddTransient<IThemesManager, ThemesManager>();
             services.AddAuthenticators();
             services.AddValidators();
             return services;
@@ -91,15 +91,18 @@ namespace BusinessLayer.Extensions
         {
             services.AddTransient<ICreateCollectionModelValidator, CreateCollectionModelValidator>();
             services.AddTransient<IUpdateCollectionModelValidator, UpdateCollectionModelValidator>();
+            services.AddTransient<IDeleteCollectionModelValidator, DeleteCollectionModelValidator>();
             services.AddTransient<ICreateItemModelValidator, CreateItemModelValidator>();
             services.AddTransient<IUpdateItemModelValidator, UpdateItemModelValidator>();
             services.AddTransient<IDeleteItemModelValidator, DeleteItemModelValidator>();
             services.AddTransient<ICreateDefaultOptionalFieldModelValidator, CreateDefaultOptionalFieldModelValidator>();
             services.AddTransient<IDeleteOptionalFieldModelValidator, DeleteOptionalFieldModelValidator>();
-            services.AddTransient<IDeleteCollectionModelValidator, DeleteCollectionModelValidator>();
             services.AddTransient<ILikeItemModelValidator, LikeItemModelValidator>();
             services.AddTransient<ICommentItemModelValidator, CommentItemModelValidator>();
             services.AddTransient<IModelValidatorsStore, ModelValidatorsStore>();
+            services.AddTransient<ICreateThemeModelValidator, CreateThemeModelValidator>();
+            services.AddTransient<IUpdateThemeModelValidator, UpdateThemeModelValidator>();
+            services.AddTransient<IDeleteThemeModelValidator, DeleteThemeModelValidator>();
             return services;
         }
     }
