@@ -11,7 +11,7 @@ namespace CourseProject.ViewModels
         public int TypeId { get; set; }
 
         [Required(ErrorMessage = "Field name required")]
-        [RegularExpression(@"^[a-zA-Z0-9 \-]*$")]
+        [RegularExpression(@"^[\w\s]*$")]
         public string Name { get; set; }
     }
 }
