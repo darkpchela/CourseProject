@@ -1,7 +1,7 @@
 ﻿"use strict"
 
-$('input[type=checkbox]').val('false').change(e => {
-    $(e.delegateTarget).val($(e.delegateTarget).is(':checked'))
+$('input[type=checkbox]').change(e => {
+    $(e.delegateTarget).val($(e.delegateTarget).is(':checked')? 'true': '')
 });
 
 let filterElemsDic = {
@@ -11,9 +11,11 @@ let filterElemsDic = {
 };
 
 let filterFuncDic = {
-    less : (a, b) => a < b,
-    more : (a, b) => a > b,
-    equal : (a, b) => a ==b
+    numMore: (a, b) => Number(a) >= Number(b),
+    numLess: (a, b) => Number(a) <= Number(b),
+    dateMore: (a, b) => new Date(a) >= new Date(b),
+    dateLess: (a, b) => new Date(a) <= new Date(b),
+    equal: (a, b) => a == b 
 }
 
 const getFilterElem = (fieldVM) => {
@@ -31,21 +33,28 @@ for (let i = 0; i < collectionFields.length; i++) {
 
 const filterItems = () => {
     let items = $('[name=item]');
-    let filters = $('#filterTab [name=filterProp]').sort((a, b) => $(a).attr('data-fieldId') - $(b).attr('data-fieldId'));
+    let filters = $('#filterTab [name=filterProp]');
     items.each((i, item) => {
-        let fields = JSON.parse($(item).attr('data-fields')).sort((a, b) => a.fieldId - b.fieldId)
+        let fields = JSON.parse($(item).attr('data-fields'));
+        let filtered = false;
         filters.each((i, filter) => {
             let fieldId = $(filter).attr('data-fieldId');
             let field = fields.find(f => f.fieldId == fieldId)
-            console.log(field)
             let op = $(filter).attr('data-op')
             let val = $(filter).val();
-            let func = filterFuncDic[op];
-            if (func(field.value, val) !== true) {
-                $(item).hide();
+            if (!field || val=="") {
+                return true;
             }
-
+            let func = filterFuncDic[op];
+            if (func(field.value, val) === false) {
+                filtered = true
+                return false;
+            }
         });
+        if (filtered === true) 
+            $(item).hide();
+        else 
+            $(item).show();
     });
 };
 
