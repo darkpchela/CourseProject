@@ -1,4 +1,4 @@
-﻿let items = null;
+﻿let collections = null;
 let sortList = Array.prototype.sort.bind(items)
 
 $('#sortProp, #sortPropParam').change(e => {
@@ -13,26 +13,26 @@ $('#sortProp, #sortPropParam').change(e => {
 
 
 const sortDateAsc = (a, b) => {
-    let aDate = $(a).attr('data-date');
-    let bDate = $(b).attr('data-date');
+    let aDate = new Date($(a).attr('data-date'));
+    let bDate = new Date($(b).attr('data-date'));
     return (aDate < bDate ? -1 : aDate > bDate ? 1 : 0);
 };
 
 const sortDateDesc = (a, b) => {
-    let aDate = $(a).attr('data-date');
-    let bDate = $(b).attr('data-date');
+    let aDate = new Date($(a).attr('data-date'));
+    let bDate = new Date($(b).attr('data-date'));
     return (aDate < bDate ? 1 : aDate > bDate ? -1 : 0);
 };
 
 const sortLikeAsc = (a, b) => {
-    let aLikes = $(a).attr('data-likes');
-    let bLikes = $(b).attr('data-likes');
+    let aLikes = Number($(a).attr('data-likes'));
+    let bLikes = Number($(b).attr('data-likes'));
     return (aLikes < bLikes ? -1 : aLikes > bLikes ? 1 : 0);
 }
 
 const sortLikeDesc = (a, b) => {
-    let aLikes = $(a).attr('data-likes');
-    let bLikes = $(b).attr('data-likes');
+    let aLikes = Number($(a).attr('data-likes'));
+    let bLikes = Number($(b).attr('data-likes'));
     return (aLikes < bLikes ? 1 : aLikes > bLikes ? -1 : 0);
 }
 
@@ -49,14 +49,14 @@ const sortNameDesc = (a, b) => {
 };
 
 const sortCountAsc = (a, b) => {
-    let aCount = $(a).attr('data-count');
-    let bCount = $(b).attr('data-count');
+    let aCount = Number($(a).attr('data-count'));
+    let bCount = Number($(b).attr('data-count'));
     return (aCount < bCount ? -1 : aCount > bCount ? 1 : 0);
 };
 
 const sortCountDesc = (a, b) => {
-    let aCount = $(a).attr('data-count');
-    let bCount = $(b).attr('data-count');
+    let aCount = Number($(a).attr('data-count'));
+    let bCount = Number($(b).attr('data-count'));
     return (aCount < bCount ? 1 : aCount > bCount ? -1 : 0);
 };
 
@@ -72,6 +72,6 @@ const sortsDic = {
 };
 
 $(() => {
-    items = $('[name=collection]');
+    collections = $('[name=collection]');
     $('#sortProp').change();
 });

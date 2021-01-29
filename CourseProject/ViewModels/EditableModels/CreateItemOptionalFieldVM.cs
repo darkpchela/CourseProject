@@ -10,7 +10,7 @@ namespace CourseProject.ViewModels.EditableModels
         public string Value { get; set; }
 
         [Required(ErrorMessage = "Field must have name")]
-        [RegularExpression(@"^[a-zA-Z0-9 \-]*$")]
+        [RegularExpression(@"^[\w\s]*$")]
         public string Name { get; set; }
 
         public string Type { get; set; }

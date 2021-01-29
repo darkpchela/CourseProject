@@ -7,7 +7,7 @@ namespace CourseProject.ViewModels.EditableModels
         public int ThemeId { get; set; }
 
         [Required]
-        [RegularExpression(@"^[a-zA-Z0-9 \-]*$")]
+        [RegularExpression(@"^[\w\s]*$")]
         public string Name { get; set; }
     }
 }
