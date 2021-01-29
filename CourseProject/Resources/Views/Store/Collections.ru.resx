@@ -129,6 +129,9 @@
   <data name="header" xml:space="preserve">
     <value>Коллекции</value>
   </data>
+  <data name="Items" xml:space="preserve">
+    <value>Предметов</value>
+  </data>
   <data name="Items_count" xml:space="preserve">
     <value>Количеству предметов</value>
   </data>
