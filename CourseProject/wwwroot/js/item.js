@@ -31,6 +31,7 @@ hubConnection.on("OnItemLiked", (result, id) => {
 
 hubConnection.on("OnCommentMade", (result, id) => {
     if (result.succeed) {
+        console.log(result)
         let comment = getCommentElem(result);
         $('#inputArea').before(comment);
     }
