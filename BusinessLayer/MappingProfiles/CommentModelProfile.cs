@@ -8,7 +8,8 @@ namespace BusinessLayer.MappingProfiles
     {
         public CommentModelProfile()
         {
-            CreateMap<CommentItemModel, CommentModel>();
+            CreateMap<CommentItemModel, CommentModel>()
+                .ForMember(d => d.Value, o => o.MapFrom(s => s.Value.Trim()));
         }
     }
 }

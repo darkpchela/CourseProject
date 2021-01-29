@@ -10,7 +10,8 @@ namespace BusinessLayer.MappingProfiles
         {
             CreateMap<CommentModel, CommentItemResult>()
                 .ForMember(d => d.UserName, o => o.MapFrom(s => s.User.Username))
-                .ForMember(d => d.Value, o => o.MapFrom(s => s.Value));
+                .ForMember(d => d.Value, o => o.MapFrom(s => s.Value))
+                .ForMember(d => d.Date, o => o.MapFrom(s => s.CreationDate.ToString("g")));
         }
     }
 }
