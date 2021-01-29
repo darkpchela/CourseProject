@@ -53,7 +53,7 @@
             </div>
         </div>
 
-        <div class="m-auto w-75" id="filterTab">
+        <div class="m-auto w-75" id="filterTab" data-fields=@Html.Raw(@Json.Serialize(Model.Fields))>
             <div class="d-flex flex-row p-1">
                 <div class="font-italic font-weight-bold w-25 text-truncate border-right-custom text-right pr-1">
                     <span name="fieldName">"Sort by"</span>
@@ -77,7 +77,7 @@
 
                 @foreach (var item in Model.Items)
                 {
-                    <div name="item" data-id="@item.Id" data-date="@item.CreatedAt" data-name="@item.Name" data-likes="@item.ItemLikes.Count" class=" m-1 text-center">
+                    <div name="item" data-id="@item.Id" data-fields=@Json.Serialize(item.Fields) data-date="@item.CreatedAt" data-name="@item.Name" data-likes="@item.ItemLikes.Count" class=" m-1 text-center">
                         <div class="p-2">
                             <a asp-action="Item" asp-controller="Store" asp-route-id="@item.Id" class="btn p-0">
                                 <img class="img-fluid img-thumbnail mx-square-20"
@@ -94,49 +94,51 @@
         </div>
     </div>
 </div>
+
 <div class="d-none">
     <div id="dateProto" class="d-flex flex-row p-1">
         <div class="font-italic font-weight-bold w-25 text-truncate border-right-custom text-right pr-1">
-            <span name="fieldName">"Datetime"</span>
+            "<span data-prop="name"></span>"
         </div>
         <div class="w-75 d-flex flex-row">
             <div class="ml-1 font-italic font-weight-bolder">
                 <label>From</label>
-                <input type="date" />
+                <input name="filterProp" data-fieldId="" data-op="more" type="date" />
             </div>
             <div class="ml-1 font-italic font-weight-bolder">
                 <label>To</label>
-                <input type="date" />
+                <input name="filterProp" data-fieldId="" data-op="less" type="date" />
             </div>
         </div>
     </div>
 
     <div id="numberProto" class=" d-flex flex-row p-1">
         <div class="font-italic font-weight-bold w-25 text-truncate border-right-custom text-right pr-1">
-            <span name="fieldName">"Number"</span>
+            "<span data-prop="name"></span>"
         </div>
         <div class="w-75 d-flex flex-row">
             <div class="ml-1 font-italic font-weight-bolder">
                 <label>From</label>
-                <input type="number" />
+                <input name="filterProp" data-fieldId="" data-op="more" type="number" />
             </div>
             <div class="ml-1 font-italic font-weight-bolder">
                 <label>To</label>
-                <input type="number" />
+                <input name="filterProp" data-fieldId="" data-op="less" type="number" />
             </div>
         </div>
     </div>
 
     <div id="boolenProto" class="d-flex flex-row p-1">
         <div class="font-italic font-weight-bold w-25 text-truncate border-right-custom text-right pr-1">
-            <span name="fieldName">"Boolen"</span>
+            "<span data-prop="name"></span>"
         </div>
         <div class="mt-auto pl-3">
-            <input type="checkbox">
+            <input name="filterProp" data-fieldId="" data-op="equal" type="checkbox">
         </div>
     </div>
 </div>
 
 @section Scripts{
     <script src="~/js/itemsSort.js"></script>
+<script src="~/js/filterItems.js"></script>
 }
