@@ -6,7 +6,6 @@ using BusinessLayer.Interfaces.Validation;
 using BusinessLayer.Models;
 using BusinessLayer.Models.DALModels;
 using BusinessLayer.Models.ResultModels;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -59,7 +58,6 @@ namespace BusinessLayer.Services
                 return new CreateCollectionResult(validResult);
             var result = new CreateCollectionResult();
             var collectionModel = mapper.Map<CollectionModel>(createCollectionModel);
-            collectionModel.CreationDate = DateTime.Now;
             await collectionsCrudService.CreateAsync(collectionModel);
             result.CollectionId = collectionModel.Id;
             return result;
