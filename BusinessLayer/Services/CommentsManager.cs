@@ -5,7 +5,6 @@ using BusinessLayer.Interfaces.Validation;
 using BusinessLayer.Models;
 using BusinessLayer.Models.DALModels;
 using BusinessLayer.Models.ResultModels;
-using System;
 using System.Threading.Tasks;
 
 namespace BusinessLayer.Services
@@ -20,7 +19,7 @@ namespace BusinessLayer.Services
 
         private readonly IMapper mapper;
 
-        public CommentsManager(IModelValidatorsStore validatorsStore, IItemCommentCrudService itemCommentCrudService, ICommentsCrudService commentsCrudService ,IMapper mapper)
+        public CommentsManager(IModelValidatorsStore validatorsStore, IItemCommentCrudService itemCommentCrudService, ICommentsCrudService commentsCrudService, IMapper mapper)
         {
             this.validatorsStore = validatorsStore;
             this.itemCommentCrudService = itemCommentCrudService;
@@ -34,7 +33,6 @@ namespace BusinessLayer.Services
             if (!validRes.Succeed)
                 return new CommentItemResult(validRes);
             var comment = mapper.Map<CommentModel>(commentItemModel);
-            comment.CreationDate = DateTime.Now;
             await commentsCrudService.CreateAsync(comment);
             var itemComment = new ItemCommentModel
             {

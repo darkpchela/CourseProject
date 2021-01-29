@@ -13,26 +13,26 @@ $('#sortProp, #sortPropParam').change(e => {
 
 
 const sortDateAsc = (a, b) => {
-    let aDate = $(a).attr('data-date');
-    let bDate = $(b).attr('data-date');
+    let aDate = new Date($(a).attr('data-date'));
+    let bDate = new Date($(b).attr('data-date'));
     return (aDate < bDate ? -1 : aDate > bDate ? 1 : 0);
 };
 
 const sortDateDesc = (a, b) => {
-    let aDate = $(a).attr('data-date');
-    let bDate = $(b).attr('data-date');
+    let aDate = new Date($(a).attr('data-date'));
+    let bDate = new Date($(b).attr('data-date'));
     return (aDate < bDate ? 1 : aDate > bDate ? -1 : 0);
 };
 
 const sortLikeAsc = (a, b) => {
-    let aLikes = $(a).attr('data-likes');
-    let bLikes = $(b).attr('data-likes');
+    let aLikes = Number($(a).attr('data-likes'));
+    let bLikes = Number($(b).attr('data-likes'));
     return (aLikes < bLikes ? -1 : aLikes > bLikes ? 1 : 0);
 }
 
 const sortLikeDesc = (a, b) => {
-    let aLikes = $(a).attr('data-likes');
-    let bLikes = $(b).attr('data-likes');
+    let aLikes = Number($(a).attr('data-likes'));
+    let bLikes = Number($(b).attr('data-likes'));
     return (aLikes < bLikes ? 1 : aLikes > bLikes ? -1 : 0);
 }
 
