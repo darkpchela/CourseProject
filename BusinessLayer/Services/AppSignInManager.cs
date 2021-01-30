@@ -76,7 +76,7 @@ namespace BusinessLayer.Services
             var appResult = new AppSignInResult();
             if (!result.Succeeded)
                 appResult.AddError("Invalid login/password");
-            return new AppSignInResult();
+            return appResult;
         }
 
 

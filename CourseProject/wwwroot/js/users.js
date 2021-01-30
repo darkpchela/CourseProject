@@ -24,7 +24,7 @@ const updateTable = () => {
 };
 
 const makeDisabled = () => {
-    $('button').prop('disabled', true);
+    $('button:not(.modal button)').prop('disabled', true);
     $('#main').fadeTo(300, 0.5);
     $('#spinner').show();
 };
@@ -78,13 +78,12 @@ $('#btnDelete').click(e => {
 });
 
 $('#btnConfirmDelUsers').click(async e => {
-    e.preventDefault();
     makeDisabled();
     await $.post('/admin/DeleteUsers/',
         {
             users: getSelectedIds()
         },
-        result => result.deleted.forEach(id => $(`tr[data-userId=${id}]`).remove())
+        result => result.deletedUsers.forEach(id => $(`tr[data-userId=${id}]`).remove())
     );
     makeEnabled();
 });
