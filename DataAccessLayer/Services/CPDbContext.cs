@@ -225,6 +225,8 @@ namespace DataAccessLayer.Services
 
             modelBuilder.Entity<Tag>(entity =>
             {
+                entity.HasIndex(e => e.Value, "NCI_Tags_Value");
+
                 entity.Property(e => e.Value)
                     .IsRequired()
                     .HasMaxLength(32);
