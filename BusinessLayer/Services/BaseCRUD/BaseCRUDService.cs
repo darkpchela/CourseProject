@@ -21,7 +21,7 @@ namespace BusinessLayer.Services.BaseCrud
             this.mapper = mapper;
         }
 
-        public async Task CreateAsync(TModel model)
+        public virtual async Task CreateAsync(TModel model)
         {
             if (model is null)
                 return;
@@ -31,7 +31,7 @@ namespace BusinessLayer.Services.BaseCrud
             mapper.Map(entity, model);
         }
 
-        public async Task CreateRangeAsync(IEnumerable<TModel> models)
+        public virtual async Task CreateRangeAsync(IEnumerable<TModel> models)
         {
             if (models is null)
                 return;
@@ -44,13 +44,13 @@ namespace BusinessLayer.Services.BaseCrud
             mapper.Map(entities, models);
         }
 
-        public async Task DeleteAsync(int id)
+        public virtual async Task DeleteAsync(int id)
         {
             await BaseRepository.Delete(id);
             await cPUnitOfWork.SaveChangesAsync();
         }
 
-        public async Task DeleteRangeAsync(IEnumerable<int> ids)
+        public virtual async Task DeleteRangeAsync(IEnumerable<int> ids)
         {
             foreach (var id in ids)
             {
@@ -59,21 +59,21 @@ namespace BusinessLayer.Services.BaseCrud
             await cPUnitOfWork.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<TModel>> GetAllAsync()
+        public virtual async Task<IEnumerable<TModel>> GetAllAsync()
         {
             var entities = await BaseRepository.GetAll().ToListAsync();
             var models = mapper.Map<IEnumerable<TModel>>(entities);
             return models;
         }
 
-        public async Task<TModel> GetAsync(int id)
+        public virtual async Task<TModel> GetAsync(int id)
         {
             var entity = await BaseRepository.Get(id);
             var model = mapper.Map<TModel>(entity);
             return model;
         }
 
-        public async Task UpdateAsync(TModel model)
+        public virtual async Task UpdateAsync(TModel model)
         {
             var entity = mapper.Map<TEntity>(model);
             BaseRepository.Update(entity);
