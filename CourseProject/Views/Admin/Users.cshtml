@@ -1,22 +1,22 @@
 ﻿@model IEnumerable<AppUserVM>
 @inject IViewLocalizer localizer
 
-<div class="mt-2">
+<div id="main" class="mt-2">
     <div class="btn-toolbar col-6 offset-3 mt-0 justify-content-center">
         <div class="btn-group border-custom border-bottom-0">
-            <button class="btn btn-light" id="btnUnblock" type="submit">
+            <button class="btn btn-light" id="btnUnblock">
                 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-unlock-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                     <path d="M.5 9a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2V9z" />
                     <path fill-rule="evenodd" d="M8.5 4a3.5 3.5 0 1 1 7 0v3h-1V4a2.5 2.5 0 0 0-5 0v3h-1V4z" />
                 </svg>
             </button>
-            <button class="btn btn-light" id="btnBlock" type="submit">
+            <button class="btn btn-light" id="btnBlock">
                 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-lock-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                     <path d="M2.5 9a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2V9z" />
                     <path fill-rule="evenodd" d="M4.5 4a3.5 3.5 0 1 1 7 0v3h-1V4a2.5 2.5 0 0 0-5 0v3h-1V4z" />
                 </svg>
             </button>
-            <button class="btn btn-light" id="btnDelete" type="submit">
+            <button class="btn btn-light" id="btnDelete" data-toggle="modal" data-target="#delUsersModal">
                 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-x-square-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z" />
                 </svg>
@@ -43,12 +43,10 @@
             <tbody id="table">
                 @foreach (var user in Model)
                 {
-                    <tr data-userId="@user.Id">
+                    <tr data-userId="@user.Id" data-isAdmin="@user.IsAdmin.ToString().ToLower()" data-isBlocked="@user.IsBlocked.ToString().ToLower()">
                         <td>
                             <div class="text-center">
-                                <input type="checkbox" data-userId="@user.Id" />
-                                <input type="hidden" name="isBlocked" value="@user.IsBlocked.ToString().ToLower()" />
-                                <input type="hidden" name="isAdmin" value="@user.IsAdmin.ToString().ToLower()" />
+                                <input type="checkbox" data-userId="@user.Id" data-username="@user.Username" />
                             </div>
                         </td>
                         <td>@user.Id</td>
@@ -69,99 +67,35 @@
     </div>
 </div>
 
+<div id="delUsersModal" class="modal fade">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content text-center border-custom rounded">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" data-target="#delItemModal" aria-label="Close">&times;</button>
+            </div>
+            <h4 class="modal-title">@localizer["ConfirmDel"]</h4>
+            <div class="modal-body">
+                @localizer["DelCollectionMessage"] "<span id="users"></span>"?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" data-target="#delItemModal" id="btnConfirmDelUsers">@localizer["Yes"]</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" data-target="#delItemModal">@localizer["No"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="spinner" class="position-fixed bg-transparent" style="display:none; top:50%; left:50%;">
+    <div class="text-center bg-transparent m-auto">
+        <div class="spinner-border bg-transparent ">
+            <span class="sr-only">Deleting</span>
+        </div>
+        <div class="text-center bg-transparent">
+            @localizer["Deleting"]...
+        </div>
+    </div>
+</div>
+
 @section Scripts{
-    <script>
-        const getSelected = () => $('#table input:checked').map((i, e) => $(e).attr('data-userId')).get();
-        const updateTable = () => {
-            $('tr').each((i, e) => {
-                let isBlocked = $(e).find('input[name=isBlocked]').val();
-                let isAdmin = $(e).find('input[name=isAdmin]').val();
-                if (isBlocked == 'true') {
-                    $(e).find('td[name=status]').text("Blocked");
-                }
-                else {
-                    $(e).find('td[name=status]').text("Unblocked");
-                }
-                if (isAdmin == 'true') {
-                    $(e).find('td[name=role]').text("Admin");
-                    $(e).find('[name=btnAddRules]').hide()
-                    $(e).find('[name=btnDelRules]').show()
-                }
-                else {
-                    $(e).find('td[name=role]').text("User");
-                    $(e).find('[name=btnAddRules]').show()
-                    $(e).find('[name=btnDelRules]').hide()
-                }
-            });
-        };
-
-        $('#checkBoxMain').click(function () {
-            $('#table input:checkbox').prop('checked', $(this).is(':checked') ? true : false);
-        });
-        $('#table input:checkbox').click(function () {
-            $('#checkBoxMain').prop('checked', false);
-        });
-        $('#btnBlock').click(async e => {
-            e.preventDefault();
-            await $.post('/admin/Block/', { users: getSelected() }, result => {
-                for (let i = 0; i < result.blocked.length; i++) {
-                    $(`tr[data-userId=${result.blocked[i]}]`).find('[name=isBlocked]').val('true');
-                }
-            });
-            updateTable();
-        });
-        $('#btnUnblock').click(async e => {
-            e.preventDefault();
-            await $.post('/admin/Unblock/',
-                {
-                    users: getSelected()
-                },
-                result => {
-                    for (let i = 0; i < result.unblocked.length; i++) {
-                        $(`tr[data-userId=${result.unblocked[i]}]`).find('[name=isBlocked]').val('false');
-                    }
-                });
-            updateTable();
-        });
-        $('#btnDelete').click(async e => {
-            e.preventDefault();
-            await $.post('/admin/DeleteUsers/',
-                {
-                    users: getSelected()
-                },
-                result => {
-                    for (let i = 0; i < result.deleted.length; i++) {
-                        $(`tr[data-userId=${result.deleted[i]}]`).remove();
-                    }
-                });
-        });
-        $('[name=btnAddRules]').click(async e => {
-            e.preventDefault();
-            let id = $(e.delegateTarget).attr('data-userId');
-            await $.post('/admin/AddAdminRules/',
-                {
-                    userId: id,
-                },
-                result => {
-                    $(`tr[data-userId=${result.userId}]`).find('[name=isAdmin]').val('true');
-                });
-            updateTable();
-        });
-        $('[name=btnDelRules]').click(async e => {
-            e.preventDefault();
-            let id = $(e.delegateTarget).attr('data-userId');
-            await $.post('/admin/DropAdminRules/',
-                {
-                    userId: id
-                },
-                result => {
-                    $(`tr[data-userId=${result.userId}]`).find('[name=isAdmin]').val('false');
-                });
-            updateTable();
-        });
-
-        $(() => {
-            updateTable();
-        });
-    </script>
+    <script src="~/js/users.js"></script>
 } 
