@@ -126,4 +126,7 @@
   <data name="Owner" xml:space="preserve">
     <value>Owner</value>
   </data>
+  <data name="Sort_by" xml:space="preserve">
+    <value>Sort by</value>
+  </data>
 </root>
