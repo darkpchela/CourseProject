@@ -31,16 +31,16 @@ namespace BusinessLayer.Extensions
         {
             services.AddBaseCrudServices();
             services.AddCloudinaryService(configuration);
-            services.AddTransient<ICollectionsManager, CollectionsManager>();
-            services.AddTransient<IItemsManager, ItemsManager>();
-            services.AddTransient<IResourcesManager, ResourcesManager>();
-            services.AddTransient<IOptionalFieldsManager, OptionalFieldsManager>();
-            services.AddTransient<ITagsManager, TagsManager>();
-            services.AddTransient<ILikesManager, LikesManager>();
-            services.AddTransient<ICommentsManager, CommentsManager>();
-            services.AddTransient<IAppUsersManager, AppUsersManager>();
-            services.AddTransient<IAppSignInManager, AppSignInManager>();
-            services.AddTransient<IThemesManager, ThemesManager>();
+            services.AddScoped<ICollectionsManager, CollectionsManager>();
+            services.AddScoped<IItemsManager, ItemsManager>();
+            services.AddScoped<IResourcesManager, ResourcesManager>();
+            services.AddScoped<IOptionalFieldsManager, OptionalFieldsManager>();
+            services.AddScoped<ITagsManager, TagsManager>();
+            services.AddScoped<ILikesManager, LikesManager>();
+            services.AddScoped<ICommentsManager, CommentsManager>();
+            services.AddScoped<IAppUsersManager, AppUsersManager>();
+            services.AddScoped<IAppSignInManager, AppSignInManager>();
+            services.AddScoped<IThemesManager, ThemesManager>();
             services.AddAuthenticators();
             services.AddValidators();
             return services;
@@ -48,20 +48,20 @@ namespace BusinessLayer.Extensions
 
         private static IServiceCollection AddBaseCrudServices(this IServiceCollection services)
         {
-            services.AddTransient<ICollectionItemCrudService, CollectionItemCrudService>();
-            services.AddTransient<ICollectionsCrudService, CollectionsCrudService>();
-            services.AddTransient<ICommentsCrudService, CommentsCrudService>();
-            services.AddTransient<IItemCommentCrudService, ItemCommentCrudService>();
-            services.AddTransient<IItemLikeCrudService, ItemLikeCrudService>();
-            services.AddTransient<IItemOptionalFieldCrudService, ItemOptionalFieldCrudService>();
-            services.AddTransient<IItemsCrudService, ItemsCrudService>();
-            services.AddTransient<IItemTagCrudService, ItemTagCrudService>();
-            services.AddTransient<IOptionalFieldsCrudService, OptionalFieldsCrudService>();
-            services.AddTransient<ITagsCrudService, TagsCrudService>();
-            services.AddTransient<IThemesCrudService, ThemesCrudService>();
-            services.AddTransient<IUserCrudService, UsersCrudService>();
-            services.AddTransient<IFieldTypesCrudService, FieldTypesCrudService>();
-            services.AddTransient<IResourceCrudService, ResourceCrudService>();
+            services.AddScoped<ICollectionItemCrudService, CollectionItemCrudService>();
+            services.AddScoped<ICollectionsCrudService, CollectionsCrudService>();
+            services.AddScoped<ICommentsCrudService, CommentsCrudService>();
+            services.AddScoped<IItemCommentCrudService, ItemCommentCrudService>();
+            services.AddScoped<IItemLikeCrudService, ItemLikeCrudService>();
+            services.AddScoped<IItemOptionalFieldCrudService, ItemOptionalFieldCrudService>();
+            services.AddScoped<IItemsCrudService, ItemsCrudService>();
+            services.AddScoped<IItemTagCrudService, ItemTagCrudService>();
+            services.AddScoped<IOptionalFieldsCrudService, OptionalFieldsCrudService>();
+            services.AddScoped<ITagsCrudService, TagsCrudService>();
+            services.AddScoped<IThemesCrudService, ThemesCrudService>();
+            services.AddScoped<IUserCrudService, UsersCrudService>();
+            services.AddScoped<IFieldTypesCrudService, FieldTypesCrudService>();
+            services.AddScoped<IResourceCrudService, ResourceCrudService>();
             return services;
         }
 
@@ -74,7 +74,7 @@ namespace BusinessLayer.Extensions
 
         private static IServiceCollection AddAuthenticators(this IServiceCollection services)
         {
-            services.AddTransient<ISessionHelper, SessionHelper>();
+            services.AddSingleton<ISessionHelper, SessionHelper>();
             services.AddTransient<ICreateCollectionModelAuthenticator, CreateCollectionModelAuthenticator>();
             services.AddTransient<ICreateItemModelAuthenticator, CreateItemModelAuthenticator>();
             services.AddTransient<ICreateOptionalFieldModelAuthenticator, CreateOptionalFieldModelAuthenticator>();
