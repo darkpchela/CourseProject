@@ -41,7 +41,7 @@ namespace BusinessLayer.Services.Validation
         {
             var collection = (await collectionsCrudService.GetAllAsync()).FirstOrDefault(c => c.Name == model.Name);
             if (collection != null)
-                ValidationResult.AddError("Name already taken");
+                ValidationResult.AddError("Collection with such name already exists");
         }
     }
 }
