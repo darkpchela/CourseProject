@@ -47,30 +47,32 @@
             </div>
             <div class="flex-grow-1 p-1 text-center">
                 <h5 class="text-center">@localizer["Description"]</h5>
-                <div class="w-100" style="min-width: 300px;">
-                    @Model.Description
+                <div class="w-100" data-mkd-value="@Model.Description" style="min-width: 300px;">
                 </div>
             </div>
         </div>
 
-        <div class="m-auto w-75" id="filterTab" data-fields='@Json.Serialize(Model.Fields)'>
-            <div class="d-flex flex-row p-1">
-                <div class="font-italic font-weight-bold w-25 text-truncate border-right-custom text-right pr-1">
-                    <span name="fieldName">@localizer["Sort_by"]</span>
-                </div>
-                <div class="w-75 d-flex flex-row justify-content-start pl-4">
-                    <select id="sortProp" data-prop="date">
-                        <option selected="selected" value="date">@localizer["Date"]</option>
-                        <option value="like">@localizer["Popularity"]</option>
-                        <option value="name">@localizer["Name"]</option>
-                    </select>
-                    <select id="sortPropParam">
-                        <option value="Asc">@localizer["Ascending"]</option>
-                        <option selected="selected" value="Desc">@localizer["Descending"]</option>
-                    </select>
+        @if (Model.Items.Count > 0)
+        {
+            <div class="m-auto w-75" id="filterTab" data-fields='@Json.Serialize(Model.Fields)'>
+                <div class="d-flex flex-row p-1">
+                    <div class="font-italic font-weight-bold w-25 text-truncate border-right-custom text-right pr-1">
+                        <span name="fieldName">@localizer["Sort_by"]</span>
+                    </div>
+                    <div class="w-75 d-flex flex-row justify-content-start pl-4">
+                        <select id="sortProp" data-prop="date">
+                            <option selected="selected" value="date">@localizer["Date"]</option>
+                            <option value="like">@localizer["Popularity"]</option>
+                            <option value="name">@localizer["Name"]</option>
+                        </select>
+                        <select id="sortPropParam">
+                            <option value="Asc">@localizer["Ascending"]</option>
+                            <option selected="selected" value="Desc">@localizer["Descending"]</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-        </div>
+        }
         <div>
 
             <div id="items" class="d-flex flex-row flex-md-row flex-wrap align-items-baseline justify-content-center border-top-custom">
@@ -140,5 +142,6 @@
 
 @section Scripts{
     <script src="~/js/itemsSort.js"></script>
-<script src="~/js/filterItems.js"></script>
+    <script src="~/js/filterItems.js"></script>
+    <script src="~/js/collection.js"></script>
 }

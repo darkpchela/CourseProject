@@ -72,4 +72,5 @@ $(() => {
     let theme = $.cookie('theme') ?? 'dark';
     $('html').attr('theme', theme);
     makeSearhTags();
+    $('[data-mkd-value]').each((i, e) => parseMarkDownTo($(e).attr('data-mkd-value'), $(e)))
 });
