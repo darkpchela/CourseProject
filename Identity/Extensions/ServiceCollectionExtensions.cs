@@ -37,7 +37,7 @@ namespace Identity.Extensions
 
         public static IServiceCollection AddIdentityDependencies(this IServiceCollection services)
         {
-            services.AddTransient<IIdentityUnitOfWork, IdentityUnitOfWork>();
+            services.AddScoped<IIdentityUnitOfWork, IdentityUnitOfWork>();
             return services;
         }
 
