@@ -79,7 +79,7 @@
 
                 @foreach (var item in Model.Items)
                 {
-                    <div name="item" data-id="@item.Id" data-fields='@Json.Serialize(item.Fields)' data-date="@item.CreatedAt" data-name="@item.Name" data-likes="@item.ItemLikes.Count" class=" m-1 text-center">
+                    <div name="item" data-id="@item.Id" data-fields='@Json.Serialize(item.Fields)' data-date="@item.CreatedAt.ToFileTimeUtc()" data-name="@item.Name" data-likes="@item.ItemLikes.Count" class=" m-1 text-center">
                         <div class="p-2">
                             <a asp-action="Item" asp-controller="Store" asp-route-id="@item.Id" class="btn p-0">
                                 <img class="img-fluid img-thumbnail mx-square-20"
