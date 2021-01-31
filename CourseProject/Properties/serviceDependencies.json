@@ -1,5 +1,9 @@
 {
   "dependencies": {
+    "secrets1": {
+      "type": "secrets",
+      "connectionId": "CPVault"
+    },
     "mssql1": {
       "type": "mssql",
       "connectionId": "ApplicationDb"
@@ -7,10 +11,6 @@
     "mssql2": {
       "type": "mssql",
       "connectionId": "Identity"
-    },
-    "secrets1": {
-      "type": "secrets",
-      "connectionId": "CPVault"
     }
   }
 }

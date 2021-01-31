@@ -1,21 +1,21 @@
 {
   "dependencies": {
-    "mssql1": {
-      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/labserver2021/databases/CPDb",
-      "type": "mssql.azure",
-      "connectionId": "ApplicationDb",
-      "secretStore": "AzureAppSettings"
-    },
-    "mssql2": {
-      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/labserver2021/databases/CPIdentity",
-      "type": "mssql.azure",
-      "connectionId": "Identity",
-      "secretStore": "AzureAppSettings"
-    },
     "secrets1": {
       "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.KeyVault/vaults/CourseProjectvault",
       "type": "secrets.keyVault",
       "connectionId": "CPVault",
+      "secretStore": "AzureAppSettings"
+    },
+    "mssql1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/labserver20212/databases/CPDb",
+      "type": "mssql.azure",
+      "connectionId": "ApplicationDb",
+      "secretStore": "AzureKeyVault"
+    },
+    "mssql2": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/labserver20212/databases/CPIdentity",
+      "type": "mssql.azure",
+      "connectionId": "Identity",
       "secretStore": "AzureAppSettings"
     }
   }
