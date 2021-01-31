@@ -95,7 +95,6 @@ $('#changeImage').click(e => {
     $('#dzContainer').show();
     $.post('/api/abortUpload');
 });
-
 $(() => {
     let cashedFields = JSON.parse($('#cashedFields').text());
     for (let i = 0; i < cashedFields.length; i++) {
@@ -103,4 +102,8 @@ $(() => {
         $('#fields #addFieldArea').before(field);
     }
     updateFieldNames();
+    let mkEditor = $('[data-mkd=editor]');
+    let mkView = $('[data-mkd=view]');
+    makeMarkDown(mkEditor, mkView);
+    parseMarkDownTo(mkEditor.val(), mkView);
 });

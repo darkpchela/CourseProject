@@ -15,6 +15,30 @@ const makeSearhTags = () => {
     });
 };
 
+const makeMarkDown = (jqEditor, jqView) => {
+    jqEditor.markdownEditor();
+    console.log(jqView.html());
+    jqView.click(e => switchViewEditor(jqEditor, jqView));
+    jqEditor.blur(e => switchViewEditor(jqEditor, jqView));
+    jqEditor.change(e => parseMarkDownTo(marked(jqEditor.val()), jqView))
+};
+
+const switchViewEditor = (jqEditor, jqView) => {
+    if (jqEditor.is(':hidden')) {
+        jqView.attr('hidden', 'hidden');
+        jqEditor.removeAttr('hidden');
+        jqEditor.focus();
+    }
+    else if (jqEditor.val() && jqEditor.val().trim() != '') {
+        jqEditor.attr('hidden', 'hidden');
+        jqView.removeAttr('hidden');
+    }
+};
+
+const parseMarkDownTo = (mkdStr, jqView) => {
+    jqView.html(marked(mkdStr));
+};
+
 $('#searcher').change(async e => {
     console.log($(e.target).val());
     $('#searchSpinner').showV();
@@ -34,9 +58,6 @@ $('#searcher').change(async e => {
     $('input, button').prop('disabled', false);
     $('main').fadeTo(300, 1.0);
 });
-$(() => {
-    makeSearhTags();
-});
 
 $('#btnColorTheme').click(e => {
     e.preventDefault();
@@ -46,7 +67,9 @@ $('#btnColorTheme').click(e => {
     $.cookie('theme', $('html').attr('theme'), { expires: 186, path: '/' });
 });
 
+
 $(() => {
     let theme = $.cookie('theme') ?? 'dark';
     $('html').attr('theme', theme);
+    makeSearhTags();
 });
