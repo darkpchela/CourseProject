@@ -59,7 +59,7 @@
                     <div class="font-italic font-weight-bold w-25 text-truncate border-right-custom text-right pr-1">
                         <span name="fieldName">@localizer["Sort_by"]</span>
                     </div>
-                    <div class="w-75 d-flex flex-row justify-content-start pl-4">
+                    <div class="w-75 d-flex flex-row justify-content-start pl-1">
                         <select id="sortProp" data-prop="date">
                             <option selected="selected" value="date">@localizer["Date"]</option>
                             <option value="like">@localizer["Popularity"]</option>
@@ -156,11 +156,11 @@
             "<span data-prop="name"></span>"
         </div>
         <div class="w-75 d-flex flex-row">
-            <div class="ml-1 font-italic font-weight-bolder">
+            <div class="ml-1 font-italic font-weight-bolder w-50">
                 <label>@localizer["From"]</label>
                 <input name="filterProp" data-fieldId="" data-op="dateMore" type="date" />
             </div>
-            <div class="ml-1 font-italic font-weight-bolder">
+            <div class="ml-1 font-italic font-weight-bolder w-50">
                 <label>@localizer["To"]</label>
                 <input name="filterProp" data-fieldId="" data-op="dateLess" type="date" />
             </div>
@@ -172,11 +172,11 @@
             "<span data-prop="name"></span>"
         </div>
         <div class="w-75 d-flex flex-row">
-            <div class="ml-1 font-italic font-weight-bolder">
+            <div class="ml-1 font-italic font-weight-bolder w-50">
                 <label>@localizer["From"]</label>
                 <input name="filterProp" data-fieldId="" data-op="numMore" type="number" />
             </div>
-            <div class="ml-1 font-italic font-weight-bolder">
+            <div class="ml-1 font-italic font-weight-bolder w-50">
                 <label>@localizer["To"]</label>
                 <input name="filterProp" data-fieldId="" data-op="numLess" type="number" />
             </div>
@@ -187,8 +187,12 @@
         <div class="font-italic font-weight-bold w-25 text-truncate border-right-custom text-right pr-1">
             "<span data-prop="name"></span>"
         </div>
-        <div class="mt-auto pl-3">
-            <input name="filterProp" data-fieldId="" data-op="equal" type="checkbox">
+        <div class="mt-auto pl-1">
+            <select name="filterProp" data-fieldId="" data-op="equal">
+                <option selected="selected" value="">@localizer["No_matter"]</option>
+                <option value="true">@localizer["Yes"]</option>
+                <option value="false">@localizer["No"]</option>
+            </select>
         </div>
     </div>
 </div>

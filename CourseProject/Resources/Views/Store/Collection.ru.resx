@@ -150,6 +150,9 @@
   <data name="No" xml:space="preserve">
     <value>Нет</value>
   </data>
+  <data name="No_matter" xml:space="preserve">
+    <value>Не имеет значения</value>
+  </data>
   <data name="Owner" xml:space="preserve">
     <value>Владелец</value>
   </data>
