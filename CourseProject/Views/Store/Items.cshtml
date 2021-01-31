@@ -22,7 +22,7 @@
         <div id="items" class="d-flex flex-row flex-wrap align-items-baseline justify-content-center">
             @foreach (var item in (await itemsService.GetAllAsync()).OrderByDescending(i => i.CreationDate))
             {
-                <div name="item" data-date="@item.CreationDate.ToShortDateString()" data-likes="@item.ItemLikes.Count()" data-name="@item.Name" class=" m-1 text-center">
+                <div name="item" data-date="@item.CreationDate.ToFileTimeUtc()" data-likes="@item.ItemLikes.Count()" data-name="@item.Name" class=" m-1 text-center">
                     <div class="btn p-0">
                         <a asp-action="Item" asp-controller="Store" asp-route-id="@item.Id">
                             <img class="img-fluid img-thumbnail mx-square-20"

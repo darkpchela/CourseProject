@@ -23,7 +23,7 @@
         <div id="collections" class="d-flex flex-row flex-wrap align-items-baseline justify-content-center">
             @foreach (var collection in (await collectionsService.GetAllAsync()).OrderByDescending(c => c.CreationDate))
             {
-                <div name="collection" class="m-2 text-center" data-name="@collection.Name" data-date="@collection.CreationDate" 
+                <div name="collection" class="m-2 text-center" data-name="@collection.Name" data-date="@collection.CreationDate.ToFileTimeUtc()" 
                      data-likes="@collection.CollectionItems.Select(ci => ci.Item.ItemLikes.Count()).Sum()" data-count="@collection.CollectionItems.Count()">
                     <div class="btn p-0">
                         <a asp-action="Collection" asp-controller="Store" asp-route-id="@collection.Id" class="btn p-0 ">
