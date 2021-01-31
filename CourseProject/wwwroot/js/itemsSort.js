@@ -5,22 +5,20 @@ $('#sortProp, #sortPropParam').change(e => {
     let sortType = $('#sortProp').val();
     let param = $('#sortPropParam').val();
     let sort = sortType + param;
+    console.log(sort)
     items.sort(sortsDic[sort]);
     $('#items').empty().append(items);
 });
 
-
-
-
 const sortDateAsc = (a, b) => {
-    let aDate = new Date($(a).attr('data-date'));
-    let bDate = new Date($(b).attr('data-date'));
+    let aDate = new Date($(a).attr('data-date') / 1000);
+    let bDate = new Date($(b).attr('data-date') / 1000);
     return (aDate < bDate ? -1 : aDate > bDate ? 1 : 0);
 };
 
 const sortDateDesc = (a, b) => {
-    let aDate = new Date($(a).attr('data-date'));
-    let bDate = new Date($(b).attr('data-date'));
+    let aDate = new Date($(a).attr('data-date') / 1000);
+    let bDate = new Date($(b).attr('data-date') / 1000);
     return (aDate < bDate ? 1 : aDate > bDate ? -1 : 0);
 };
 
