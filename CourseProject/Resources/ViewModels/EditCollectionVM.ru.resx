@@ -117,37 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ConfirmDel" xml:space="preserve">
-    <value>Подтвердите удаление</value>
+  <data name="Collection description required" xml:space="preserve">
+    <value>Необходимо описание коллекции</value>
   </data>
-  <data name="Deleting" xml:space="preserve">
-    <value>Удаляем</value>
+  <data name="Collection name is required" xml:space="preserve">
+    <value>Необходимо имя коллекции</value>
   </data>
-  <data name="DelUsersMessage" xml:space="preserve">
-    <value>Вы действительно хотите удалить пользователей</value>
+  <data name="Image required" xml:space="preserve">
+    <value>Необходимо изображение</value>
   </data>
-  <data name="Drop_admin" xml:space="preserve">
-    <value>Убрать права админа</value>
+  <data name="Min description length is 3. Maximum is 1024" xml:space="preserve">
+    <value>Минимальная длина описания 3. Максимальная 1024</value>
   </data>
-  <data name="First_name" xml:space="preserve">
-    <value>Имя</value>
+  <data name="Min name legth is 3. Maximum is 64" xml:space="preserve">
+    <value>Минимальная длина имени 3. Максимальная 64</value>
   </data>
-  <data name="Last_name" xml:space="preserve">
-    <value>Фамилия</value>
+  <data name="Special symbols are forbidden" xml:space="preserve">
+    <value>Спецсимволы запрещены</value>
   </data>
-  <data name="Make_admin" xml:space="preserve">
-    <value>Добавить права админа</value>
-  </data>
-  <data name="No" xml:space="preserve">
-    <value>Нет</value>
-  </data>
-  <data name="Role" xml:space="preserve">
-    <value>Роль</value>
-  </data>
-  <data name="Status" xml:space="preserve">
-    <value>Статус</value>
-  </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Да</value>
+  <data name="Theme must me chosen" xml:space="preserve">
+    <value>Необходимо выбрать тему</value>
   </data>
 </root>

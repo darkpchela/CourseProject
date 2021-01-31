@@ -37,7 +37,8 @@ namespace CourseProject
             services.AddHttpContextAccessor();
             services.AddLocalization(options => options.ResourcesPath = "Resources");
             services.AddControllersWithViews()
-                .AddViewLocalization();
+                .AddViewLocalization()
+                .AddDataAnnotationsLocalization();
             services.AddSignalR();
         }
 

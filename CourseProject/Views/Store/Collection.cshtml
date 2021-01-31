@@ -47,30 +47,32 @@
             </div>
             <div class="flex-grow-1 p-1 text-center">
                 <h5 class="text-center">@localizer["Description"]</h5>
-                <div class="w-100" style="min-width: 300px;">
-                    @Model.Description
+                <div class="w-100" data-mkd-value="@Model.Description" style="min-width: 300px;">
                 </div>
             </div>
         </div>
 
-        <div class="m-auto w-75" id="filterTab" data-fields='@Json.Serialize(Model.Fields)'>
-            <div class="d-flex flex-row p-1">
-                <div class="font-italic font-weight-bold w-25 text-truncate border-right-custom text-right pr-1">
-                    <span name="fieldName">"Sort by"</span>
-                </div>
-                <div class="w-75 d-flex flex-row justify-content-start pl-4">
-                    <select id="sortProp" data-prop="date">
-                        <option selected="selected" value="date">Date</option>
-                        <option value="like">Popularity</option>
-                        <option value="name">Name</option>
-                    </select>
-                    <select id="sortPropParam">
-                        <option value="Asc">Ascending</option>
-                        <option selected="selected" value="Desc">Descend</option>
-                    </select>
+        @if (Model.Items.Count > 0)
+        {
+            <div class="m-auto w-75" id="filterTab" data-fields='@Json.Serialize(Model.Fields)'>
+                <div class="d-flex flex-row p-1">
+                    <div class="font-italic font-weight-bold w-25 text-truncate border-right-custom text-right pr-1">
+                        <span name="fieldName">@localizer["Sort_by"]</span>
+                    </div>
+                    <div class="w-75 d-flex flex-row justify-content-start pl-1">
+                        <select id="sortProp" data-prop="date">
+                            <option selected="selected" value="date">@localizer["Date"]</option>
+                            <option value="like">@localizer["Popularity"]</option>
+                            <option value="name">@localizer["Name"]</option>
+                        </select>
+                        <select id="sortPropParam">
+                            <option value="Asc">@localizer["Ascending"]</option>
+                            <option selected="selected" value="Desc">@localizer["Descending"]</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-        </div>
+        }
         <div>
 
             <div id="items" class="d-flex flex-row flex-md-row flex-wrap align-items-baseline justify-content-center border-top-custom">
@@ -88,9 +90,62 @@
                         <div>
                             <h5>@item.Name</h5>
                         </div>
+                        @if (User.IsInRole("admin") || Model.Owner.Id == sessionHelper.GetCurrentUserId())
+                        {
+                            <div name="editTools" class="position-relative">
+                                <button name='btnDeleteItem' data-id="@item.Id" class="btn btn-hidden p-0 position-absolute medium-icon"
+                                        data-toggle="modal" data-target="#delItemModal" style="bottom: 0px; left: 0px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         class="h-100" viewBox="0 0 16 16" fill="currentColor">
+                                        <path fill-rule="evenodd"
+                                              d="M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+                                        <path fill-rule="evenodd"
+                                              d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                                    </svg>
+                                </button>
+                                <a asp-action="EditItem" asp-controller="Profile" asp-route-id="@item.Id"
+                                   class="btn btn-hidden p-0 position-absolute medium-icon" style="bottom: 1px; right: 1px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         fill="currentColor" class="h-100" viewBox="0 0 16 16">
+                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                                        <path fill-rule="evenodd"
+                                              d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+                                    </svg>
+                                </a>
+                            </div>
+                        }
                     </div>
                 }
             </div>
+        </div>
+    </div>
+</div>
+
+<div id="delItemModal" class="modal fade">
+    <div class="modal-dialog modal-dialog-centered text-danger" role="document">
+        <div class="modal-content text-center border-custom rounded">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" data-target="#delItemModal" aria-label="Close">&times;</button>
+            </div>
+            <h4 class="modal-title">@localizer["ConfirmDel"]</h4>
+            <div class="modal-body text-danger">
+                @localizer["DelItemMessage"] "<span class="font-weight-bold" id="itemName"></span>"?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-dismiss="modal" data-target="#delItemModal" id="confirmDelItem">@localizer["Yes"]</button>
+                <button type="button" class="btn" data-dismiss="modal" data-target="#delItemModal">@localizer["No"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="spinner" class="position-fixed bg-transparent" style="display:none; top:50%; left:50%;">
+    <div class="text-center bg-transparent m-auto">
+        <div class="spinner-border bg-transparent ">
+            <span class="sr-only">Deleting</span>
+        </div>
+        <div class="text-center bg-transparent">
+            @localizer["Deleting"]...
         </div>
     </div>
 </div>
@@ -101,12 +156,12 @@
             "<span data-prop="name"></span>"
         </div>
         <div class="w-75 d-flex flex-row">
-            <div class="ml-1 font-italic font-weight-bolder">
-                <label>From</label>
+            <div class="ml-1 font-italic font-weight-bolder w-50">
+                <label>@localizer["From"]</label>
                 <input name="filterProp" data-fieldId="" data-op="dateMore" type="date" />
             </div>
-            <div class="ml-1 font-italic font-weight-bolder">
-                <label>To</label>
+            <div class="ml-1 font-italic font-weight-bolder w-50">
+                <label>@localizer["To"]</label>
                 <input name="filterProp" data-fieldId="" data-op="dateLess" type="date" />
             </div>
         </div>
@@ -117,12 +172,12 @@
             "<span data-prop="name"></span>"
         </div>
         <div class="w-75 d-flex flex-row">
-            <div class="ml-1 font-italic font-weight-bolder">
-                <label>From</label>
+            <div class="ml-1 font-italic font-weight-bolder w-50">
+                <label>@localizer["From"]</label>
                 <input name="filterProp" data-fieldId="" data-op="numMore" type="number" />
             </div>
-            <div class="ml-1 font-italic font-weight-bolder">
-                <label>To</label>
+            <div class="ml-1 font-italic font-weight-bolder w-50">
+                <label>@localizer["To"]</label>
                 <input name="filterProp" data-fieldId="" data-op="numLess" type="number" />
             </div>
         </div>
@@ -132,13 +187,18 @@
         <div class="font-italic font-weight-bold w-25 text-truncate border-right-custom text-right pr-1">
             "<span data-prop="name"></span>"
         </div>
-        <div class="mt-auto pl-3">
-            <input name="filterProp" data-fieldId="" data-op="equal" type="checkbox">
+        <div class="mt-auto pl-1">
+            <select name="filterProp" data-fieldId="" data-op="equal">
+                <option selected="selected" value="">@localizer["No_matter"]</option>
+                <option value="true">@localizer["Yes"]</option>
+                <option value="false">@localizer["No"]</option>
+            </select>
         </div>
     </div>
 </div>
 
 @section Scripts{
     <script src="~/js/itemsSort.js"></script>
-<script src="~/js/filterItems.js"></script>
+    <script src="~/js/filterItems.js"></script>
+    <script src="~/js/collection.js"></script>
 }

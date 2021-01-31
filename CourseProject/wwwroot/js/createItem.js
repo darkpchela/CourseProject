@@ -116,7 +116,33 @@ $('#CollectionId').change(e => {
     loadFields(id);
 });
 
+let tagify;
+const updateTagify = () => {
+    let input = document.querySelector('#TagsJson');
+    if (input) {
+        tagify = new Tagify(input, {
+            whitelist: [],
+            delimiters: ",| ",
+            maxTags: 5,
+            dropdown: {
+                maxItems: 20,
+                classname: "tags-look",
+                enabled: 0,
+                closeOnSelect: false
+            }
+        });
+        $.ajax({
+            type: "post",
+            url: "/api/GetTags",
+            success: data => {
+                tagify.settings.whitelist.splice(0, data.length, ...data);
+            }
+        });
+    }
+};
+
 $(() => {
+    updateTagify();
     let cashedFields = JSON.parse($('#cashedFields').text());
     if (cashedFields) {
         for (let i = 0; i < cashedFields.length; i++) {
@@ -129,4 +155,7 @@ $(() => {
         let collectionId = $('#CollectionId').val();
         loadFields(collectionId);
     }
+    let mkEditor = $('[data-mkd=editor]');
+    let mkView = $('[data-mkd=view]');
+    makeMarkDown(mkEditor, mkView);
 });

@@ -41,6 +41,8 @@ namespace BusinessLayer.Services
             foreach (var user in users)
             {
                 var idenUser = await identityUnitOfWork.UserManager.FindByIdAsync(user.Id.ToString());
+                if (idenUser is null)
+                    continue;
                 var appUser = mapper.Map<AppUserModel>(user);
                 appUser.Roles = await identityUnitOfWork.UserManager.GetRolesAsync(idenUser);
                 appUsers.Add(appUser);
@@ -54,16 +56,16 @@ namespace BusinessLayer.Services
             foreach (var id in userIds)
             {
                 var appUser = await identityUnitOfWork.UserManager.FindByIdAsync(id.ToString());
-                var idenRes = await identityUnitOfWork.UserManager.DeleteAsync(appUser);
-                if (idenRes.Succeeded)
-                {
-                    await userCrudService.DeleteAsync(id);
-                    result.DeletedUsers.Add(id);
-                }
-                else
+                if (appUser is null)
                 {
                     result.AddError($"User {id} not found");
                     result.NotDeleted.Add(id);
+                }
+                else
+                {
+                    await userCrudService.DeleteAsync(id);
+                    await identityUnitOfWork.UserManager.DeleteAsync(appUser);
+                    result.DeletedUsers.Add(id);
                 }
             }
             return result;

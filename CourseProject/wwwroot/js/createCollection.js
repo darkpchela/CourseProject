@@ -53,10 +53,13 @@ $('#changeImage').click(e => {
 });
 
 $(() => {
-    let cashedFields = JSON.parse($('#cashedFields').text());
+    let cashedFields = JSON.parse($('#cashedFields').text()) || [];
     for (let i = 0; i < cashedFields.length; i++) {
         let field = getFieldElem(cashedFields[i]);
         $('#fields #btnAddField').before(field);
     }
     updateFieldNames();
+    let mkEditor = $('[data-mkd=editor]');
+    let mkView = $('[data-mkd=view]');
+    makeMarkDown(mkEditor, mkView);
 });

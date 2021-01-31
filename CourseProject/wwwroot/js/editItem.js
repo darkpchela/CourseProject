@@ -128,4 +128,8 @@ $(() => {
         fieldsElem.append(field);
     }
     updateFieldNames();
+    let mkEditor = $('[data-mkd=editor]');
+    let mkView = $('[data-mkd=view]');
+    makeMarkDown(mkEditor, mkView);
+    parseMarkDownTo(mkEditor.val(), mkView);
 });
