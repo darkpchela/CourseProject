@@ -11,7 +11,7 @@ namespace CourseProject.ViewModels
         public int TypeId { get; set; }
 
         [Required(ErrorMessage = "Field name required")]
-        [RegularExpression(@"^[\w\s]*$")]
+        [RegularExpression(@"^[\w\s]*$", ErrorMessage = "Special symbols are forbidden")]
         public string Name { get; set; }
     }
 }

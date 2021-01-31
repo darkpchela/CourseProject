@@ -11,8 +11,8 @@ namespace CourseProject.ViewModels
 
         public string Value { get; set; }
 
-        [Required(ErrorMessage = "Field must have name")]
-        [RegularExpression(@"^[\w\s]*$")]
+        [Required(ErrorMessage = "Field name is required")]
+        [RegularExpression(@"^[\w\s]*$", ErrorMessage = "Special symbols are forbidden")]
         public string Name { get; set; }
 
         public string Type { get; set; }

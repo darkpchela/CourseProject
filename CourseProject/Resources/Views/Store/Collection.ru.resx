@@ -117,13 +117,55 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Ascending" xml:space="preserve">
+    <value>Возрастанию</value>
+  </data>
+  <data name="ConfirmDel" xml:space="preserve">
+    <value>Подтвердите удаление</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Дате</value>
+  </data>
+  <data name="Deleting" xml:space="preserve">
+    <value>Удаляем</value>
+  </data>
+  <data name="DelItemMessage" xml:space="preserve">
+    <value>Вы действительно хотите удалить предмет</value>
+  </data>
+  <data name="Descending" xml:space="preserve">
+    <value>Убыванию</value>
+  </data>
   <data name="Description" xml:space="preserve">
     <value>Описание</value>
+  </data>
+  <data name="From" xml:space="preserve">
+    <value>От</value>
   </data>
   <data name="Items" xml:space="preserve">
     <value>Предметов</value>
   </data>
+  <data name="Name" xml:space="preserve">
+    <value>Имени</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Нет</value>
+  </data>
+  <data name="No_matter" xml:space="preserve">
+    <value>Не имеет значения</value>
+  </data>
   <data name="Owner" xml:space="preserve">
     <value>Владелец</value>
+  </data>
+  <data name="Popularity" xml:space="preserve">
+    <value>Популярности</value>
+  </data>
+  <data name="Sort_by" xml:space="preserve">
+    <value>Сортировать по</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>До</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Да</value>
   </data>
 </root>

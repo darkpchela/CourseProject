@@ -1,12 +1,12 @@
 ﻿let collections = null;
-let sortList = Array.prototype.sort.bind(items)
+let sortList = Array.prototype.sort.bind(collections)
 
 $('#sortProp, #sortPropParam').change(e => {
     let sortType = $('#sortProp').val();
     let param = $('#sortPropParam').val();
     let sort = sortType + param;
-    items.sort(sortsDic[sort]);
-    $('#collections').empty().append(items);
+    collections.sort(sortsDic[sort]);
+    $('#collections').empty().append(collections);
 });
 
 

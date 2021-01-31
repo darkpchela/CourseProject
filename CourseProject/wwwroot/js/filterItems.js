@@ -1,6 +1,4 @@
-﻿"use strict"
-
-$('input[type=checkbox]').change(e => {
+﻿$('input[type=checkbox]').val('').change(e => {
     $(e.delegateTarget).val($(e.delegateTarget).is(':checked')? 'true': '')
 });
 
@@ -30,7 +28,6 @@ for (let i = 0; i < collectionFields.length; i++) {
     let filterElem = getFilterElem(collectionFields[i]);
     $('#filterTab').prepend(filterElem);
 }
-
 const filterItems = () => {
     let items = $('[name=item]');
     let filters = $('#filterTab [name=filterProp]');
@@ -51,7 +48,7 @@ const filterItems = () => {
                 return false;
             }
         });
-        if (filtered === true) 
+        if (filtered === true)
             $(item).hide();
         else 
             $(item).show();

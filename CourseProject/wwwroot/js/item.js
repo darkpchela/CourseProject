@@ -14,6 +14,9 @@ hubConnection.on("OnItemLiked", (result, id) => {
         result.result == 0 ? count++ : count--;
         $('#likesCount').text(count);
         if (id == connectionId) {
+            $('#likeSpinner').hide();
+            $('#likesCount').show();
+            $('#btnLike').prop('disabled', false);
             if (result.result == 0) {
                 $('#disliked').hide();
                 $('#liked').show();
@@ -30,7 +33,7 @@ hubConnection.on("OnItemLiked", (result, id) => {
 });
 
 hubConnection.on("OnCommentMade", (result, id) => {
-    if (result.succeed) {
+    if (result.succeed === true) {
         console.log(result)
         let comment = getCommentElem(result);
         $('#inputArea').before(comment);
@@ -40,7 +43,8 @@ hubConnection.on("OnCommentMade", (result, id) => {
     }
     if (connectionId == id) {
         $('#inputArea').find('textarea').prop('readonly', false).val('');
-        $('#btnComment').prop('disabled', false);
+        $('#commentSpinner').hide();
+        $('#btnComment').show();
     }
 });
 
@@ -58,14 +62,18 @@ $('#btnComment').click(e => {
     e.preventDefault();
     let itemId = $('#itemId').val();
     let value = $('#commentValue').val();
-    $('#inputArea').find('input').prop('readonly', true);
-    $('#btnComment').prop('disabled', true);
+    $('#inputArea').find('textarea').prop('readonly', true);
+    $('#btnComment').hide();
+    $('#commentSpinner').show();
     hubConnection.invoke("SendComment", itemId, value);
 });
 
 $('#btnLike').click(e => {
     e.preventDefault();
     let itemId = $('#itemId').val();
+    $('#btnLike').prop('disabled', true);
+    $('#likesCount').hide();
+    $('#likeSpinner').show();
     hubConnection.invoke("SendLike", itemId);
 });
 
