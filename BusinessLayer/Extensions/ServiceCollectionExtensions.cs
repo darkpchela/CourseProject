@@ -31,16 +31,16 @@ namespace BusinessLayer.Extensions
         {
             services.AddBaseCrudServices();
             services.AddCloudinaryService(configuration);
-            services.AddScoped<ICollectionsManager, CollectionsManager>();
-            services.AddScoped<IItemsManager, ItemsManager>();
-            services.AddScoped<IResourcesManager, ResourcesManager>();
-            services.AddScoped<IOptionalFieldsManager, OptionalFieldsManager>();
-            services.AddScoped<ITagsManager, TagsManager>();
-            services.AddScoped<ILikesManager, LikesManager>();
-            services.AddScoped<ICommentsManager, CommentsManager>();
-            services.AddScoped<IAppUsersManager, AppUsersManager>();
-            services.AddScoped<IAppSignInManager, AppSignInManager>();
-            services.AddScoped<IThemesManager, ThemesManager>();
+            services.AddTransient<ICollectionsManager, CollectionsManager>();
+            services.AddTransient<IItemsManager, ItemsManager>();
+            services.AddTransient<IResourcesManager, ResourcesManager>();
+            services.AddTransient<IOptionalFieldsManager, OptionalFieldsManager>();
+            services.AddTransient<ITagsManager, TagsManager>();
+            services.AddTransient<ILikesManager, LikesManager>();
+            services.AddTransient<ICommentsManager, CommentsManager>();
+            services.AddTransient<IAppUsersManager, AppUsersManager>();
+            services.AddTransient<IAppSignInManager, AppSignInManager>();
+            services.AddTransient<IThemesManager, ThemesManager>();
             services.AddAuthenticators();
             services.AddValidators();
             return services;
